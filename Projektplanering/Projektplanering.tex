@@ -1,0 +1,117 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{xcolor}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{fullpage}
+\usepackage[font=small,labelfont=bf]{caption}
+\usepackage{caption}
+\usepackage{multirow}
+\usepackage{wrapfig}
+\usepackage{float}
+\usepackage{multirow}
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
+\usepackage[hidelinks]{hyperref}
+\usepackage{array,etoolbox}
+\preto\tabular{\setcounter{magicrownumbers}{0}}
+\newcounter{magicrownumbers}
+\newcommand\rownumber{\stepcounter{magicrownumbers}\arabic{magicrownumbers}}
+\usepackage{tikz}
+\parindent0em
+
+\begin{document}
+	\begin{titlepage}
+  	\vspace*{3\baselineskip}
+    \begin{center}
+    	\begin{center}
+    \includegraphics[scale=0.5]{Faculty_of_Engineering_(LTH),_Lund_University_logo.png}
+    	\end{center}
+    \vspace*{3\baselineskip}
+    \large
+    \bfseries
+   \Huge
+   Optimizing business intelligence extraction speed from an ERP-system's database
+   \HRule\\
+       \normalfont
+          \LARGE
+          Project plan \\
+            \normalsize
+            \vspace*{1\baselineskip}
+      Master Thesis in  Computer Science\\
+      \vspace*{4\baselineskip}
+      Preliminary dates: 20/1/2015 --- 9/6/2015\\
+      \vspace*{6\baselineskip}
+      
+      
+      \begin{table}[H]
+      \centering
+      \begin{tabular}{r c l}
+      Max Åberg &|& Alexander Söderberg\\
+      (880408-0219) &|& (900702-5217) \\
+      mat09mab@student.lu.se &|& ain10aso@student.lu.se\\
+      \end{tabular}
+      \end{table}
+
+    
+    
+
+    \today \\
+
+    \end{center}
+\end{titlepage}
+    
+\newpage
+
+\vspace*{-2\baselineskip}
+
+\section*{Introduction}
+PerfectIT BeX AB has three products distributed as SaaS-solutions. The three products are:
+\begin{itemize}
+\item BeX Online - a cloud based ERP-system specialized for retail and e-commerce businesses. BeX Online has features for finance, sales orders, purchase orders, inventory/warehousing, business intelligence-reporting and more. 
+\item BeX Retail - a desktop retail application connected to BeX Online.
+\item BeX B2B - a cloud based system for order handling inbetween businesses.
+\end{itemize}
+
+BeX Online has a module for creating business intelligence reports (refered to as BI-reports) but generating what is considered as large reports is slow and puts a high demand on the system. The company believes that this process could be faster and more effective. 
+
+\section*{Goal}
+PerfectIt BeX AB wants the process behind generating these reports analyzed and optimised to improve the speed of the generation and lessen the demands it puts on the system.
+\section*{Stakeholders}
+\begin{table}[H]
+    \begin{tabular}{l|l|l}
+    Stakeholder & Name & Mail \\\hline
+    Thesis students & Max Åberg \& Alexander Söderberg & see frontpage \\\hline
+    University supervisor & Alma Orucevic Alagic & alma@cs.lth.se\\\hline
+    Workplace supervisor & Lennart Söderberg & lennart@perfectit.se\\\hline
+    Examiner & Per Andersson & per.andersson@cs.lth.se 
+    \end{tabular}
+    \caption{Thesis stakeholders}
+\end{table}
+
+\section*{Overall objectives and issues/research questions}
+The current processes behind generation of the BI-reports must be identified and mapped. This mapping will be analyzed for bottle-necks and innefficiencies. Research will be performed to learn of approaches to solve the problems identified in the analysis. The research will consider as many options as possible to find a long-term solution.
+These approaches will be analyzed to decide which of them are a best fit and should be used to reach the goal. This will then be implemented in BeX Online and a final analysis should be performed to determine if the goal was met.
+It is important that the new solution does not affect the front-end interface of the system.
+
+\section*{Result list}
+\begin{itemize}
+\item something
+\end{itemize}
+
+\section*{Activity breakdown}
+\begin{table}[H]
+    \begin{tabular}{|@{\makebox[1em][r]{\rownumber\space}} l|l|l|}
+    \hline
+    \multicolumn{1}{|l|}{\textbf{Activities}} & \textbf{Time} & \textbf{Dependent on}\\\hline
+    Literature search & 7 days & \ldots \\\hline
+    literature summary & 12 days & 1\\\hline   
+    \end{tabular}
+    \caption{Example of activities}
+\end{table}
+
+\section*{Time schedule}
+
+\section*{Follow up}
+
+\end{document}
