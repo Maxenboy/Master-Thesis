@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.4-1.40.13 (MiKTeX 2.9) (preloaded format=pdflatex 2013.11.30)  10 DEC 2014 13:25
+This is pdfTeX, Version 3.1415926-2.4-1.40.13 (MiKTeX 2.9) (preloaded format=pdflatex 2013.11.30)  21 JAN 2015 10:49
 entering extended mode
 **Goal*document.tex
 ("C:\Users\Max\Desktop\Plugg\Exjobb\Måldokument\Goal document.tex"
@@ -552,14 +552,14 @@ LaTeX Info: Redefining \nameref on input line 18.
 ("C:\Users\Max\Desktop\Plugg\Exjobb\Måldokument\Goal document.out")
 \@outlinefile=\write3
 
-<Faculty_of_Engineering_(LTH),_Lund_University_logo.png, id=3, 414.54875pt x 27
-4.02374pt>
+<Faculty_of_Engineering_(LTH),_Lund_University_logo.png, id=3, 517.935pt x 342.
+078pt>
 File: Faculty_of_Engineering_(LTH),_Lund_University_logo.png Graphic file (type
  png)
  <use Faculty_of_Engineering_(LTH),_Lund_University_logo.png>
 Package pdftex.def Info: Faculty_of_Engineering_(LTH),_Lund_University_logo.png
  used on input line 23.
-(pdftex.def)             Requested size: 207.27386pt x 137.01154pt.
+(pdftex.def)             Requested size: 258.96686pt x 171.03857pt.
 LaTeX Font Info:    Try loading font information for OT1+lmr on input line 44.
 
 ("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\lm\ot1lmr.fd"
@@ -634,9 +634,9 @@ fonts/type1/public/lm/lmbx12.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1
 /public/lm/lmr10.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/lm/l
 mr12.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/lm/lmr17.pfb><C:
 /Program Files (x86)/MiKTeX 2.9/fonts/type1/public/lm/lmsy10.pfb>
-Output written on "Goal document.pdf" (3 pages, 160743 bytes).
+Output written on "Goal document.pdf" (3 pages, 204775 bytes).
 PDF statistics:
- 66 PDF objects out of 1000 (max. 8388607)
+ 67 PDF objects out of 1000 (max. 8388607)
  13 named destinations out of 1000 (max. 500000)
  6 words of extra memory for PDF output out of 10000 (max. 10000000)
 

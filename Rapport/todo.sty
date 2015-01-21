@@ -1,0 +1,56 @@
+\NeedsTeXFormat{LaTeX2e}[1995/12/01]
+\ProvidesPackage{todo} [2003/01/27 v0.1]
+
+\RequirePackage{ifthen}
+\RequirePackage{latexsym}
+
+\newcommand\todoboxes{true}
+\DeclareOption{inline}
+        {\renewcommand\todoboxes {true}}
+\DeclareOption{noinline}
+        {\renewcommand\todoboxes {false}}
+\ProcessOptions
+
+
+\newcounter{todocnt}
+\setcounter{todocnt}{0}
+\def\todolist{}
+
+\def\printtodo{%
+  \ifnum \c@todocnt >\z@
+%    \renewcommand\labelitemi{\raisebox{0.9ex}\fbox{}}
+%    \renewcommand\labelitemi{}
+    \newpage
+    \markboth{}{}
+    \setcounter{todocnt}{1}
+    \section*{ToDo}
+    \begin{itemize}
+      \todolist
+    \end{itemize}
+   \fi
+}
+
+%\newcommand{\todo}[1]{
+%  \marginpar{ToDo!}
+%  \addtocounter{todocnt}{1}
+%  \g@addto@macro{\todolist}{\item Section~\ref{todo:\thetodocnt},~page~\pageref{todo:\thetodocnt}\addtocounter{todocnt}{1}: #1}
+%}
+
+\newcommand{\todo}[2][false]{
+  \addtocounter{todocnt}{1}
+  \label{todo:\thetodocnt}
+\ifthenelse{\equal{#1}{false}}{
+\ifthenelse{\equal{\todoboxes}{true}}{
+  \begin{description}
+  \item[{ToDo:}] \framebox{\parbox[t]{0.75\columnwidth}{#2}} 
+  \end{description} 
+}{\noindent\makebox[-1em]{\raisebox{0pt}[0pt][0pt]{\raisebox{0.9ex}{\textbf{\fbox{\scriptsize T}}}}}}
+}{}
+%\makebox[-1em]{  
+\g@addto@macro{\todolist}{\ifthenelse{\equal{#1}{false}}{\renewcommand\labelitemi{$\Box$}}{\renewcommand\labelitemi{$\surd$}} \item  Section~\ref{todo:\thetodocnt},~page~\pageref{todo:\thetodocnt}\addtocounter{todocnt}{1}: #2 \ifthenelse{\equal{#1}{false}}{}{\textit{#1}}}
+%}
+}
+\endinput
+%%
+%% End of file `todo.sty'.
+
