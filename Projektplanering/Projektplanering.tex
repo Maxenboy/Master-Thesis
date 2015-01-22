@@ -19,34 +19,7 @@
 \usepackage{rotating}
 \usepackage[graphicx]{realboxes}
 
-\newganttchartelement*{mymilestone}{
-mymilestone/.style={
-shape=isosceles triangle,
-inner sep=0pt,
-draw=cyan,
-top color=white,
-bottom color=cyan!50
-},
-mymilestone incomplete/.style={
-/pgfgantt/mymilestone,
-draw=yellow,
-bottom color=yellow!50
-},
-mymilestone label font=\slshape,
-mymilestone left shift=0pt,
-mymilestone right shift=0pt
-}
 
-\newgantttimeslotformat{stardate}{%
-\def\decomposestardate##1.##2\relax{%
-\def\stardateyear{##1}\def\stardateday{##2}%
-}%
-\decomposestardate#1\relax%
-\pgfcalendardatetojulian{\stardateyear-01-01}{#2}%
-\advance#2 by-1\relax%
-\advance#2 by\stardateday\relax%
-}
-\parindent0em
 
 \begin{document}
 	\begin{titlepage}
@@ -151,12 +124,13 @@ The university supervisor will aid in guiding and maintaining the thesis's focus
     A11 & Result and Benchmarking & 14 days & A10 \\\hline
     A12 & Discussion & 14 days & A11 \\\hline
     A13 & Reviewing and improvements & 7 days & A12 \\\hline
+    A14 & Presentation and opposition preparations & 7 days & A13 \\\hline
+    A15 & Presentation & 1 day & A14\\\hline
     \end{tabular}
     \caption{Example of activities}
 \end{table}
 
 \section*{Time schedule}
-
 \begin{ganttchart}[vgrid, hgrid]{1}{9}[H]
 \gantttitle{Jan}{9}\\
 \gantttitlelist{23,...,31}{1}\\
@@ -225,25 +199,27 @@ The university supervisor will aid in guiding and maintaining the thesis's focus
 %First Group
 \ganttbar{A12}{1}{12} \\
 \ganttbar{A13}{13}{19}\\
+\ganttbar{A14}{29}{31}\\
 %\ganttlink{elem0}{elem1}
 \ganttlink{elem0}{elem1}
+\ganttlink{elem1}{elem2}
 %\ganttmilestone{Milestone 1}{11}
 %Second Group
-
 \end{ganttchart}\\
 
 \begin{ganttchart}[vgrid, hgrid]{1}{5} [H]
 \gantttitle{Jun}{5}\\
 \gantttitlelist{1,...,5}{1}\\
 %First Group
-%\ganttbar{Task 1}{2}{3} \\
-%\ganttlink{elem0}{elem1}
+\ganttbar{A14}{1}{4}\\
+\ganttbar{A15}{5}{5} \\
+\ganttlink{elem0}{elem1}
 %\ganttlink{elem0}{elem1}
 %\ganttlink{elem1}{elem2}
 %\ganttmilestone{Milestone 1}{11}
 %Second Group
-
 \end{ganttchart}\\
+
 
 \section*{Follow up}
 
