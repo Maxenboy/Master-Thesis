@@ -139,7 +139,7 @@ At first, internal fragmentation might seem like a good thing. If the phone book
 External fragmentation often makes reading the database non-sequential, i.e it cannot be read in order but must be read in random order. This is especially bad in classic magnetic hard drives where the reader head must move around to multiple locations on the drive. Some magnetic hard drives only get 1\% of their sequential reading speed when performing random reads. \cite{Toshiba12}
 
 \subsubsection*{Measuring fragmentation}
-In Al-Farooque Shubhoe's article "Top 10 ways to optimize data access in SQL Server"\cite{Shubhoe09} he explains how to measure if index fragmentation has occurred. By executing the following script, index fragmentation is analyzed on every table in the database and presented in a table with an internal and external fragmentation value. 
+In Al-Farooque Shubho's article "Top 10 ways to optimize data access in SQL Server"\cite{Shubho09} he explains how to measure if index fragmentation has occurred. By executing the following script, index fragmentation is analyzed on every table in the database and presented in a table with an internal and external fragmentation value. 
 
 \begin{lstlisting}[caption={Algorithm to find fragmented tables and the fragmentation values.},label=See DB-Fragmentation]
 SELECT object_name(dt.object_id) Tablename,si.name
@@ -156,10 +156,10 @@ AND si.index_id=dt.index_id AND dt.avg_fragmentation_in_percent>10
 AND dt.avg_page_space_used_in_percent<75 ORDER BY avg_fragmentation_in_percent DESC
 \end{lstlisting}
 
-According to Shubhoe, only tables with an internal fragmentation value of less than 75 and/or an external fragmentation value of more than 10 should be considered as fragmented, which this code takes into account.
+According to Shubho, only tables with an internal fragmentation value of less than 75 and/or an external fragmentation value of more than 10 should be considered as fragmented, which this code takes into account.
 
 \subsubsection*{Reorganize vs Rebuild}\mbox{}\\
-Both rebuilding and reorganizing are built-in operations in SQL-Server 2014.
+Both rebuilding and reorganizing are built-in operations in SQL-Server 2014. They are two different operations that both reduce the fragmentation 
 
 \subsection{Cardinality}
 \subsection{Redundancy}
