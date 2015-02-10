@@ -85,6 +85,10 @@ The time frame of a master thesis is limited and therefore work limitations have
 \href{https://drive.google.com/file/d/0B1IYTmE2hnD-eGQ0N2tvYXZNNVE/view?usp=sharing}{Database schema link}
 
 \section{Theory}
+In order to understand why a database might not perform optimally, the following theory was used.
+\subsection{Index Fragmentation}
+Index fragmentation is one of the most common problems in a relational database. Two kinds of fragmentation can occur, internal index fragmentation and external index fragmentation. The easiest way to explain index fragmentation is by imagining the SQL database as a phone book. At the very end of the book you have a few pages containing a table with indexes of all the entries sorted by last name. This is fine in a static environment such as a phonebook but what happens in a dynamic environment?
+Since people can be added to the phonebook there must be space available after each column in the index, as well as in the pages in the phonebook. This is called the fill factor. A page can still run out of space and when this happens SQL Server has to add a new page, but it it can't add it at the correct place beacause the book is already bound. So, it adds a blank page at the very end.
 \section{Analysis}
 
 
