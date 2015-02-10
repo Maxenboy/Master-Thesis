@@ -1,4 +1,6 @@
 \documentclass{cslthse-msc}
+\setcounter{tocdepth}{4}
+\setcounter{secnumdepth}{4}
 \usepackage[utf8]{inputenc}
 \usepackage[english]{babel}
 \usepackage{amsmath}
@@ -9,14 +11,16 @@
 \usepackage{graphicx}
 \usepackage[titletoc, header, page]{appendix}
 \usepackage{todo}
+\usepackage{float}
+\usepackage[hidelinks]{hyperref}
+\usepackage{wrapfig}
+\usepackage[within=none]{caption}
 \usepackage{listings}
 \usepackage{color}
 
 \definecolor{mygreen}{rgb}{0,0.6,0}
 \definecolor{mygray}{rgb}{0.5,0.5,0.5}
 \definecolor{mymauve}{rgb}{0.58,0,0.82}
-
-\usepackage[hidelinks]{hyperref}
 
 
 \lstset{
@@ -46,7 +50,7 @@ captionpos=b
 extraction speed from an
 ERP-system’s database}
 \subtitle{Master Thesis}
-\company{Perfect IT BeX AB}
+\company{Perfect IT BeX\textsuperscript{\textregistered} AB}
 \supervisors{Lennart Söderberg, \href{mailto:lennart@perfectit.se}{\texttt{lennart@perfectit.se}}}{Alma Orucevic Alagic, \href{mailto:alma@cs.lth.se}{\texttt{alma@cs.lth.se}}}
 %\supervisor{John Deer, \href{mailto:jdeer@company.com}{\texttt{jdeer@company.com}}}
 \examiner{Per Andersson, \href{mailto:per.andersson@cs.lth.se}{\texttt{per.andersson@cs.lth.se}}}
@@ -102,9 +106,22 @@ The time frame of a master thesis is limited and therefore work limitations have
 \section{Work}
 
 \chapter{Approach}
-\section{Technical Description}
-\includegraphics[scale=.2]{Systemdesc.png}
-\section{Database}
+\section{Technical System Description}
+Perfect IT delivers web-based business system and services associated to such a market. All of the system components are essential parts of the business intelligence report generation, but only some of it are of interest when considering the extraction speed.
+\begin{figure}[H]
+\vspace{-15pt}
+  \begin{center}
+    \includegraphics[scale=0.3]{Systemdesc.png}
+  \end{center}
+  \caption{Context diagram of Perfect IT's system}
+  \label{context}
+  \vspace{-15pt}
+\end{figure}
+\noindent The dashed section in Figure~\ref{context} are the components that are of the most interest for this thesis and will be more thoroughly described than the other system components.
+\subsection{Components}
+\subsubsection{BeX\textsuperscript{\textregistered} Online}
+Each client possesses a unique instance of the BeX\textsuperscript{\textregistered} Online system, which consists of a front-end and a back-end a user interacts with. BeX\textsuperscript{\textregistered} Online is web based and has a front-end built in HTML5, CSS and JavaScript. The front-end communicates with the back-end through ASP (POST- \& GET-requests), which in turn translates the requests and sends SQL-queries to the database. The fetched result is finally interpreted by a web-browser as HTML. \todo{deeper description}
+\subsubsection{Database}
 \href{https://drive.google.com/file/d/0B1IYTmE2hnD-eGQ0N2tvYXZNNVE/view?usp=sharing}{Database schema link}
 
 \section{Theory}
@@ -138,6 +155,8 @@ AND dt.avg_page_space_used_in_percent<75 ORDER BY avg_fragmentation_in_percent D
 
 According to Shubhoe, only tables with an internal fragmentation value of less than 75 and/or an external fragmentation value of more than 10 should be considered as fragmented, which this code takes into account.
 
+\subsection{Cardinality}
+\subsection{Redundancy}
 \section{Analysis}
 
 
@@ -150,7 +169,7 @@ According to Shubhoe, only tables with an internal fragmentation value of less t
 \chapter{Discussion}
 
 \chapter{Conclusions}
-
+\addcontentsline{toc}{chapter}{Bibliography}
 \bibliographystyle{plain}
 \bibliography{MyMSc}
 \end{document}
