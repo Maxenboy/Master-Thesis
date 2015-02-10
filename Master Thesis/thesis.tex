@@ -26,7 +26,7 @@
 extraction speed from an
 ERP-system’s database}
 \subtitle{Master Thesis}
-\company{Perfect IT BeX AB}
+\company{Perfect IT BeX\textsuperscript{\textregistered} AB}
 \supervisors{Lennart Söderberg, \href{mailto:lennart@perfectit.se}{\texttt{lennart@perfectit.se}}}{Alma Orucevic Alagic, \href{mailto:alma@cs.lth.se}{\texttt{alma@cs.lth.se}}}
 %\supervisor{John Deer, \href{mailto:jdeer@company.com}{\texttt{jdeer@company.com}}}
 \examiner{Per Andersson, \href{mailto:per.andersson@cs.lth.se}{\texttt{per.andersson@cs.lth.se}}}
@@ -83,14 +83,20 @@ The time frame of a master thesis is limited and therefore work limitations have
 
 \chapter{Approach}
 \section{Technical System Description}
-Perfect IT delivers web-based business system and services associated to such a market.  	
+Perfect IT delivers web-based business system and services associated to such a market. All of the system components are essential parts of the business intelligence report generation, but only some of it are of interest when considering the extraction speed. \\
+The dashed section in Figure~\ref{context} are the components that are of the most interest for this thesis and will be more thoroughly described than the other system components.\\\\
+\subsubsection{BeX\textsuperscript{\textregistered} Online}
+Each client possesses a unique instance of the BeX\textsuperscript{\textregistered} Online system, which consists of 
+	
 \begin{figure}[H]
   \begin{center}
     \includegraphics[scale=0.3]{Systemdesc.png}
   \end{center}
   \caption{Context diagram of Perfect IT's system}
+  \label{context}
+  \vspace{-15pt}
 \end{figure}
-
+	
 \section{Database}
 \href{https://drive.google.com/file/d/0B1IYTmE2hnD-eGQ0N2tvYXZNNVE/view?usp=sharing}{Database schema link}
 
