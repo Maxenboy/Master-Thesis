@@ -125,7 +125,7 @@ Perfect IT delivers web-based business system and services associated to such a 
 \subsubsection{BeX\textsuperscript{\textregistered} Online}
 Each client possesses a unique instance of the BeX\textsuperscript{\textregistered} Online system, which consists of a front-end and a back-end a user interacts with. BeX\textsuperscript{\textregistered} Online is web based and has a front-end built in HTML5, CSS and JavaScript. The front-end communicates with the back-end through ASP (POST- \& GET-requests), which in turn translates the requests and sends SQL-queries to the database. The fetched result is finally interpreted by a web-browser as HTML. \todo{deeper description}
 \subsubsection{Database}
-The database is an essential part of Perfect IT's system and this thesis. All clients share the same physical database but have a unique instance of the database with only their data.  Perfect IT has has to today \hilight{40} clients connected to the servers database, all with different sizes of data ranging from approximately \hilight{5GB data to approximately 60GB} data. The database is run on an Microsoft SQL Server 2014 and has a total of approximately \hilight{350GB} of data. The database design is largely the same for all the clients.\\\\ 
+The database is an essential part of Perfect IT\'s system and this thesis. All clients share the same physical database but have a unique instance of the database with only their data.  Perfect IT has has to today \hilight{40} clients connected to the servers database, all with different sizes of data ranging from approximately \hilight{5GB data to approximately 60GB} data. The database is run on an Microsoft SQL Server 2014 and has a total of approximately \hilight{350GB} of data. The database design is largely the same for all the clients.\\\\ 
 This thesis will be using, until today, the biggest clients database measured in data.\\  Tables: 254 Data:57GB Biggest table: 10.5 millions rows
 \\\href{https://drive.google.com/file/d/0B1IYTmE2hnD-eGQ0N2tvYXZNNVE/view?usp=sharing}{Database schema link}
 
@@ -166,7 +166,6 @@ The advantage with reorganizing over rebuilding is that it can be aborted midway
 
 \subsubsection*{Is it always a good idea to fix fragmentation?}
 According to Brent Ozar \cite{Ozar12} fixing fragmentation can cause more damage than keeping fragmented indexes. Often administrators try to fix fragmentation by using a low fill factor, say 50\%. This would mean that half of every page would be blank, which would make writing really fast. Reading however, would be twice as slow. Another common mistake is to rebuild every single index in the database, even though some tables might not had a single write since the last time. This is a problem because defragmenting indexes causes SQL Server to write to the transaction log. The bigger a log is, the longer log backups and restores take.
-
 \subsection{Redundancy}
 \section{Analysis}
 
