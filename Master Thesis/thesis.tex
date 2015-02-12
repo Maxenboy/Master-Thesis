@@ -163,8 +163,9 @@ AND dt.avg_page_space_used_in_percent<75 ORDER BY avg_fragmentation_in_percent D
 
 According to Shubho, only tables with an internal fragmentation value of less than 75 and/or an external fragmentation value of more than 10 should be considered as fragmented, which this code takes into account.
 
-\subsubsection*{Reorganize vs Rebuild}\mbox{}\\
-Both rebuilding and reorganizing are built-in operations in SQL-Server 2014. They are two different operations that both reduce the fragmentation 
+\subsubsection*{Reorganize vs. Rebuild}\mbox{}\\
+Both rebuilding and reorganizing are built-in operations in SQL-Server 2014. These are two different operations that both reduce the fragmentation of the indexes. Reorganizing is the more lightweight of the two operations.
+
 
 \subsection{Cardinality}
 \subsection{Redundancy}
