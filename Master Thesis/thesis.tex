@@ -19,6 +19,8 @@
 \usepackage{svg}
 \usepackage{listings}
 \usepackage{color}
+\usepackage{color}
+\newcommand{\hilight}[1]{\colorbox{yellow}{#1}}
 
 \definecolor{mygreen}{rgb}{0,0.6,0}
 \definecolor{mygray}{rgb}{0.5,0.5,0.5}
@@ -88,7 +90,7 @@ In today's businesses there's high demand for accurate and up-to-date business i
 \section{Background}
 
 \section{Problem description}
-\section{Thesis Goals}'
+\section{Thesis Goals}
 
 
 \section{Scope}
@@ -112,9 +114,10 @@ The time frame of a master thesis is limited and therefore work limitations have
 \section{Technical System Description}
 Perfect IT delivers web-based business system and services associated to such a market. All of the system components are essential parts of the business intelligence report generation, but only some of it are of interest when considering the extraction speed.
 \begin{figure}[H]
-\vspace{-15pt}
+\vspace{-15pt}  
   \begin{center}
-    \includegraphics[scale=0.3]{Systemdesc.png}
+  \hspace{-2cm}
+    \includegraphics[scale=0.35]{Systemdesc.png}
   \end{center}
   \caption{Context diagram of Perfect IT's system}
   \label{context}
@@ -125,6 +128,7 @@ Perfect IT delivers web-based business system and services associated to such a 
 \subsubsection{BeX\textsuperscript{\textregistered} Online}
 Each client possesses a unique instance of the BeX\textsuperscript{\textregistered} Online system, which consists of a front-end and a back-end a user interacts with. BeX\textsuperscript{\textregistered} Online is web based and has a front-end built in HTML5, CSS and JavaScript. The front-end communicates with the back-end through ASP (POST- \& GET-requests), which in turn translates the requests and sends SQL-queries to the database. The fetched result is finally interpreted by a web-browser as HTML. \todo{deeper description}
 \subsubsection{Database}
+The database is an essential part of Perfect IT's system and this thesis. All clients share the same physical database but have a unique instance of the database with only their data. Perfect IT has has to today \hilight{40} clients connected to the servers database, all with different sizes of data ranging from approximately \hilight{5GB data to approximately 70GB} data. \\\\ 
 \href{https://drive.google.com/file/d/0B1IYTmE2hnD-eGQ0N2tvYXZNNVE/view?usp=sharing}{Database schema link}
 
 \section{Theory}
