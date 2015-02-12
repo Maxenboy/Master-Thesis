@@ -169,6 +169,8 @@ The advantage with reorganizing over rebuilding is that it can be aborted midway
 According to Brent Ozar \cite{Ozar12} fixing fragmentation can cause more damage than keeping fragmented indexes. Often administrators try to fix fragmentation by using a low fill factor, say 50\%. This would mean that half of every page would be blank, which would make writing really fast. Reading however, would be twice as slow. Another common mistake is to rebuild every single index in the database, even though some tables might not had a single write since the last time. This is a problem because defragmenting indexes causes SQL Server to write to the transaction log. The bigger a log is, the longer log backups and restores take.\\
 
 \subsection{Redundancy}
+
+\subsection{Hekaton}
 \section{Analysis}
 
 
