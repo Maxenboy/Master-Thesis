@@ -85,9 +85,11 @@ ERP-system’s database}
 In today's businesses there's high demand for accurate and up-to-date business intelligence.
 
 \chapter{Background}
+
 \section{Background}
 
 \section{Problem description}
+
 \section{Thesis Goals}
 
 \section{Scope}
@@ -111,17 +113,23 @@ The time frame of a master thesis is limited and therefore work limitations have
 \item The optimization will not effect the original structure of the systems database.
 \item The optimization will not change the logic of the queries made by the back-end to the database.
 \item The optimization should be versatile enough to handle future database expansions and higher performance of the system. However, in the scope of this master thesis only estimations based on the current system can be done.
+\item No back-end of the system is provided, due to \hilight{??}
 \end{itemize}
 
 \section{Related Work}
+
 \section{Contributions}
 
 \chapter{Research Questions \& Methodology}
+
 \section{Research Questions}
+
 \section{Methodology}
+
 \section{Work}
 
 \chapter{Approach}
+
 \section{Technical System Description}
 Perfect IT delivers web-based business system and services associated to such a market. All of the system components are essential parts of the business intelligence report generation, but only some of it are of interest when considering the extraction speed.
 \begin{figure}[H]
@@ -134,17 +142,24 @@ Perfect IT delivers web-based business system and services associated to such a 
   \vspace{-15pt}
 \end{figure}
 \noindent The dashed section in Figure~\ref{context} are the components that are of the most interest for this thesis and will be more thoroughly described than the other system components.
+
 \subsection{Components}
-Web edition, 60GB Ram, 
+
+
 \subsubsection{Server}
+Web edition, 60GB Ram, 
 \subsubsection{BeX\textsuperscript{\textregistered} Online}
 Each client possesses a unique instance of the BeX\textsuperscript{\textregistered} Online system, which consists of a front-end and a back-end a user interacts with. BeX\textsuperscript{\textregistered} Online is web based and has a front-end built in HTML5, CSS and JavaScript. The front-end communicates with the back-end through ASP (POST- \& GET-requests), which in turn translates the requests and sends SQL-queries to the database. The fetched result is finally interpreted by a web-browser as HTML. \todo{deeper description}
+
 \subsubsection{Database}
 The database is an essential part of Perfect IT's system and this thesis. All clients share the same physical database but have a unique instance of the database with only their data.  Perfect IT has has to today \hilight{40} clients connected to the servers database, all with different sizes of data ranging from approximately \hilight{5GB data to approximately 60GB} data. The database is an RDBMS an is run on an Microsoft SQL Server 2014 using OLTP and has a total of approximately \hilight{350GB} of data. The database design is largely the same for all the clients, with only a few exceptions among the clients.\\\\ 
+
+\paragraph*{Tables}\mbox{}\\\\
 This thesis will be using, until today, the biggest clients database measured in data. To ensure the clients privacy, all sensitive data has been encrypted by the system administrator. \\The default schema is called \textit{dbo} and consists of a total of 254 tables, including some views for big data queries. Many tables are large, considering the amount of rows, where the largest consists of approximately 10.5$\times 10^6$ rows and 80 columns. This table treats the data associated with every transaction made with the client from the start of using this system. There are also empty tables, \hilight{usage?}, that \ldots. The tables form a complex relation to each other and the references are many (as seen in this \href{https://drive.google.com/file/d/0B1IYTmE2hnD-eGQ0N2tvYXZNNVE/view?usp=sharing}{\textcolor{blue}{link}}). In the visualized database reference schema there are tables not referencing any tables at all, \hilight{why?}.\\\\Data obtained from third party applications and API's are also stored in the database and can be seen in the bottom part of the visualized database reference schema mentioned above (\hilight{maybe the answer to the no reference question above?}). Some, \hilight{why not all?} of the business intelligence reports have their own tables in the database, \hilight{why?}.
-\paragraph*{Tables}
-\paragraph*{Stored procedures}\mbox{}\\ 
-Stored procedures are subroutines that are available to applications that access relational database systems. Stored procedures are used as centralized logic and can therefore be used by all applications that share the system. These subroutines can include both SQL statements and host language statements, meaning that it can exist of external procedures that has nothing to do with SQL. Often extensive and complex SQL queries, that require a lot of processing and are often being used, are moved to stored procedures for reuse \cite{StoredProcedures}
+
+\paragraph*{Stored procedures}\mbox{}\\\\ 
+Stored procedures are subroutines that are available to applications that access relational database systems. Stored procedures are used as centralized logic and can therefore be used by all applications that share the system. These subroutines can include both SQL statements and host language statements, meaning that it can exist of external procedures that has nothing to do with SQL. Often extensive and complex SQL queries, that require a lot of processing and are often being used, are moved to stored procedures for reuse \cite{StoredProcedures}. It's important to know that Stored procedures both bring advantages, e.g. Stored procedures are cached, and drawbacks, e.g. Stored procedure code is not as robust as app code. Subroutines such as Stored procedures should therefore only be used when and if the implementer possess a deep knowledge of the system that is to be affected. It's for example bad practice to store all procedures as Stored procedures for the benefit of the cach-utilization.\\\\
+The database in this thesis had a total of 59 Stored procedures treating repetitive procedures by the database mainly for the sales part of the system and the business intelligence reports (there's also a subroutine for locking crucial information, with respect to concurrent execution). These subroutines do not contain any host language statements and/or external procures, but only consists of complex SQL statements. They are present in the system, as mentioned above, to make the execution and processing less demanding, as they are often run by the clients of the system. 
 \section{Theory}
 In order to understand why a database might not perform optimally, the following theory was used.
 \subsection{Index Fragmentation}
@@ -157,28 +172,13 @@ At first, internal fragmentation might seem like a good thing. If the phone book
 External fragmentation often makes reading the database non-sequential, i.e it cannot be read in order but must be read in random order. This is especially bad in classic magnetic hard drives where the reader head must move around to multiple locations on the drive. Some magnetic hard drives only get 1\% of their sequential reading speed when performing random reads. \cite{Toshiba12}
 
 \subsubsection{Measuring fragmentation}
-In Al-Farooque Shubho's article "Top 10 ways to optimize data access in SQL Server"\cite{Shubho09} he explains how to measure if index fragmentation has occurred. By executing the following script, index fragmentation is analyzed on every table in the database and presented in a table with an internal and external fragmentation value. 
-
-\begin{lstlisting}[caption={Algorithm to find fragmented tables and the fragmentation values.},label=See DB-Fragmentation]
-SELECT object_name(dt.object_id) Tablename,si.name
-IndexName,dt.avg_fragmentation_in_percent AS
-ExternalFragmentation,dt.avg_page_space_used_in_percent AS
-InternalFragmentation
-FROM
-(
-    SELECT object_id,index_id,avg_fragmentation_in_percent,avg_page_space_used_in_percent
-    FROM sys.dm_db_index_physical_stats (db_id('AdventureWorks'),null,null,null,'DETAILED'
-)
-WHERE index_id <> 0) AS dt INNER JOIN sys.indexes si ON si.object_id=dt.object_id
-AND si.index_id=dt.index_id AND dt.avg_fragmentation_in_percent>10
-AND dt.avg_page_space_used_in_percent<75 ORDER BY avg_fragmentation_in_percent DESC
-\end{lstlisting}
+In Al-Farooque Shubho's article "Top 10 ways to optimize data access in SQL Server"\cite{Shubho09} he explains how to measure if index fragmentation has occurred. By executing the script on page \pageref{lst:fragalg} in Algorithm \ref{See DB-Fragmentation}, index fragmentation is analyzed on every table in the database and presented in a table with an internal and external fragmentation value. \\
 
 According to Shubho, only tables with an internal fragmentation value of less than 75 and/or an external fragmentation value of more than 10 should be considered as fragmented, which this code takes into account.
 
 \subsubsection{Reorganize vs. Rebuild}\mbox{}\\
 Both rebuilding and reorganizing are built-in operations in SQL-Server 2014. These are two different operations that both reduce the fragmentation of the indexes. Reorganizing is the more lightweight of the two operations. It fixes the indexes as well as physical reordering of pages and applies any previously set fill factors. Rebuilding builds up a completely new structure for the index. It also allows for a new fill factor.\\
-The advantage with reorganizing over rebuilding is that it can be aborted midway, while a rebuild must roll-back after an abort. Usually, in most SQL-systems, a rebuild can't be done while the SQL-server is online. This can be done in MS SQL Server Enterprise edition\cite{Little13}.
+The advantage with reorganizing over rebuilding is that it can be aborted midway, while a rebuild must roll-back after an abort. Usually, in most SQL-systems, a rebuild can't be done while the SQL-server is online. This can be done in MS SQL Server Enterprise edition \cite{Little13}.
 
 \subsubsection{Is it always a good idea to fix fragmentation?}
 According to Brent Ozar \cite{Ozar12} fixing fragmentation can cause more damage than keeping fragmented indexes. Often administrators try to fix fragmentation by using a low fill factor, say 50\%. This would mean that half of every page would be blank, which would make writing really fast. Reading however, would be twice as slow. Another common mistake is to rebuild every single index in the database, even though some tables might not had a single write since the last time. This is a problem because defragmenting indexes causes SQL Server to write to the transaction log. The bigger a log is, the longer log backups and restores take.\\\\
@@ -186,7 +186,6 @@ Another important factor is that external fragmentation mostly causes problems w
 
 \subsection{Redundancy}
 
-\subsection{Hekaton}
 \section{Analysis}
 
 \subsection{Index fragmentation}
@@ -234,7 +233,9 @@ Table name & Index name & External fragmentation & Internal fragmentation \\ \hl
 This shows that a some of the indexes used have well over an external fragmentation value of 10. The internal fragmentation value is also bad at some of the indexes (i.e less than 75).
 
 \chapter{Proposed Solution}
+
 \section{Solution Introduction}
+
 \section{Integration}
 
 \chapter{Software Development \& Testing}
@@ -244,8 +245,26 @@ This shows that a some of the indexes used have well over an external fragmentat
 \chapter{Conclusions}
 \addcontentsline{toc}{chapter}{Bibliography}
 \bibliographystyle{plain}
+
 \bibliography{MyMSc}
+
 \begin{appendices}
 
+\chapter{Code}
+\begin{lstlisting}[caption={Algorithm to find fragmented tables and the fragmentation values.},label=See DB-Fragmentation]
+SELECT object_name(dt.object_id) Tablename,si.name
+IndexName,dt.avg_fragmentation_in_percent AS
+ExternalFragmentation,dt.avg_page_space_used_in_percent AS
+InternalFragmentation
+FROM
+(
+    SELECT object_id,index_id,avg_fragmentation_in_percent,avg_page_space_used_in_percent
+    FROM sys.dm_db_index_physical_stats (db_id('AdventureWorks'),null,null,null,'DETAILED'
+)
+WHERE index_id <> 0) AS dt INNER JOIN sys.indexes si ON si.object_id=dt.object_id
+AND si.index_id=dt.index_id AND dt.avg_fragmentation_in_percent>10
+AND dt.avg_page_space_used_in_percent<75 ORDER BY avg_fragmentation_in_percent DESC
+\end{lstlisting}
+\label{lst:fragalg}
 \end{appendices}
 \end{document}
