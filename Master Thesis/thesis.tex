@@ -125,8 +125,7 @@ The objective is primarily to increase the speed of the ERP-system's business in
 \section{Methodology}
 
 \section{Work}
-To find the literature and related work we used Engineering Village \cite{Enginvillage} and Google Scholar \cite{Googlescholar} together with DBLP \cite{DBLP} in the cases where we needed additional bibliography information. We spent a significant amount of time searching and reading to find articles of interest for our future.In addition to searching for relevant work and literature we spent a lot of time getting acquainted with the current production system at Perfect IT seeing how our proposed solution should be integrated with this system. At this stage we conducted the initial work on the report, using the paper written by Gruian and Lekebjer on formatting a master’s
-thesis \cite{Reportmall}. Guidelines on how to structure and write the report was also taken from the book by Regnell et al. \cite{regnell}.
+To find the literature and related work we used Engineering Village \cite{Enginvillage} and Google Scholar \cite{Googlescholar} together with DBLP \cite{DBLP} in the cases where we needed additional bibliography information. We spent a significant amount of time searching and reading to find articles of interest for our future.In addition to searching for relevant work and literature we spent a lot of time getting acquainted with the current production system at Perfect IT seeing how our proposed solution should be integrated with this system. At this stage we conducted the initial work on the report, using the paper written by Gruian and Lekebjer on formatting a master’s thesis \cite{Reportmall}. Guidelines on how to structure and write the report was also taken from the book by Regnell et al. \cite{regnell}.
 \chapter{Approach}
 
 \section{Technical System Description}
@@ -146,9 +145,11 @@ Perfect IT delivers web-based business system and services associated to such a 
 
 
 \subsubsection{Server}
-Web edition, 60GB Ram, 
+Microsoft SQL Server Web edition, 60GB Ram, 
+
 \subsubsection{\bex Online}
-Each client possesses a unique instance of the \bex Online system, which consists of a front-end and a back-end a user interacts with. \bex Online is web based and has a front-end built in HTML5, CSS and JavaScript. The front-end communicates with the back-end through ASP (POST- \& GET-requests), which in turn translates the requests and sends SQL-queries to the database. The fetched result is finally interpreted by a web-browser as HTML. \todo{deeper description}
+\bex Online is a web based system and has a front-end built with HTML5, CSS and JavaScript and a back-end written in C# and .net with webforms.
+Every client have their own instance of the system \todo{deeper description}
 
 \subsubsection{Database}
 The database is an essential part of Perfect IT's system and this thesis. All clients share the same physical database but have a unique instance of the database with only their data.  Perfect IT has has to today \hilight{40} clients connected to the servers database, all with different sizes of data ranging from approximately \hilight{5GB data to approximately 60GB} data. The database is an RDBMS an is run on an Microsoft SQL Server 2014 using OLTP and has a total of approximately \hilight{350GB} of data. The database design is largely the same for all the clients, with only a few exceptions among the clients.\\\\ 
