@@ -82,7 +82,7 @@ ERP-system’s database}
 \makefrontmatter
 \chapter[Introduction]{Introduction}
 2014 was the year of the cloud. Software companies strived to make their services cloud based in order to meet the increasing demands from the market of availability and reliability. 
-In today's businesses there's high demand for accurate and up-to-date business intelligence.
+In today's businesses there's high demand for accurate and up-to-date business intelligence (henceforth referred to as BI).
 
 \chapter{Background}
 
@@ -91,7 +91,7 @@ In today's businesses there's high demand for accurate and up-to-date business i
 \section{Problem description}
 
 \section{Thesis Goals}
-The goal of this thesis is to examine, test the feasibility and implement a solution for speeding up the generation of business intelligence reports in Perfect IT \bex AB's product \bex Online. 
+The goal of this thesis is to examine, test the feasibility and implement a solution for speeding up the generation of BI reports in Perfect IT \bex AB's product \bex Online. To be able to speed up the BI report generation an optimization needs to be versatile to handle the current system   
 \section{Scope}
 According to Nevarez \cite{Nevarez} the main areas of investigation while trying to optimize an existing database for speed are:
 \begin{itemize}
@@ -105,7 +105,9 @@ According to Nevarez \cite{Nevarez} the main areas of investigation while trying
 Due to the limited time frame of this thesis, all of these areas won't be explored. With respect to this and the company's preferences the following focus areas were decided upon: Query tuning, index tuning and "In-Memory OLTP"-solutions.
 
 \section{Limitations}
+
 The objective is primarily to increase the speed of the ERP-system's business intelligence reporting module by optimizing the database. The database is used by all parts of \bex Online. This means that the following limitations to the developed solution must be in place.
+
 \begin{itemize}
 \item The solution must not affect any functionality in \bex Online.
 \item The solution must not decrease performance in other \bex Online functionality.
@@ -128,7 +130,7 @@ thesis \cite{Reportmall}. Guidelines on how to structure and write the report wa
 \chapter{Approach}
 
 \section{Technical System Description}
-Perfect IT delivers web-based business system and services associated to such a market. All of the system components are essential parts of the business intelligence report generation, but only some of it are of interest when considering the extraction speed.
+Perfect IT delivers web-based business system and services associated to such a market. All of the system components are essential parts of the BI report generation, but only some of it are of interest when considering the extraction speed.
 \begin{figure}[H]
 \vspace{-15pt}
   \begin{center}
@@ -152,11 +154,11 @@ Each client possesses a unique instance of the \bex Online system, which consist
 The database is an essential part of Perfect IT's system and this thesis. All clients share the same physical database but have a unique instance of the database with only their data.  Perfect IT has has to today \hilight{40} clients connected to the servers database, all with different sizes of data ranging from approximately \hilight{5GB data to approximately 60GB} data. The database is an RDBMS an is run on an Microsoft SQL Server 2014 using OLTP and has a total of approximately \hilight{350GB} of data. The database design is largely the same for all the clients, with only a few exceptions among the clients.\\\\ 
 
 \paragraph*{Tables}\mbox{}\\\\
-This thesis will be using, until today, the biggest clients database measured in data. To ensure the clients privacy, all sensitive data has been encrypted by the system administrator. \\The default schema is called \textit{dbo} and consists of a total of 254 tables, including some views for big data queries. Many tables are large, considering the amount of rows, where the largest consists of approximately 10.5$\times 10^6$ rows and 80 columns. This table treats the data associated with every transaction made with the client from the start of using this system. There are also empty tables, \hilight{usage?}, that \ldots. The tables form a complex relation to each other and the references are many (as seen in this \href{https://drive.google.com/file/d/0B1IYTmE2hnD-eGQ0N2tvYXZNNVE/view?usp=sharing}{\textcolor{blue}{link}}). In the visualized database reference schema there are tables not referencing any tables at all, \hilight{why?}.\\\\Data obtained from third party applications and API's are also stored in the database and can be seen in the bottom part of the visualized database reference schema mentioned above (\hilight{maybe the answer to the no reference question above?}). Some, \hilight{why not all?} of the business intelligence reports have their own tables in the database, \hilight{why?}.
+This thesis will be using, until today, the biggest clients database measured in data. To ensure the clients privacy, all sensitive data has been encrypted by the system administrator. \\The default schema is called \textit{dbo} and consists of a total of 254 tables, including some views for big data queries. Many tables are large, considering the amount of rows, where the largest consists of approximately 10.5$\times 10^6$ rows and 80 columns. This table treats the data associated with every transaction made with the client from the start of using this system. There are also empty tables, \hilight{usage?}, that \ldots. The tables form a complex relation to each other and the references are many (as seen in this \href{https://drive.google.com/file/d/0B1IYTmE2hnD-eGQ0N2tvYXZNNVE/view?usp=sharing}{\textcolor{blue}{link}}). In the visualized database reference schema there are tables not referencing any tables at all, \hilight{why?}.\\\\Data obtained from third party applications and API's are also stored in the database and can be seen in the bottom part of the visualized database reference schema mentioned above (\hilight{maybe the answer to the no reference question above?}). Some, \hilight{why not all?} of the BI reports have their own tables in the database, \hilight{why?}.
 
 \paragraph*{Stored procedures}\mbox{}\\\\ 
 Stored procedures are subroutines that are available to applications that access relational database systems. Stored procedures are used as centralized logic and can therefore be used by all applications that share the system. These subroutines can include both SQL statements and host language statements, meaning that it can exist of external procedures that has nothing to do with SQL. Often extensive and complex SQL queries, that require a lot of processing and are often being used, are moved to stored procedures for reuse \cite{StoredProcedures}. It's important to know that Stored procedures both bring advantages, e.g. Stored procedures are cached, and drawbacks, e.g. Stored procedure code is not as robust as app code. Subroutines such as Stored procedures should therefore only be used when and if the implementer possess a deep knowledge of the system that is to be affected. It's for example bad practice to store all procedures as Stored procedures for the benefit of the cach-utilization.\\\\
-The database in this thesis had a total of 59 Stored procedures treating repetitive procedures by the database mainly for the sales part of the system and the business intelligence reports (there's also a subroutine for locking crucial information, with respect to concurrent execution). These subroutines do not contain any host language statements and/or external procures, but only consists of complex SQL statements. They are present in the system, as mentioned above, to make the execution and processing less demanding, as they are often run by the clients of the system. 
+The database in this thesis had a total of 59 Stored procedures treating repetitive procedures by the database mainly for the sales part of the system and the BI reports (there's also a subroutine for locking crucial information, with respect to concurrent execution). These subroutines do not contain any host language statements and/or external procures, but only consists of complex SQL statements. They are present in the system, as mentioned above, to make the execution and processing less demanding, as they are often run by the clients of the system. 
 \section{Theory}
 In order to understand why a database might not perform optimally, the following theory was used.
 \subsection{Index Fragmentation}
