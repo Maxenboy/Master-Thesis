@@ -97,12 +97,12 @@ In order to make the above optimization possible, the following goals have been 
 \item Acquire knowledge about database optimization in general.
 \item The current processes behind generation of the BI-reports must be identified and mapped in Perfect IT \bex AB.
 \item Analyze and identify bottle-necks and innefficiencies.
-\item Research will be performed to learn of approaches to solve the problems identified in the analysis. The research will consider as many options as possible to find a long-term solution.
+\item Approach research to solve the problems identified in the analysis. The research will consider as many options as possible to find a long-term solution.
 \item Analyze solution approaches to decide which of them are a best fit and should be used to reach the goal.
 \item Implement the solution in \bex Online and a final analysis should be performed to determine if the goal was met.
 \end{enumerate}
   
-\section{Scope}
+\section{Scope} \label{sec:scope}
 According to Nevarez \cite{Nevarez} the main areas of investigation while trying to optimize an existing database for speed are:
 \begin{itemize}
 \item Query tuning
@@ -131,7 +131,14 @@ The objective is primarily to increase the speed of the ERP-system's business in
 \chapter{Research Questions \& Methodology}
 
 \section{Research Questions}
-The research questions of this thesis relate to the thesis goals in section \ref{sec:goals}
+The research questions of this thesis were formulated in relation to the thesis goals in section \ref{sec:goals} and the scope in section \ref{sec:scope}. The thesis is formed to explain and answer the following research questions:
+\begin{itemize}
+\item	How does the current system system work and what are the bottle-necks?
+\item 	How does index fragmentation, query tuning and ''In-memory OLTP'' work in general?
+\item		
+\item 	Is the proposed solution versatile and scalable so that it is a long-term solution?
+\item	How can the proposed solution be implemented in Perfect IT \bex AB's current system?
+\end{itemize}
 \section{Methodology}
 
 \section{Work}
@@ -162,7 +169,7 @@ Microsoft SQL Server Web edition, 64GB Ram, Maximum data capacity: 524 PB, Maxim
 Every client have their own instance of the system \todo{deeper description}
 
 \subsubsection{Database}
-The database is an essential part of Perfect IT's system and this thesis. All clients share the same physical database but have a unique instance of the database with only their data.  Perfect IT has has to today \hilight{40} clients connected to the servers database, all with different sizes of data ranging from approximately \hilight{5GB data to approximately 60GB} data. The database is run on an Microsoft SQL Server 2014 using OLTP and has a total of approximately \hilight{350GB} of data. The database design is largely the same for all the clients, with only a few exceptions among the clients.\\\\ 
+The database is an essential part of Perfect IT's system and this thesis. All clients share the same physical database but have a unique instance of the database with only their data.  Perfect IT has has to today \hilight{40} clients connected to the servers database, all with different sizes of data ranging from approximately \hilight{5GB data to approximately 60GB} data. The database is an RDBMS and is run on an Microsoft SQL Server 2014 using OLTP and has a total of approximately \hilight{350GB} of data. The database design is largely the same for all the clients, with only a few exceptions among the clients.\\\\ 
 
 \paragraph*{Tables}\mbox{}\\\\
 This thesis will be using, until today, the biggest clients database measured in data. To ensure the clients privacy, all sensitive data has been encrypted by the system administrator. \\The default schema is called \textit{dbo} and consists of a total of 254 tables, including some views for big data queries. Many tables are large, considering the amount of rows, where the largest consists of approximately 10.5$\times 10^6$ rows and 80 columns. This table treats the data associated with every transaction made with the client from the start of using this system. There are also empty tables, \hilight{usage?}, that \ldots. The tables form a complex relation to each other and the references are many (as seen in this \href{https://drive.google.com/file/d/0B1IYTmE2hnD-eGQ0N2tvYXZNNVE/view?usp=sharing}{\textcolor{blue}{link}}). In the visualized database reference schema there are tables not referencing any tables at all, \hilight{why?}.\\\\Data obtained from third party applications and API's are also stored in the database and can be seen in the bottom part of the visualized database reference schema mentioned above (\hilight{maybe the answer to the no reference question above?}). Some, \hilight{why not all?} of the BI reports have their own tables in the database, \hilight{why?}.
