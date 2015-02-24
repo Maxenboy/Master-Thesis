@@ -36,7 +36,7 @@ frame=single,
 basicstyle=\footnotesize,
 captionpos=b
 }
-\newcommand{\bex}{BeX\textsuperscript{\textregistered} }
+\newcommand{\bex}{BeX\textsuperscript{\textregistered}}
 \renewcommand{\lstlistingname}{Algorithm}% Listing -> Algorithm
 \renewcommand{\lstlistlistingname}{List of \lstlistingname s}% List of Listings -> List of Algorithms
 
@@ -87,8 +87,6 @@ In today's businesses there's high demand for accurate and up-to-date business i
 \chapter{Background}\label{sec:background}
 
 \section{Background}
-
-\subsection{BI-generation}
 
 \section{Problem description}
 
@@ -144,7 +142,7 @@ The research questions of this thesis were formulated in relation to the thesis 
 \section{Methodology}
 This thesis is of a problem solving nature and should continuously adapt to changing conditions. The methodology used should therefore preferably be flexible. A methodology that provides valuable support and is intended to improve something while studying it is action research \cite{robson}. Action research begins with an observation phase that identifies and clarifies the problems that are present, for this thesis that is presented in chapter \ref{sec:background}. In chapter \ref{sec:proposedsoluton} the next step in action research is stated, a proposed solution to the problem(s).\\
 
-After implementing the proposed solution an important, but often neglected, phase is performed namely the evaluation. The evaluation is made to verify the implementation in its context, to analyze and reflect on how it works in its integration. The whole action research is an iterative process and is based on the evaluation. Accordingly to Höst et al. \cite{regnell} an evaluation is hard to keep unbiased, since the ones doing the critical evaluation are also the ones that performed the research. To counter a biased evaluation, some evaluation criteria were established based on the above mentioned goals in section \ref{sec:goals}. To ensure that all of the stakeholders goals are met this thesis will on a regular basis be reviewed both by supervisors at Perfect IT and at LTH.
+After implementing the proposed solution an important, but often neglected, phase is performed namely the evaluation. The evaluation is made to verify the implementation in its context, to analyze and reflect on how it works in its integration. The whole action research is an iterative process and is based on the evaluation. Accordingly to Höst et al. \cite{regnell} an evaluation is hard to keep unbiased, since the ones doing the critical evaluation are also the ones that performed the research. To counter an unbiased evaluation, some evaluation criteria were established based on the above mentioned goals in section \ref{sec:goals}. To ensure that all of the stakeholders goals are met this thesis will on a regular basis be reviewed both by supervisors at Perfect IT and at LTH.
 
 \section{Work}
 First of all an acquaintance of Perfect IT \bex AB's system needed to be established. In conjunction with the examination of the current system and its parts a literature research was performed. The area this research treats is extensively and the research done is almost indefinite. Therefore the literature research scope needed to be narrowed with its base in the currents systems examination.\\\\    
@@ -192,12 +190,12 @@ In order to understand why a database might not perform optimally, the following
 
 \subsection{Index Fragmentation}
 Index fragmentation is one of the most common problems in a relational database. Two kinds of fragmentation can occur, internal index fragmentation and external index fragmentation. The easiest way to explain index fragmentation is by imagining the SQL database as a phone book. At the very end of the book you have a few pages containing a table with indexes of all the entries sorted by last name. This is fine in a static environment such as a phone book but what happens in a dynamic environment?
-Since people can be added to the phone book there must be space available after each column in the index, as well as in the pages in the phone book. This is called the \emph{fill factor}. A page can still run out of space and when this happens SQL Server has to add a new page, but it it can't add it at the correct place because the book is already bound. So, it adds blank pages at the very end. This causes two problems, pages with a lot of unused space and pages that are out of order. The first problem is what is referred to as \emph{Internal Fragmentation} and the second is \emph{External Fragmentation}. Internal fragmentation will of course also occur when deleting entries since that leaves "blank space" on the page \cite{Ozar12}.
+Since people can be added to the phone book there must be space available after each column in the index, as well as in the pages in the phone book. This is called the \emph{fill factor}. A page can still run out of space and when this happens SQL Server has to add a new page, but it it can't add it at the correct place because the book is already bound. So, it adds blank pages at the very end. This causes two problems, pages with a lot of unused space and pages that are out of order. The first problem is what is referred to as \emph{Internal Fragmentation} and the second is \emph{External Fragmentation}. Internal fragmentation will of course also occur when deleting entries since that leaves "blank space" on the page.\cite{Ozar12}
 
 \subsubsection{Why is this bad for performance?}
 At first, internal fragmentation might seem like a good thing. If the phone book has a lot of blank space on every page to start with, adding entries would be super easy and there would be no need for adding more pages later, causing external fragmentation. This is true, but when the number of extra pages needed in the phone book to allow for a lot of blank space is considered, the inefficiency of it becomes apparent. Going through a 100\% filled 1000 page phone book is much faster than a 90\% full 1100 page phone book. So in this example, every time SQL Server needs to scan the index, it would take 10\% longer. Another problem is that the lowest unit for caching in SQL Server is not a record, but a single page, which means that all the empty space must be cached as well. \\
 
-External fragmentation often makes reading the database non-sequential, i.e it cannot be read in order but must be read in random order. This is especially bad in classic magnetic hard drives where the reader head must move around to multiple locations on the drive. Some magnetic hard drives only get 1\% of their sequential reading speed when performing random reads \cite{Toshiba12}.
+External fragmentation often makes reading the database non-sequential, i.e it cannot be read in order but must be read in random order. This is especially bad in classic magnetic hard drives where the reader head must move around to multiple locations on the drive. Some magnetic hard drives only get 1\% of their sequential reading speed when performing random reads. \cite{Toshiba12}
 
 \subsubsection{Measuring fragmentation}
 In Al-Farooque Shubho's article "Top 10 ways to optimize data access in SQL Server"\cite{Shubho09} he explains how to measure if index fragmentation has occurred. By executing the script on page \pageref{lst:fragalg} in Algorithm \ref{See DB-Fragmentation}, index fragmentation is analyzed on every table in the database and presented in a table with an internal and external fragmentation value. \\
@@ -215,10 +213,28 @@ Another important factor is that external fragmentation mostly causes problems w
 \subsection{Query Tuning}
 
 \subsection{In-Memory Database Technology}
-Relational database management systems were originally designed in the late 70's \cite{Nevarez}. Because of this, they are designed with the assumption that memory is limited, expensive and that the size of the database is many times larger than the main memory. Today, memory is relatively cheap and it is possible to have hundreds of gigabytes of memory in a single server. This makes it possible to put even large databases, completely in memory. In Vizard's article\cite{Vizard12} it is said that having a database completely in-memory can make it a thousand times faster.
+Relational database management systems were originally designed in the late 70's\cite{Nevarez}. Because of this, they are designed with the assumption that memory is limited, expensive and that the size of the database is many times larger than the main memory. Today, memory is relatively cheap and it is possible to have hundreds of gigabytes of memory in a single server. This makes it possible to put even large databases, completely in memory. In Vizard's article\cite{Vizard12} it is said that having a database completely in-memory can make it a thousand times faster.
 
 \subsubsection{Hekaton}
-Microsoft SQL Server 2014 comes with an In-Memory OLTP database engine called Hekaton. Hekaton, which is only available in the enterprise edition, improves performance in three major architecture areas: Optimization for main memory access, compiling procedures to native code, and latches and lock elimination.
+Microsoft SQL Server 2014 comes with an In-Memory OLTP database engine called Hekaton. Hekaton, which is only available in the enterprise edition, improves performance in three major architecture areas: Optimization for main memory access, compiling procedures to native code, and latches and lock elimination. The core architecture of Hekaton is a Bw-tree design\cite{Levandoski14}. A Bw-tree is a new design of the classical B-tree which supports high performance in both access to individual keys and key-sequential access to subranges of keys. The Bw-tree is designed for the new hardware environment in two main ways. 
+\begin{enumerate}
+\item The Bw-tree is latch-free, which is critical for performance when using multi-core systems where latches otherwise are common.
+\item Updating cache memory in place in multi-core systems usually results in costly cache invalidations, limiting performance. By performing "delta" updates, the Bw-tree avoids in-place updates which reduces invalidations and preserves previously cached page data.
+\end{enumerate} 
+The Hekaton engine is not a separate database system, it is fully integrated into SQL Server. A user can declare a table in a current database to be memory-optimized, and the Hekaton engine will store it in main memory and manage it. A Hekaton table can use two different kinds of indexes. Hash indexes and Range indexes.  Even though Hekaton uses very different internal concepts and implementations it still ensures that all transactions have ACID-properties. \\
+A big drawback of using Hekaton tables is that the table architecture cannot be altered without recreating the table. This means that in order to change the columns in a table or it's indexing settings, the table must be dropped and then rebuilt from scratch.
+
+\paragraph*{Stored procedures in Hekaton}\mbox{}\\\\ 
+Hekaton uses the SQL Query Optimizer to produce an efficient query plan. This plane is then compiled into native C code and loaded as DLLs into the SQL Server process. This compilation happens on SQL Server start.
+When a procedure is saved as a natively  compiled stored procedure it locks all the tables that it uses. This is because such procedures must be schema bound, i.e all tables referenced by a procedure can't be dropped. If this is considered together with the the limitation mentioned above regarding changing of a table architecture, the following process would be required in order to change e.g. a Hekaton table's columns\cite{Nevarez}.
+\begin{enumerate}
+\item Drop the procedures referencing the table.
+\item Store the data in the Hekaton in a temporary table.
+\item Drop the Hekaton table.
+\item Rebuild the Hekaton table with the new columns.
+\item Reload the data from the temporary table into the new Hekaton table. 
+\item Recreate the stored procedures.
+\end{enumerate}
 
 
 \section{Analysis}
@@ -266,9 +282,6 @@ Table name & Index name & External fragmentation & Internal fragmentation \\ \hl
 \end{table}
 
 This shows that a some of the indexes used have well over an external fragmentation value of 10. The internal fragmentation value is also bad at some of the indexes (i.e less than 75).
-\subsection{Query Tuning}
-
-\subsection{In-memory OLTP}
 
 \chapter{Proposed Solution}\label{sec:proposedsoluton}
 
