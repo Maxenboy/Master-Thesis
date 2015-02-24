@@ -213,7 +213,7 @@ Another important factor is that external fragmentation mostly causes problems w
 \subsection{Query Tuning}
 
 \subsection{In-Memory Database Technology}
-Relational database management systems were originally designed in the late 70's\cite{Nevarez}. Because of this, they are designed with the assumption that memory is limited, expensive and that the size of the database is many times larger than the main memory. Today, memory is relatively cheap and it is possible to have hundreds of gigabytes of memory in a single server. This makes it possible to put even large databases, completely in memory. In Vizard's article\cite{Vizard12} it is said that having a database completely in-memory can make it a thousand times faster.
+Relational database management systems were originally designed in the late 70's \cite{Nevarez}. Because of this, they are designed with the assumption that memory is limited, expensive and that the size of the database is many times larger than the main memory. Today, memory is relatively cheap and it is possible to have hundreds of gigabytes of memory in a single server. This makes it possible to put even large databases, completely in memory. In Vizard's article\cite{Vizard12} it is said that having a database completely in-memory can make it a thousand times faster.
 
 
 \section{Analysis}
@@ -261,6 +261,9 @@ Table name & Index name & External fragmentation & Internal fragmentation \\ \hl
 \end{table}
 
 This shows that a some of the indexes used have well over an external fragmentation value of 10. The internal fragmentation value is also bad at some of the indexes (i.e less than 75).
+\subsection{Query Tuning}
+
+\subsection{In-memory OLTP}
 
 \chapter{Proposed Solution}\label{sec:proposedsoluton}
 
