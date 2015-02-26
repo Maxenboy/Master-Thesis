@@ -109,7 +109,7 @@ In order to make the above optimization possible, the following goals have been 
 \begin{enumerate}
 \item Acquire knowledge about database optimization in general.
 \item The current processes behind generation of the BI-reports must be identified and mapped in Perfect IT \bex AB.
-\item Analyze and identify bottle-necks and innefficiencies.
+\item Analyze and identify bottle-necks and inefficiencies.
 \item Solution approach research to solve the problems identified in the analysis. The research will consider as many options as possible to find a long-term solution.
 \item Analyze solution approaches to decide which of them are a best fit and should be used to reach the goal.
 \item Implement the solution in \bex Online and a final analysis should be performed to determine if the goal was met.
@@ -238,7 +238,11 @@ As the query optimizer limits the available alternatives two problems arise. The
 \end{figure} 
 \noindent As an example the cost model assumes that every query's data is read from disk and not from memory (cold cach). In addition some operations are not covered by the mathematical model, leading to that the query optimizer has to resort to guessing logic and/or heuristics to deal with such situations. 
 
- 
+\subsubsection{Query tuning}
+In order the optimize the process explained above there are numerous areas that can be altered. One can dive in to the actual SQL statements and try to break down complex queries, optimize join ordering etc. Besides altering the SQL statements the workload sent to the query optimizer can be optimized in several ways. Chaudhuri et al. state that compressing the size of a workload, which is a set of SQL statements, improves a systems scalability and illustrates its effectiveness in index selection and approximate query processing \cite{compressing}. 
+\paragraph*{Join ordering}\mbox{}\\\\
+
+\paragraph*{Query break down}\mbox{}\\\\   
 
 \subsection{In-Memory Database Technology}
 Relational database management systems were originally designed in the late 70's\cite{Nevarez}. Because of this, they are designed with the assumption that memory is limited, expensive and that the size of the database is many times larger than the main memory. Today, memory is relatively cheap and it is possible to have hundreds of gigabytes of memory in a single server. This makes it possible to put even large databases, completely in memory. In Vizard's article\cite{Vizard12} it is said that having a database completely in-memory can make it a thousand times faster.
