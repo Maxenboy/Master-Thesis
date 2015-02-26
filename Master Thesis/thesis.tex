@@ -100,7 +100,7 @@ Perfect It BeX AB was founded by Lennart Söderberg and Niklas Lindgren in 2007.
 In recent years, Lennart and Niklas have felt an increasing demand from customers for better business intelligence capabilities. In response to this they have improved the Business Report functionality in BeX Online, to be able to give a wider range of different financial key values. According to Lennart, being able to offer their customers tools enabling for good business intelligence, is key to staying competitive. Therefore, they want to develop these tools further to make them better and to include more functionality. However, they have noticed that generating some of the reports can take a relatively long time, especially for their bigger clients whose system's have a lot of data.
 
 \section{Problem description}
-Perfect It BeX AB has ordered this master thesis	 to investigate how to increase the generation speed of these reports and to implement a solution that does this.
+Perfect It BeX AB has ordered this master thesis to investigate how to increase the generation speed of the business intelligence-reports and to implement a solution that increases this speed.
 
 \section{Thesis Goals} \label{sec:goals}
 The goal of this thesis is to examine, test the feasibility and implement a solution for speeding up the generation of BI reports in Perfect IT \bex AB's product \bex Online. To be able to speed up the BI report generation an optimization needs to be done. The optimization needs to be versatile to handle the current system, to handle new functionality and also future company growth. Hence, the optimization needs to be scalable. Taking in to account that Perfect IT \bex has one physical server, the scalability should be vertically \cite{scalability} since the company will provide the system to more clients in the future.\\\\
@@ -165,7 +165,8 @@ Using the paper written by Gruian and Lekebjer on formatting a master’s thesis
 \chapter{Approach}
 
 \section{Technical System Description}
-Perfect IT delivers web-based business system and services associated to such a market. All of the system components are essential parts of the BI report generation, but only some of it are of interest when considering the extraction speed.
+Perfect IT delivers web-based business systems and services specialized for the retail industry. The \bex Online ERP-system is distributed as a SaaS-solution and all clients share servers which makes it a true cloud based service. The clients access \bex Online's front-end through a web browser. \bex Retail and \bex B2B are connected directly to \bex Online's back-end.
+The database for \bex Online is a Microsoft Server 2014 Web Edition.
 \begin{figure}[H]
 \vspace{-15pt}
   \begin{center}
@@ -181,14 +182,14 @@ Perfect IT delivers web-based business system and services associated to such a 
 
 
 \subsubsection{Server}
-Microsoft SQL Server Web edition, 64GB Ram, Maximum data capacity: 524 PB, Maximum CPU capacity< 4 socket or 16 cores 
+Currently all the clients instances of /bex Online are placed on a single server hosted by a third party hosting company. This server also hosts the database system.
 
 \subsubsection{\bex Online}
-\bex Online is a web based system and has a front-end built with HTML5, CSS and JavaScript and a back-end written in C\# and .net with webforms.
+\bex Online is a web based system and has a front-end built with HTML5, CSS and JavaScript and a back-end written in C\# and .net with Webforms.
 Every client have their own instance of the system \todo{deeper description}
 
 \subsubsection{Database}
-The database is an essential part of Perfect IT's system and this thesis. All clients share the same physical database but have a unique instance of the database with only their data.  Perfect IT has has to today \hilight{40} clients connected to the servers database, all with different sizes of data ranging from approximately \hilight{5GB data to approximately 60GB} data. The database is an RDBMS and is run on an Microsoft SQL Server 2014 using OLTP and has a total of approximately \hilight{350GB} of data. The database design is largely the same for all the clients, with only a few exceptions among the clients.\\\\ 
+Microsoft SQL Server Web edition, 64GB Ram, Maximum data capacity: 524 PB, Maximum CPU capacity < 4 socket or 16 cores. All clients are on the same SQL Server 2014-license but have their own unique instance of the database-system with only their data.  Perfect IT has has around \hilight{40} clients connected to the servers database, all with different sizes of data ranging from approximately \hilight{5GB data to approximately 60GB} data. The database is an RDBMS and is run on a Microsoft SQL Server 2014-license using OLTP and the size of all the clients databases together are approximately \hilight{350GB}.
 
 \paragraph*{Tables}\mbox{}\\\\
 This thesis will be using, until today, the biggest clients database measured in data. To ensure the clients privacy, all sensitive data has been encrypted by the system administrator. \\The default schema is called \textit{dbo} and consists of a total of 254 tables, including some views for big data queries. Many tables are large, considering the amount of rows, where the largest consists of approximately 10.5$\times 10^6$ rows and 80 columns. This table treats the data associated with every transaction made with the client from the start of using this system. There are also empty tables, \hilight{usage?}, that \ldots. The tables form a complex relation to each other and the references are many (as seen in this \href{https://drive.google.com/file/d/0B1IYTmE2hnD-eGQ0N2tvYXZNNVE/view?usp=sharing}{\textcolor{blue}{link}}). In the visualized database reference schema there are tables not referencing any tables at all, \hilight{why?}.\\\\Data obtained from third party applications and API's are also stored in the database and can be seen in the bottom part of the visualized database reference schema mentioned above (\hilight{maybe the answer to the no reference question above?}). Some, \hilight{why not all?} of the BI reports have their own tables in the database, \hilight{why?}.
