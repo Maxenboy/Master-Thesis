@@ -81,7 +81,7 @@ ERP-system’s database}
 \begin{document}
 \makefrontmatter
 \chapter[Introduction]{Introduction}
-2014 was the year of the cloud. Software companies strived to make their services cloud based in order to meet the increasing demands from the market of availability and reliability. 
+2014 was the year of the cloud. Software companies strived to make their services cloud based in order to meet the increasing demands from the market of availability and reliability. 	
 In today's businesses there's high demand for accurate and up-to-date business intelligence (henceforth referred to as BI).
 
 \chapter{Background}\label{sec:background}
@@ -202,7 +202,7 @@ The default schema is called \textit{dbo} and consists of a total of 254 tables,
 
 \paragraph*{Stored procedures}\mbox{}\\\\ 
 Stored procedures are subroutines that are available to applications that access relational database systems. Stored procedures are used as centralized logic and can therefore be used by all applications that share the system. These subroutines can include both SQL statements and host language statements, meaning that it can exist external procedures that has nothing to do with SQL. Often extensive and complex SQL queries, that require a lot of processing and are often being used, are moved to stored procedures for reuse \cite{StoredProcedures}. It's important to know that Stored procedures both bring advantages, e.g. Stored procedures are cached, and drawbacks, e.g. Stored procedure code is not as robust as app code. Subroutines such as Stored procedures should therefore only be used when and if the implementer possess a deep knowledge of the system that is to be affected. It's for example bad practice to store all procedures as Stored procedures for the benefit of the cache-utilization.\\\\
-The database in this thesis had a total of 59 Stored procedures treating repetitive procedures by the database mainly for the sales part of the system and the BI reports (there's also a subroutine for locking crucial information, with respect to concurrent execution). These subroutines do not contain any host language statements and/or external procures, but only consists of complex SQL statements. They are present in the system, as mentioned above, to make the execution and processing less demanding, as they are often run by the clients of the system.
+The database in this thesis had a total of 59 Stored procedures treating repetitive procedures by the database mainly for the sales part of the system and the BI reports (there's also a subroutine for locking crucial information, with respect to concurrent execution). These subroutines do not contain any host language statements and/or external procedures, but only consists of complex SQL statements. They are present in the system, as mentioned above, to make the execution and processing less demanding, as they are often used in \bex Online.
  
 \section{Theory}
 In order to understand why a database might not perform optimally, the following theory was used.
