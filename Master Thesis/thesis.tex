@@ -195,7 +195,7 @@ This thesis will be using, until today, the biggest clients database measured in
 
 \paragraph*{Stored procedures}\mbox{}\\\\ 
 Stored procedures are subroutines that are available to applications that access relational database systems. Stored procedures are used as centralized logic and can therefore be used by all applications that share the system. These subroutines can include both SQL statements and host language statements, meaning that it can exist of external procedures that has nothing to do with SQL. Often extensive and complex SQL queries, that require a lot of processing and are often being used, are moved to stored procedures for reuse \cite{StoredProcedures}. It's important to know that Stored procedures both bring advantages, e.g. Stored procedures are cached, and drawbacks, e.g. Stored procedure code is not as robust as app code. Subroutines such as Stored procedures should therefore only be used when and if the implementer possess a deep knowledge of the system that is to be affected. It's for example bad practice to store all procedures as Stored procedures for the benefit of the cach-utilization.\\\\
-The database in this thesis had a total of 59 Stored procedures treating repetitive procedures by the database mainly for the sales part of the system and the BI reports (there's also a subroutine for locking crucial information, with respect to concurrent execution). These subroutines do not contain any host language statements and/or external procures, but only consists of complex SQL statements. They are present in the system, as mentioned above, to make the execution and processing less demanding, as they are often run by the clients of the system.
+The database in this thesis had a total of 59 Stored procedures treating repetitive procedures by the database mainly for the sales part of the system and the BI reports (there's also a subroutine for locking crucial information, with respect to concurrent execution). These subroutines do not contain any host language statements and/or external procedures, but only consists of complex SQL statements. They are present in the system, as mentioned above, to make the execution and processing less demanding as they are often run by the clients of the system.
  
 \section{Theory}
 In order to understand why a database might not perform optimally, the following theory was used.
@@ -238,7 +238,7 @@ As the query optimizer limits the available alternatives two problems arise. The
 \noindent As an example the cost model assumes that every query's data is read from disk and not from memory (cold cach). In addition some operations are not covered by the mathematical model, leading to that the query optimizer has to resort to guessing logic and/or heuristics to deal with such situations. 
 
 \subsubsection{Query tuning}
-In order the optimize the process explained above there are numerous areas that can be altered. One can dive in to the actual SQL statements and try to break down complex queries, optimize join ordering etc. Besides altering the SQL statements the workload sent to the query optimizer can be optimized in several ways. Chaudhuri et al. state that compressing the size of a workload, which is a set of SQL statements, improves a systems scalability and illustrates its effectiveness in index selection and approximate query processing \cite{compressing}. 
+In order the optimize the process explained above there are numerous areas that can be altered. One can dive in to the actual SQL statements and try to break down complex queries, optimize join ordering etc. Besides altering the SQL statements the workload sent to the query optimizer can be optimized in several ways. Chaudhuri et al. state that compressing the size of a workload, which is a set of SQL statements, improves a systems scalability and illustrates its effectiveness in index selection and approximate query processing \cite{compressing}. Furthermore, major database vendors have focused on releasing automated physical database design tools that reduce the total cost of a workload. An essential assumption of these tools is that the workload consists of a set of SQL statements with no internal ordering. Agrawal et al. state that the workload in itself isn't the most promising aspect of workload optimization, but that the workload can be treated as a sequence which broadens the usage of the above mentioned tools \cite{automatic}.
 \paragraph*{Join ordering}\mbox{}\\\\
 
 \paragraph*{Query break down}\mbox{}\\\\   
@@ -325,10 +325,11 @@ This shows that a some of the indexes used have well over an external fragmentat
 \chapter{Discussion}
 
 \chapter{Conclusions}
-\addcontentsline{toc}{chapter}{Bibliography}
-\bibliographystyle{plain}
 
+\addcontentsline{toc}{chapter}{Bibliography}
+\bibliographystyle{ieeetr}
 \bibliography{MyMSc}
+
 
 \begin{appendices}
 
