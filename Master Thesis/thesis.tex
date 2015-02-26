@@ -238,7 +238,11 @@ As the query optimizer limits the available alternatives two problems arise. The
 \end{figure} 
 \noindent As an example the cost model assumes that every query's data is read from disk and not from memory (cold cach). In addition some operations are not covered by the mathematical model, leading to that the query optimizer has to resort to guessing logic and/or heuristics to deal with such situations. 
 
- 
+\subsubsection{Query tuning}
+
+\paragraph*{Join ordering}\mbox{}\\\\
+
+\paragraph*{Query break down}\mbox{}\\\\   
 
 \subsection{In-Memory Database Technology}
 Relational database management systems were originally designed in the late 70's\cite{Nevarez}. Because of this, they are designed with the assumption that memory is limited, expensive and that the size of the database is many times larger than the main memory. Today, memory is relatively cheap and it is possible to have hundreds of gigabytes of memory in a single server. This makes it possible to put even large databases, completely in memory. In Vizard's article\cite{Vizard12} it is said that having a database completely in-memory can make it a thousand times faster.
