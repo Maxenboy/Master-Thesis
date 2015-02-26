@@ -24,7 +24,8 @@
 \definecolor{mygreen}{rgb}{0,0.6,0}
 \definecolor{mygray}{rgb}{0.5,0.5,0.5}
 \definecolor{mymauve}{rgb}{0.58,0,0.82}
-
+\usepackage{colortbl}
+  \definecolor{Lightgray}{RGB}{235,235,235}
 
 \lstset{
 breaklines=true,
@@ -80,6 +81,7 @@ ERP-system’s database}
 
 \begin{document}
 \makefrontmatter
+
 \chapter[Introduction]{Introduction}
 2014 was the year of the cloud. Software companies strived to make their services cloud based in order to meet the increasing demands from the market of availability and reliability. 
 In today's businesses there's high demand for accurate and up-to-date business intelligence (henceforth referred to as BI).
@@ -245,8 +247,28 @@ As the query optimizer limits the available alternatives two problems arise. The
 
 \subsubsection{Query tuning}
 In order the optimize the process explained above there are numerous areas that can be altered. One can dive in to the actual SQL statements and try to break down complex queries, optimize join ordering etc. Besides altering the SQL statements the workload sent to the query optimizer can be optimized in several ways. Chaudhuri et al. state that compressing the size of a workload, which is a set of SQL statements, improves a systems scalability and illustrates its effectiveness in index selection and approximate query processing \cite{compressing}. 
-\paragraph*{Join ordering}\mbox{}\\\\
 
+\paragraph*{Join ordering}\mbox{}\\\\
+\cite{join}
+\begin{table}[H]
+\centering 
+\begin{tabular}{ l l l }
+  Trees & Left-Deep Trees & Bushy Trees\\\hline
+  2 & 2 & 2 \\\hline
+  3 & 6 & 12 \\\hline
+  4 & 24 & 120 \\\hline
+  5 & 120 & 1 680 \\\hline
+  6 & 720 & 30 240 \\\hline
+  7 & 5 040 & 665 280 \\\hline
+  8 & 40 320 & 17 297 280 \\\hline
+  9 & 362 880 & 518 918 400 \\\hline
+  10 & 3 628 800 & 17 643 225 600 \\\hline
+  11 & 39 916 800 & 670 444 572 800 \\\hline
+  12 & 479 001 600 & 28 158 588 057 600 \\
+\end{tabular}
+\caption {Possible join orders for Left-Deep and Bushy trees}
+\label{table:join}
+\end{table}
 \paragraph*{Query break down}\mbox{}\\\\   
 
 \subsection{In-Memory Database Technology}
