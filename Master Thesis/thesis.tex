@@ -87,9 +87,19 @@ In today's businesses there's high demand for accurate and up-to-date business i
 \chapter{Background}\label{sec:background}
 
 \section{Background}
-Perfect It BeX AB has three products; \bex Online, \bex Retail, and \bex B2B. \bex Online is the main product on which the other products rely. 
+Perfect It BeX AB was founded by Lennart Söderberg and Niklas Lindgren in 2007. In the beginning they made business extensions such as B2B, e-commerce and retail for the Microsoft Navision ERP. Eventually they started development of their own ERP-system to accommodate their extensions since they felt limited buy the technologies on which Navision was based. In 2010 they released three products; \bex Online, \bex Retail, and \bex B2B. \bex Online is the main product on which the other products rely. It is a completely cloud-based ERP-system specialized for the retail industry. The main functionality in \bex Online is:
 
-\subsection{BI-report generation}
+\begin{itemize}
+\item Financial tools
+\item Sales administration \& handling
+\item Purchase handling
+\item Inventory and Warehousing
+\item History and Business Reports
+\end{itemize}
+
+In recent years, Lennart and Niklas have felt an increasing demand from customers for better business intelligence capabilities. In response to this they have improved the Business Report functionality in BeX Online, to be able to give a wider range of different financial key values. According to Lennart, being able to offer their customers tools enabling for good business intelligence, is key to staying competitive. Therefore, they want to develop these tools further to make them better and to include more functionality. However, they have noticed that generating some of the reports can take a relatively long time, especially for their bigger clients whose system's have a lot of data. \\
+
+Perfect It BeX AB has ordered this mastered thesis to investigate how to increase the generation speed of these reports and to implement a solution that does this.
 
 \section{Problem description}
 
@@ -214,14 +224,19 @@ According to Brent Ozar \cite{Ozar12} fixing fragmentation can cause more damage
 Another important factor is that external fragmentation mostly causes problems when the database is stored in disc, since classical hard drives are slow at random reading. If the database is instead stored in memory, which is almost as fast at random reading as sequential reading, external fragmentation won't be as big a issue.
 
 \subsection{Query optimization}
-When talking about query optimization one imagines that the logic in the SQL statements are altered and optimized. Even if this is true, by tuning the actual SQL statements an optimization can be accomplished, it's done with respect to the execution plan. Query optimization can also been seen as mapping of the logical query operations to physical operations that the execution engine can execute.It does this by implementing a number of algorithms, which the query optimizer must choose from when formulating an execution plan. In summary a query optimization is actually a strategic manner to optimize the execution functionality of the execution engine \cite{Nevarez}. \\\\ The purpose of the query optimization is to provide a good enough and hopefully optimal execution plan. In order to do so a query must go through a query-processing process as can be viewed in Figure~\ref{fig:qpp}. The query-processing starts with a simplification of tree representation that is sent from the Algebrizer, which checks the syntax and appropriate bindings of the SQL statement(s). There are 4 stages in the query-processing that return an execution plan and if the simplification of the logic tree representation qualifies as a trivial plan a trivial execution plan is returned and the optimization process ends immediately. Otherwise a full optimization process will be run in up to three stages and an execution plan may be created at the end of any of these stages. All the alternatives the full optimization returns are stored and evaluated by the SQL server based on the cost. The whole optimization is a cost/benefit trade-off regarding the query optimization time. The number of varying plans can easily rise and the optimization will therefore not be feasible as it takes too long. Therefore during this full optimization process the query optimizer uses statistics, transformation rules, heuristics and cost estimations to limit and assure the quality of the executions plans that are returned. 
-\begin{figure}[H] 
-\begin{center}
-    \includegraphics[scale=0.3]{Optimization-process.png}
+When talking about query optimization one imagines that the logic in the SQL statements are altered and optimized. Even if this is true, by tuning the actual SQL statements an optimization can be accomplished, it's done with respect to the execution plan.
+\begin{wrapfigure}{r}{0.5\textwidth} 
+  \vspace{-20pt}
+  \begin{center}
+    \includegraphics[width=0.6\textwidth]{Optimization-process.png}
   \end{center}
+  \vspace{-20pt}
   \caption{The query-processing process}
   \label{fig:qpp}
-\end{figure}
+  \vspace{-10pt}
+\end{wrapfigure} 
+Query optimization can also been seen as mapping of the logical query operations to physical operations that the execution engine can execute.It does this by implementing a number of algorithms, which the query optimizer must choose from when formulating an execution plan. In summary a query optimization is actually a strategic manner to optimize the execution functionality of the execution engine \cite{Nevarez}. \\\\ The purpose of the query optimization is to provide a good enough and hopefully optimal execution plan. In order to do so a query must go through a query-processing process as can be viewed in Figure~\ref{fig:qpp}. The query-processing starts with a simplification of tree representation that is sent from the Algebrizer, which checks the syntax and appropriate bindings of the SQL statement(s). There are 4 stages in the query-processing that return an execution plan and if the simplification of the logic tree representation qualifies as a trivial plan a trivial execution plan is returned and the optimization process ends immediately. Otherwise a full optimization process will be run in up to three stages and an execution plan may be created at the end of any of these stages.
+All the alternatives the full optimization returns are stored and evaluated by the SQL server based on the cost. The whole optimization is a cost/benefit trade-off regarding the query optimization time. The number of varying plans can easily rise and the optimization will therefore not be feasible as it takes too long. Therefore during this full optimization process the query optimizer uses statistics, transformation rules, heuristics and cost estimations to limit and assure the quality of the executions plans that are returned.  
 
 
 \subsection{In-Memory Database Technology}
