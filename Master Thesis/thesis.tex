@@ -24,7 +24,8 @@
 \definecolor{mygreen}{rgb}{0,0.6,0}
 \definecolor{mygray}{rgb}{0.5,0.5,0.5}
 \definecolor{mymauve}{rgb}{0.58,0,0.82}
-
+\usepackage{colortbl}
+  \definecolor{Lightgray}{RGB}{235,235,235}
 
 \lstset{
 breaklines=true,
@@ -80,6 +81,7 @@ ERP-system’s database}
 
 \begin{document}
 \makefrontmatter
+
 \chapter[Introduction]{Introduction}
 2014 was the year of the cloud. Software companies strived to make their services cloud based in order to meet the increasing demands from the market of availability and reliability. 	
 In today's businesses there's high demand for accurate and up-to-date business intelligence (henceforth referred to as BI).
@@ -103,7 +105,7 @@ In recent years, Lennart and Niklas have felt an increasing demand from customer
 Perfect It BeX AB has ordered this master thesis to investigate how to increase the generation speed of the business intelligence-reports and to implement a solution that increases this speed.
 
 \section{Thesis Goals} \label{sec:goals}
-The goal of this thesis is to examine, test the feasibility and implement a solution for speeding up the generation of BI reports in Perfect IT \bex AB's product \bex Online. To be able to speed up the BI report generation an optimization needs to be done. The optimization needs to be versatile to handle the current system, to handle new functionality and also future company growth. Hence, the optimization needs to be scalable. Taking in to account that Perfect IT \bex has one physical server, the scalability should be vertically \cite{scalability} since the company will provide the system to more clients in the future.\\\\
+The goal of this thesis is to examine, test the feasibility and implement a solution for speeding up the generation of BI reports in Perfect IT \bex AB's product \bex Online. To be able to speed up the BI report generation an optimization needs to be done. The optimization needs to be versatile to handle the current system, to handle new functionality and also future company growth. Hence, the optimization needs to be scalable. Taking in to account that Perfect IT \bex has one physical server, the scalability should be vertically\cite{scalability} since the company will provide the system to more clients in the future.\\\\
 In order to make the above optimization possible, the following goals have been established:
 \begin{enumerate}
 \item Acquire knowledge about database optimization in general.
@@ -115,7 +117,7 @@ In order to make the above optimization possible, the following goals have been 
 \end{enumerate}
   
 \section{Scope} \label{sec:scope}
-According to Nevarez \cite{Nevarez} the main areas of investigation while trying to optimize an existing database for speed are:
+According to Nevarez\cite{Nevarez} the main areas of investigation while trying to optimize an existing database for speed are:
 \begin{itemize}
 \item Query tuning
 \item Execution plan tuning
@@ -152,14 +154,14 @@ The research questions of this thesis were formulated in relation to the thesis 
 \item	How can the proposed solution be implemented in Perfect IT \bex AB's current system?
 \end{itemize}
 \section{Methodology}
-This thesis is of a problem solving nature and should continuously adapt to changing conditions. The methodology used should therefore preferably be flexible. A methodology that provides valuable support and is intended to improve something while studying it is action research \cite{robson}. Action research begins with an observation phase that identifies and clarifies the problems that are present, for this thesis that is presented in chapter \ref{sec:background}. In chapter \ref{sec:proposedsoluton} the next step in action research is stated, a proposed solution to the problem(s).\\
+This thesis is of a problem solving nature and should continuously adapt to changing conditions. The methodology used should therefore preferably be flexible. A methodology that provides valuable support and is intended to improve something while studying it is action research\cite{robson}. Action research begins with an observation phase that identifies and clarifies the problems that are present, for this thesis that is presented in chapter \ref{sec:background}. In chapter \ref{sec:proposedsoluton} the next step in action research is stated, a proposed solution to the problem(s).\\
 
-After implementing the proposed solution an important, but often neglected, phase is performed namely the evaluation. The evaluation is made to verify the implementation in its context, to analyze and reflect on how it works in its integration. The whole action research is an iterative process and is based on the evaluation. Accordingly to Höst et al. \cite{regnell} an evaluation is hard to keep unbiased, since the ones doing the critical evaluation are also the ones that performed the research. To counter an unbiased evaluation, some evaluation criteria were established based on the above mentioned goals in section \ref{sec:goals}. To ensure that all of the stakeholders goals are met this thesis will on a regular basis be reviewed both by supervisors at Perfect IT and at LTH.
+After implementing the proposed solution an important, but often neglected, phase is performed namely the evaluation. The evaluation is made to verify the implementation in its context, to analyze and reflect on how it works in its integration. The whole action research is an iterative process and is based on the evaluation. Accordingly to Höst et al.\cite{regnell} an evaluation is hard to keep unbiased, since the ones doing the critical evaluation are also the ones that performed the research. To counter an unbiased evaluation, some evaluation criteria were established based on the above mentioned goals in section \ref{sec:goals}. To ensure that all of the stakeholders goals are met this thesis will on a regular basis be reviewed both by supervisors at Perfect IT and at LTH.
 
 \section{Work}
 First of all an acquaintance of Perfect IT \bex AB's system needed to be established. In conjunction with the examination of the current system and its parts a literature research was performed. The area this research treats is extensively and the research done is almost indefinite. Therefore the literature research scope needed to be narrowed with its base in the currents systems examination.\\\\    
-To find the literature and related work Engineering Village \cite{Enginvillage} and Google Scholar \cite{Googlescholar} together with DBLP \cite{DBLP} was used. A lot of time was dedicated to find relevant literature and information for this thesis and at the same time examine if the ideas established during the system examination phase were possible, and solid, solutions.\\\\
-Using the paper written by Gruian and Lekebjer on formatting a master’s thesis \cite{Reportmall} and guidelines from the book by Regnell et al. \cite{regnell} the initial work on the master thesis report was conducted. 
+To find the literature and related work Engineering Village\cite{Enginvillage} and Google Scholar\cite{Googlescholar} together with DBLP\cite{DBLP} was used. A lot of time was dedicated to find relevant literature and information for this thesis and at the same time examine if the ideas established during the system examination phase were possible, and solid, solutions.\\\\
+Using the paper written by Gruian and Lekebjer on formatting a master’s thesis\cite{Reportmall} and guidelines from the book by Regnell et al.\cite{regnell} the initial work on the master thesis report was conducted. 
 \todo{to be continued\ldots}
 
 \chapter{Approach}
@@ -201,8 +203,9 @@ For this thesis Perfect It BeX AB has made available a copy of one of their bigg
 The default schema is called \textit{dbo} and consists of a total of 254 tables, including some views for big data queries. Many tables are large, considering the amount of rows, where the largest consists of approximately 10.5$\times 10^6$ rows and 80 columns. This table stores the data associated with every business transaction made by the system from the start of using this system. There are also empty tables, \hilight{usage?}, that \ldots. The tables form a complex relation to each other and the references are many (as seen in this \href{https://drive.google.com/file/d/0B1IYTmE2hnD-eGQ0N2tvYXZNNVE/view?usp=sharing}{\textcolor{blue}{link}}). In the visualized database reference schema there are tables not referencing any tables at all, \hilight{why?}.\\\\ There are also tables needed by third party applications and API's that also are stored in the database and can be seen in the bottom part of the visualized database reference schema mentioned above (\hilight{maybe the answer to the no reference question above?}). Some, \hilight{why not all?} of the BI reports have their own tables in the database, \hilight{why?}.
 
 \paragraph*{Stored procedures}\mbox{}\\\\ 
-Stored procedures are subroutines that are available to applications that access relational database systems. Stored procedures are used as centralized logic and can therefore be used by all applications that share the system. These subroutines can include both SQL statements and host language statements, meaning that it can exist external procedures that has nothing to do with SQL. Often extensive and complex SQL queries, that require a lot of processing and are often being used, are moved to stored procedures for reuse \cite{StoredProcedures}. It's important to know that Stored procedures both bring advantages, e.g. Stored procedures are cached, and drawbacks, e.g. Stored procedure code is not as robust as app code. Subroutines such as Stored procedures should therefore only be used when and if the implementer possess a deep knowledge of the system that is to be affected. It's for example bad practice to store all procedures as Stored procedures for the benefit of the cache-utilization.\\\\
+Stored procedures are subroutines that are available to applications that access relational database systems. Stored procedures are used as centralized logic and can therefore be used by all applications that share the system. These subroutines can include both SQL statements and host language statements, meaning that it can exist external procedures that has nothing to do with SQL. Often extensive and complex SQL queries, that require a lot of processing and are often being used, are moved to stored procedures for reuse\cite{StoredProcedures}. It's important to know that Stored procedures both bring advantages, e.g. Stored procedures are cached, and drawbacks, e.g. Stored procedure code is not as robust as app code. Subroutines such as Stored procedures should therefore only be used when and if the implementer possess a deep knowledge of the system that is to be affected. It's for example bad practice to store all procedures as Stored procedures for the benefit of the cache-utilization.\\\\
 The database in this thesis had a total of 59 Stored procedures treating repetitive procedures by the database mainly for the sales part of the system and the BI reports (there's also a subroutine for locking crucial information, with respect to concurrent execution). These subroutines do not contain any host language statements and/or external procedures, but only consists of complex SQL statements. They are present in the system, as mentioned above, to make the execution and processing less demanding, as they are often used in \bex Online.
+
  
 \section{Theory}
 In order to understand why a database might not perform optimally, the following theory was used.
@@ -214,7 +217,7 @@ Since people can be added to the phone book there must be space available after 
 \subsubsection{Why is this bad for performance?}
 At first, internal fragmentation might seem like a good thing. If the phone book has a lot of blank space on every page to start with, adding entries would be super easy and there would be no need for adding more pages later, causing external fragmentation. This is true, but when the number of extra pages needed in the phone book to allow for a lot of blank space is considered, the inefficiency of it becomes apparent. Going through a 100\% filled 1000 page phone book is much faster than a 90\% full 1100 page phone book. So in this example, every time SQL Server needs to scan the index, it would take 10\% longer. Another problem is that the lowest unit for caching in SQL Server is not a record, but a single page, which means that all the empty space must be cached as well. \\
 
-External fragmentation often makes reading the database non-sequential, i.e it cannot be read in order but must be read in random order. This is especially bad in classic magnetic hard drives where the reader head must move around to multiple locations on the drive. Some magnetic hard drives only get 1\% of their sequential reading speed when performing random reads. \cite{Toshiba12}
+External fragmentation often makes reading the database non-sequential, i.e it cannot be read in order but must be read in random order. This is especially bad in classic magnetic hard drives where the reader head must move around to multiple locations on the drive. Some magnetic hard drives only get 1\% of their sequential reading speed when performing random reads.\cite{Toshiba12}
 
 \subsubsection{Measuring fragmentation}
 In Al-Farooque Shubho's article "Top 10 ways to optimize data access in SQL Server"\cite{Shubho09} he explains how to measure if index fragmentation has occurred. By executing the script on page \pageref{lst:fragalg} in Algorithm \ref{See DB-Fragmentation}, index fragmentation is analyzed on every table in the database and presented in a table with an internal and external fragmentation value. \\
@@ -223,16 +226,16 @@ According to Shubho, only tables with an internal fragmentation value of less th
 
 \subsubsection{Reorganize vs. Rebuild}\mbox{}\\
 Both rebuilding and reorganizing are built-in operations in SQL-Server 2014. These are two different operations that both reduce the fragmentation of the indexes. Reorganizing is the more lightweight of the two operations. It fixes the indexes as well as physical reordering of pages and applies any previously set fill factors. Rebuilding builds up a completely new structure for the index. It also allows for a new fill factor.\\
-The advantage with reorganizing over rebuilding is that it can be aborted midway, while a rebuild must roll-back after an abort. Usually, in most SQL-systems, a rebuild can't be done while the SQL-server is online. This can be done in MS SQL Server Enterprise edition \cite{Little13}.
+The advantage with reorganizing over rebuilding is that it can be aborted midway, while a rebuild must roll-back after an abort. Usually, in most SQL-systems, a rebuild can't be done while the SQL-server is online. This can be done in MS SQL Server Enterprise edition\cite{Little13}.
 
 \subsubsection{Is it always a good idea to fix fragmentation?}
-According to Brent Ozar \cite{Ozar12} fixing fragmentation can cause more damage than keeping fragmented indexes. Often administrators try to fix fragmentation by using a low fill factor, say 50\%. This would mean that half of every page would be blank, which would make writing really fast. Reading however, would be twice as slow. Another common mistake is to rebuild every single index in the database, even though some tables might not had a single write since the last time. This is a problem because defragmenting indexes causes SQL Server to write to the transaction log. The bigger a log is, the longer log backups and restores take.\\\\
+According to Brent Ozar\cite{Ozar12} fixing fragmentation can cause more damage than keeping fragmented indexes. Often administrators try to fix fragmentation by using a low fill factor, say 50\%. This would mean that half of every page would be blank, which would make writing really fast. Reading however, would be twice as slow. Another common mistake is to rebuild every single index in the database, even though some tables might not had a single write since the last time. This is a problem because defragmenting indexes causes SQL Server to write to the transaction log. The bigger a log is, the longer log backups and restores take.\\\\
 Another important factor is that external fragmentation mostly causes problems when the database is stored in disc, since classical hard drives are slow at random reading. If the database is instead stored in memory, which is almost as fast at random reading as sequential reading, external fragmentation won't be as big a issue.
 
 \subsection{Query optimization}
-When talking about query optimization one imagines that the logic in the SQL statements are altered and optimized. Even if this is true, by tuning the actual SQL statements an optimization can be accomplished, it's done with respect to the execution plan. Query optimization can also been seen as mapping of the logical query operations to physical operations that the execution engine can execute.It does this by implementing a number of algorithms, which the query optimizer must choose from when formulating an execution plan. In summary a query optimization is actually a strategic manner to optimize the execution functionality of the execution engine \cite{Nevarez}. \\\\ 
-The purpose of the query optimization is to provide a good enough and hopefully optimal execution plan. In order to do so a query must go through a query-processing process as can be viewed in Figure~\ref{fig:qpp}. The query-processing starts with a simplification of tree representation that is sent from the Algebrizer, which checks the syntax and appropriate bindings of the SQL statement(s). There are 4 stages in the query-processing that return an execution plan and if the simplification of the logic tree representation qualifies as a trivial plan a trivial execution plan is returned and the optimization process ends immediately. Otherwise a full optimization process will be run in up to three stages and an execution plan may be created at the end of any of these stages. All the alternatives the full optimization returns are stored and evaluated by the SQL server based on the cost. The whole optimization is a cost/benefit trade-off regarding the query optimization time. The number of varying plans can easily rise, an effect known as the combinatorial explosion \cite{combo}, and the optimization will therefore not be feasible as it takes too long. Therefore during this full optimization process the query optimizer uses statistics, transformation rules, heuristics and cost estimations to limit and assure the quality of the executions plans that are returned.\\\\ 
-As the query optimizer limits the available alternatives two problems arise. The entire search space is not evaluated and the chosen execution plan is therefore impossible to prove that it's the most optimal one. So the query optimizers utmost important functionality lies in considering the plans that are of low cost. Which brings us to another major technical challenge, accurate estimations. The quality of the plan that is chosen is only as good as the accuracy of the estimation. According to Nevarez \cite{Nevarez} the estimations are inherently inexact and do not consider the environments hardware conditions.
+When talking about query optimization one imagines that the logic in the SQL statements are altered and optimized. Even if this is true, by tuning the actual SQL statements an optimization can be accomplished, it's done with respect to the execution plan. Query optimization can also been seen as mapping of the logical query operations to physical operations that the execution engine can execute.It does this by implementing a number of algorithms, which the query optimizer must choose from when formulating an execution plan. In summary a query optimization is actually a strategic manner to optimize the execution functionality of the execution engine\cite{Nevarez}. \\\\ 
+The purpose of the query optimization is to provide a good enough and hopefully optimal execution plan. In order to do so a query must go through a query-processing process as can be viewed in Figure~\ref{fig:qpp}. The query-processing starts with a simplification of tree representation that is sent from the Algebrizer, which checks the syntax and appropriate bindings of the SQL statement(s). There are 4 stages in the query-processing that return an execution plan and if the simplification of the logic tree representation qualifies as a trivial plan a trivial execution plan is returned and the optimization process ends immediately. Otherwise a full optimization process will be run in up to three stages and an execution plan may be created at the end of any of these stages. All the alternatives the full optimization returns are stored and evaluated by the SQL server based on the cost. The whole optimization is a cost/benefit trade-off regarding the query optimization time. The number of varying plans can easily rise, an effect known as the combinatorial explosion\cite{combo}, and the optimization will therefore not be feasible as it takes too long. Therefore during this full optimization process the query optimizer uses statistics, transformation rules, heuristics and cost estimations to limit and assure the quality of the executions plans that are returned.\\\\ 
+As the query optimizer limits the available alternatives two problems arise. The entire search space is not evaluated and the chosen execution plan is therefore impossible to prove that it's the most optimal one. So the query optimizers utmost important functionality lies in considering the plans that are of low cost. Which brings us to another major technical challenge, accurate estimations. The quality of the plan that is chosen is only as good as the accuracy of the estimation. According to Nevarez\cite{Nevarez} the estimations are inherently inexact and do not consider the environments hardware conditions.
 \begin{figure}[H] 
 \begin{center}
     \includegraphics[scale=0.3]{Optimization-process.png}
@@ -245,9 +248,29 @@ As the query optimizer limits the available alternatives two problems arise. The
 \noindent As an example the cost model assumes that every query's data is read from disk and not from memory (cold cach). In addition some operations are not covered by the mathematical model, leading to that the query optimizer has to resort to guessing logic and/or heuristics to deal with such situations. 
 
 \subsubsection{Query tuning}
-In order the optimize the process explained above there are numerous areas that can be altered. One can dive in to the actual SQL statements and try to break down complex queries, optimize join ordering etc. Besides altering the SQL statements the workload sent to the query optimizer can be optimized in several ways. Chaudhuri et al. state that compressing the size of a workload, which is a set of SQL statements, improves a systems scalability and illustrates its effectiveness in index selection and approximate query processing \cite{compressing}. 
-\paragraph*{Join ordering}\mbox{}\\\\
+In order the optimize the process explained above there are numerous areas that can be altered. One can dive in to the actual SQL statements and try to break down complex queries, optimize join ordering etc. Besides altering the SQL statements the workload sent to the query optimizer can be optimized in several ways. Chaudhuri et al. state that compressing the size of a workload, which is a set of SQL statements, improves a systems scalability and illustrates its effectiveness in index selection and approximate query processing\cite{compressing}. Furthermore, major database vendors have focused on releasing automated physical database design tools that reduce the total cost of a workload. An essential assumption of these tools is that the workload consists of a set of SQL statements with no internal ordering. Agrawal et al. state that the workload in itself isn't the most promising aspect of workload optimization, but that the workload can be treated as a sequence which broadens the usage of the above mentioned tools\cite{automatic}.
 
+\paragraph*{Join ordering}\mbox{}\\\\
+\cite{join}
+\begin{table}[H]
+\centering 
+\begin{tabular}{ l l l }
+  Trees & Left-Deep Trees $(n!)$ & Bushy Trees $(2n-2)!/(n-1)!$ \\\hline
+  2 & 2 & 2 \\\hline
+  3 & 6 & 12 \\\hline
+  4 & 24 & 120 \\\hline
+  5 & 120 & 1 680 \\\hline
+  6 & 720 & 30 240 \\\hline
+  7 & 5 040 & 665 280 \\\hline
+  8 & 40 320 & 17 297 280 \\\hline
+  9 & 362 880 & 518 918 400 \\\hline
+  10 & 3 628 800 & 17 643 225 600 \\\hline
+  11 & 39 916 800 & 670 444 572 800 \\\hline
+  12 & 479 001 600 & 28 158 588 057 600 \\
+\end{tabular}
+\caption {Possible join orders for Left-Deep and Bushy trees}
+\label{table:join}
+\end{table}
 \paragraph*{Query break down}\mbox{}\\\\   
 
 \subsection{In-Memory Database Technology}
@@ -264,7 +287,7 @@ A big drawback of using Hekaton tables is that the table architecture cannot be 
 
 \paragraph*{Stored procedures in Hekaton}\mbox{}\\\\ 
 Hekaton uses the SQL Query Optimizer to produce an efficient query plan. This plane is then compiled into native C code and loaded as DLLs into the SQL Server process. This compilation happens on SQL Server start.
-When a procedure is saved as a natively  compiled stored procedure it locks all the tables that it uses. This is because such procedures must be schema bound, i.e all tables referenced by a procedure can't be dropped. If this is considered together with the the limitation mentioned above regarding changing of a table architecture, the following process would be required in order to change e.g. a Hekaton table's columns \cite{Nevarez}.
+When a procedure is saved as a natively  compiled stored procedure it locks all the tables that it uses. This is because such procedures must be schema bound, i.e all tables referenced by a procedure can't be dropped. If this is considered together with the the limitation mentioned above regarding changing of a table architecture, the following process would be required in order to change e.g. a Hekaton table's columns\cite{Nevarez}.
 \begin{enumerate}
 \item Drop the procedures referencing the table.
 \item Store the data in the Hekaton in a temporary table.
@@ -333,7 +356,7 @@ This shows that a some of the indexes used have well over an external fragmentat
 
 \chapter{Conclusions}
 \addcontentsline{toc}{chapter}{Bibliography}
-\bibliographystyle{plain}
+\bibliographystyle{ieeetr}
 
 \bibliography{MyMSc}
 
