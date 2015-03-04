@@ -84,7 +84,7 @@ ERP-system’s database}
 
 \chapter[Introduction]{Introduction}
 2014 was the year of the cloud. Software companies strived to make their services cloud based in order to meet the increasing demands from the market of availability and reliability. 	
-In today's businesses there's high demand for accurate and up-to-date business intelligence (henceforth referred to as BI).
+In today's businesses there's high demand for accurate and up-to-date business intelligence (henceforth referred to as BI). \todo{Not finished at all.}
 
 \chapter{Background}\label{sec:background}
 
@@ -140,6 +140,7 @@ The objective is primarily to increase the speed of the ERP-system's business in
 
 \section{Related Work}
 
+
 \section{Contributions}
 
 \chapter{Research Questions \& Methodology}
@@ -147,12 +148,13 @@ The objective is primarily to increase the speed of the ERP-system's business in
 \section{Research Questions}
 The research questions of this thesis were formulated in relation to the thesis goals in section \ref{sec:goals} and the scope in section \ref{sec:scope}. The thesis is formed to explain and answer the following research questions:
 \begin{itemize}
-\item	How does the current system system work and what are the bottle-necks?
+\item	How does the current system function and what are the bottle-necks?
 \item 	How does index fragmentation, query tuning and ''In-memory OLTP'' work in general?
 \item	What optimization solutions are best-fit and why?	
 \item 	Is the proposed solution versatile and scalable so that it is a long-term solution?
 \item	How can the proposed solution be implemented in Perfect IT \bex AB's current system?
 \end{itemize}
+
 \section{Methodology}
 This thesis is of a problem solving nature and should continuously adapt to changing conditions. The methodology used should therefore preferably be flexible. A methodology that provides valuable support and is intended to improve something while studying it is action research\cite{robson}. Action research begins with an observation phase that identifies and clarifies the problems that are present, for this thesis that is presented in chapter \ref{sec:background}. In chapter \ref{sec:proposedsoluton} the next step in action research is stated, a proposed solution to the problem(s).\\
 
@@ -202,7 +204,7 @@ HD: & 500 GB Disk drive
 Every client have their own instance of the system \todo{deeper description}
 
 \subsubsection{Database}
-Microsoft SQL Server Web edition, 64GB Ram, Maximum data capacity: 524 PB, Maximum CPU capacity < 4 socket or 16 cores. All clients are on the same SQL Server 2014-license but have their own unique instance of the database-system with only their data.  Perfect IT has has around \hilight{40} clients connected to the servers database, all with different sizes of data ranging from approximately \hilight{5GB data to approximately 60GB} data. The database is an RDBMS and is run on a Microsoft SQL Server 2014-license using OLTP and the size of all the clients databases together are approximately \hilight{350GB}.
+The database system used is Microsoft SQL Server 2014 Web edition. It has a maximum data capacity of 524 PB, maximum ram usage of 64GB, maximum CPU capacity < 4 socket or 16 cores. All clients are on the same SQL Server 2014-license but have their own unique instance of the database-system with only their data.  Perfect IT has has around 40 clients, all with different database sizes ranging from approximately 5GB of data to approximately 90GB of data in their database. The database is an RDBMS and is run on a Microsoft SQL Server 2014-license using OLTP and the size of all the clients databases together are approximately 350GB.
 
 \paragraph*{Tables}\mbox{}\\\\
 For this thesis Perfect It BeX AB has made available a copy of one of their biggest clients database. To ensure the clients privacy, and the privacy of the clients customers, all sensitive data has been removed. \\ 
@@ -251,10 +253,10 @@ As the query optimizer limits the available alternatives two problems arise. The
   \label{fig:qpp}
   \vspace{-10pt}
 \end{figure} 
-\noindent As an example the cost model assumes that every query's data is read from disk and not from memory (cold cach). In addition some operations are not covered by the mathematical model, leading to that the query optimizer has to resort to guessing logic and/or heuristics to deal with such situations. 
+\noindent As an example the cost model assumes that every query's data is read from disk and not from memory (cold cache). In addition some operations are not covered by the mathematical model, leading to that the query optimizer has to resort to guessing logic and/or heuristics to deal with such situations. 
 
 \subsubsection{Query tuning}
-In order the optimize the process explained above there are numerous areas that can be altered. One can dive in to the actual SQL statements and try to break down complex queries, optimize join ordering etc. Besides altering the SQL statements the workload sent to the query optimizer can be optimized in several ways. Chaudhuri et al. state that compressing the size of a workload, which is a set of SQL statements, improves a systems scalability and illustrates its effectiveness in index selection and approximate query processing\cite{compressing}. Furthermore, major database vendors have focused on releasing automated physical database design tools that reduce the total cost of a workload. An essential assumption of these tools is that the workload consists of a set of SQL statements with no internal ordering. Agrawal et al. state that the workload in itself isn't the most promising aspect of workload optimization, but that the workload can be treated as a sequence which broadens the usage of the above mentioned tools\cite{automatic}.
+In order to optimize the process explained above there are numerous areas that can be altered. One can dive in to the actual SQL statements and try to break down complex queries, optimize join ordering etc. Besides altering the SQL statements the workload sent to the query optimizer can be optimized in several ways. Chaudhuri et al. state that compressing the size of a workload, which is a set of SQL statements, improves a systems scalability and illustrates its effectiveness in index selection and approximate query processing\cite{compressing}. Furthermore, major database vendors have focused on releasing automated physical database design tools that reduce the total cost of a workload. An essential assumption of these tools is that the workload consists of a set of SQL statements with no internal ordering. Agrawal et al. state that the workload in itself isn't the most promising aspect of workload optimization, but that the workload can be treated as a sequence which broadens the usage of the above mentioned tools\cite{automatic}.
 
 \paragraph*{Join ordering}\mbox{}\\\\
 \cite{join}
@@ -291,6 +293,11 @@ Microsoft SQL Server 2014 comes with an In-Memory OLTP database engine called He
 The Hekaton engine is not a separate database system, it is fully integrated into SQL Server. A user can declare a table in a current database to be memory-optimized, and the Hekaton engine will store it in main memory and manage it. A Hekaton table can use two different kinds of indexes. Hash indexes and Range indexes.  Even though Hekaton uses very different internal concepts and implementations it still ensures that all transactions have ACID-properties. \\
 A big drawback of using Hekaton tables is that the table architecture cannot be altered without recreating the table. This means that in order to change the columns in a table or it's indexing settings, the table must be dropped and then rebuilt from scratch.
 
+\paragraph*{Buckets}\mbox{}\\\\
+In Hekaton, Buckets is something you have to reserve for the hash index when creating a memory optimized table. This parameter doesn't exist in when discussing ordinary indexes or other special indexes. Microsoft recommends that one select a bucket count of double the amount of distinct values in the table. The number of buckets also have to be a power of two and the parameter is static once set. This means that the table has to be dropped and rebuild if the bucket count is bad.
+
+The hash tables in Hekaton are implemented as regular hash tables with keys mapped via a hash function to values. The values are stored in a list of buckets. 
+
 \paragraph*{Stored procedures in Hekaton}\mbox{}\\\\ 
 Hekaton uses the SQL Query Optimizer to produce an efficient query plan. This plane is then compiled into native C code and loaded as DLLs into the SQL Server process. This compilation happens on SQL Server start.
 When a procedure is saved as a natively  compiled stored procedure it locks all the tables that it uses. This is because such procedures must be schema bound, i.e all tables referenced by a procedure can't be dropped. If this is considered together with the the limitation mentioned above regarding changing of a table architecture, the following process would be required in order to change e.g. a Hekaton table's columns\cite{Nevarez}.
@@ -302,6 +309,8 @@ When a procedure is saved as a natively  compiled stored procedure it locks all 
 \item Reload the data from the temporary table into the new Hekaton table. 
 \item Recreate the stored procedures.
 \end{enumerate}
+
+A complex procedure like this is preferably avoided. The cost of having to rebuild the in-memory tables from scratch could be high so it is important to plan and choose parameters wisely.
 
 
 \section{Analysis}
