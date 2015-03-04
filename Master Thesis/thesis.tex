@@ -175,7 +175,7 @@ The database for \bex Online is a Microsoft Server 2014 Web Edition.
 \begin{figure}[H]
 \vspace{-15pt}
   \begin{center}
-    \includegraphics[scale=0.3]{Systemdesc.png}
+    \includegraphics[scale=0.3]{Pictures/Systemdesc.png}
   \end{center}
   \caption{Context diagram of Perfect IT's system}
   \label{context}
@@ -247,7 +247,7 @@ The purpose of the query optimization is to provide a good enough and hopefully 
 As the query optimizer limits the available alternatives two problems arise. The entire search space is not evaluated and the chosen execution plan is therefore impossible to prove that it's the most optimal one. So the query optimizers utmost important functionality lies in considering the plans that are of low cost. Which brings us to another major technical challenge, accurate estimations. The quality of the plan that is chosen is only as good as the accuracy of the estimation. According to Nevarez\cite{Nevarez} the estimations are inherently inexact and do not consider the environments hardware conditions.
 \begin{figure}[H] 
 \begin{center}
-    \includegraphics[scale=0.3]{Optimization-process.png}
+    \includegraphics[scale=0.3]{Pictures/Optimization-process.png}
   \end{center}
   \vspace{-20pt}
   \caption{The query-processing process}
@@ -264,7 +264,7 @@ The order of joins is a key factor in controlling the amount of data flowing bet
 
 \begin{figure}[H] 
 \begin{center}
-    \includegraphics[scale=0.7]{trees.jpg}
+    \includegraphics[scale=0.7]{Pictures/trees.jpg}
   \end{center}
   \caption{Left-deep and bushy trees}
   \label{fig:trees}
@@ -312,9 +312,14 @@ The Hekaton engine is not a separate database system, it is fully integrated int
 A big drawback of using Hekaton tables is that the table architecture cannot be altered without recreating the table. This means that in order to change the columns in a table or it's indexing settings, the table must be dropped and then rebuilt from scratch.
 
 \paragraph*{Buckets}\mbox{}\\\\
-In Hekaton, Buckets is something you have to reserve for the hash index when creating a memory optimized table. This parameter doesn't exist in when discussing ordinary indexes or other special indexes. Microsoft recommends that one select a bucket count of double the amount of distinct values in the table. The number of buckets also have to be a power of two and the parameter is static once set. This means that the table has to be dropped and rebuild if the bucket count is bad.
-
+In Hekaton, Buckets is something you have to reserve for the hash index when creating a memory optimized table. This parameter doesn't exist in when discussing ordinary indexes or other special indexes. Microsoft recommends that one select a bucket count of double the amount of distinct values in the table. The number of buckets also have to be a power of two and the parameter is static once set. This means that the table has to be dropped and rebuild if the bucket count is bad. \\\\
 The hash tables in Hekaton are implemented as regular hash tables with keys mapped via a hash function to values. The values are stored in a list of buckets. 
+
+\begin{figure}
+\begin{center}
+\includegraphics[scale=0.5]{Pictures/bucket_hash_index.jpg}
+\end{center}
+\end{figure}
 
 \paragraph*{Stored procedures in Hekaton}\mbox{}\\\\ 
 Hekaton uses the SQL Query Optimizer to produce an efficient query plan. This plane is then compiled into native C code and loaded as DLLs into the SQL Server process. This compilation happens on SQL Server start.
