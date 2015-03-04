@@ -295,12 +295,9 @@ Since the number of the possibilities are that great the query optimizer needs t
 In some cases the query optimizer may not be able to produce/decide a good plan. This is mostly because of complex queries containing a large number of joins and joins with aggregations. Breaking down these complex queries into two or more and storing the intermediate result in temporary tables is a good plan, since it's fairly rare to request all the data in a single query. 
 Howard\cite{break-down} describes several problematic query patterns that the query optimizer has problems creating good plans for. The article is applied to SQL Server versions from 2005 to ''Denali'', but according to Nevarez\cite{Nevarez} it's also applicable to SQL Server 2014.\\ Two important query patterns for this thesis are:
 \begin{itemize}
-\item OR logic in WHERE clause
+\item OR logic in Where clause
 \item Joins on aggregated data sets
 \end{itemize}
-
-\subparagraph{OR logic in WHERE clause}
-When the OR
 
 \subsection{In-Memory Database Technology}
 Relational database management systems were originally designed in the late 70's\cite{Nevarez}. Because of this, they are designed with the assumption that memory is limited, expensive and that the size of the database is many times larger than the main memory. Today, memory is relatively cheap and it is possible to have hundreds of gigabytes of memory in a single server. This makes it possible to put even large databases, completely in memory. In Vizard's article\cite{Vizard12} it is said that having a database completely in-memory can make it a thousand times faster.
@@ -316,13 +313,25 @@ A big drawback of using Hekaton tables is that the table architecture cannot be 
 
 \paragraph*{Buckets}\mbox{}\\\\
 In Hekaton, Buckets is something you have to reserve for the hash index when creating a memory optimized table. This parameter doesn't exist in when discussing ordinary indexes or other special indexes. Microsoft recommends that one select a bucket count of double the amount of distinct values in the table. The number of buckets also have to be a power of two and the parameter is static once set. This means that the table has to be dropped and rebuild if the bucket count is bad. \\\\
-The hash tables in Hekaton are implemented as regular hash tables with keys mapped via a hash function to values. The values are stored in a list of buckets. 
+The hash tables in Hekaton are implemented as regular hash tables with keys mapped via a hash function to values. The values are stored in an array of buckets\cite{Barbarin14}. 
 
-\begin{figure}
+\begin{figure}[H]
 \begin{center}
-\includegraphics[scale=0.5]{Pictures/bucket_hash_index.jpg}
+\includegraphics[scale=0.5]{Pictures/buckets.png}
+\caption{Illustrating the concept of buckets.}
 \end{center}
 \end{figure}
+
+The hash indexes are in no particular order which makes it ineffective for range operations but fast for lookup operations. The hash function should be efficient enough to spread the keys into the buckets uniformly to avoid multiple values in the same bucket. Multiple values in the same bucket also occurs when there aren't enough buckets. This causes a bucket to have a row chain. This causes the lookup operation to be slower because it has to scan the row chain for the bucket to find the value. The number of keys per bucket is the \emph{load factor} of in-memory tables. This is calculated as the total number of entities divided by the number of buckets. The higher load factor, the slower a table will perform. This means that a fixed bucket count in a table will perform worse over time if the bucket count is too small. However, a too large bucket count will use excess memory and cause range lookups to perform slowly. 
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[scale=0.5]{Pictures/buckets2.png}
+\caption{Illustrating the concept of a row chain.}
+\end{center}
+\end{figure}
+
+The reason why the bucket count has to be set as a power of two number is to make the hash function faster. The position for a value in a table is calculated as \emph{Hash value \% array size}. The problem with this calculation is that modulo is slow compared to the bit wise AND-operation. By setting the array size, which is the bucket count, to a number that is a power of two, one can use the AND-operation instead and save time.
 
 \paragraph*{Stored procedures in Hekaton}\mbox{}\\\\ 
 Hekaton uses the SQL Query Optimizer to produce an efficient query plan. This plane is then compiled into native C code and loaded as DLLs into the SQL Server process. This compilation happens on SQL Server start.
