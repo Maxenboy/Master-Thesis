@@ -291,7 +291,7 @@ The order of joins is a key factor in controlling the amount of data flowing bet
 
 Since the number of the possibilities are that great the query optimizer needs to balance between the optimization time and the quality of it. So the goal of the query optimizer is to find a good enough plan as quick as possible. 
 
-\paragraph*{Query break down}\mbox{}\\\\ 
+\paragraph*{Query break down} 
 In some cases the query optimizer may not be able to produce/decide a good plan. This is mostly because of complex queries containing a large number of joins and joins with aggregations. Breaking down these complex queries into two or more and storing the intermediate result in temporary tables is a good plan, since it's fairly rare to request all the data in a single query. 
 Howard\cite{break-down} describes several problematic query patterns that the query optimizer has problems creating good plans for. The article is applied to SQL Server versions from 2005 to ''Denali'', but according to Nevarez\cite{Nevarez} it's also applicable to SQL Server 2014.\\ Two important query patterns for this thesis are:
 \begin{itemize}
@@ -299,8 +299,15 @@ Howard\cite{break-down} describes several problematic query patterns that the qu
 \item Joins on aggregated data sets
 \end{itemize}
 
-\subparagraph{OR logic in WHERE clause}
-When the OR
+\subparagraph{OR logic in WHERE clause}\mbox{}\\\\
+When the OR operator is evaluated on one and the same table, e.g. \textit{WHERE a.col1=@val OR a.col2=@val2}, the query optimizer is able to create efficient execution plans by using index seek on two indexes and an index union. However if the OR operator is evaluated on different tables, e.g. \textit{WHERE a.col1=@val OR b.col2=@val2}, poor plans may be created. Running the two following queries will create two efficient plans.
+\begin{lstlisting}[caption={Example of broken-down query, instead of OR operator in WHERE clause on two different tables},label=firstbreak-down]
+SELECT SalesOrderId FROM Sales.SalesOrderDetail
+WHERE ProductID=897
+SELECT SalesOrderID FROM Sales.SalesOrderHeader
+WHERE CustomerID=11020
+\end{lstlisting}
+
 
 \subsection{In-Memory Database Technology}
 Relational database management systems were originally designed in the late 70's\cite{Nevarez}. Because of this, they are designed with the assumption that memory is limited, expensive and that the size of the database is many times larger than the main memory. Today, memory is relatively cheap and it is possible to have hundreds of gigabytes of memory in a single server. This makes it possible to put even large databases, completely in memory. In Vizard's article\cite{Vizard12} it is said that having a database completely in-memory can make it a thousand times faster.
@@ -404,7 +411,7 @@ This shows that a some of the indexes used have well over an external fragmentat
 \begin{appendices}
 
 \chapter{Code}
-\begin{lstlisting}[caption={Algorithm to find fragmented tables and the fragmentation values.},label=See DB-Fragmentation]
+\begin{lstlisting}[caption={Algorithm to find fragmented tables and the fragmentation values},label=See DB-Fragmentation]
 SELECT object_name(dt.object_id) Tablename,si.name
 IndexName,dt.avg_fragmentation_in_percent AS
 ExternalFragmentation,dt.avg_page_space_used_in_percent AS
