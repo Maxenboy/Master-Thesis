@@ -291,7 +291,11 @@ Since the number of the possibilities are that great the query optimizer needs t
 
 \paragraph*{Query break down}\mbox{}\\\\ 
 In some cases the query optimizer may not be able to produce/decide a good plan. This is mostly because of complex queries containing a large number of joins and joins with aggregations. Breaking down these complex queries into two or more and storing the intermediate result in temporary tables is a good plan, since it's fairly rare to request all the data in a single query. 
-Howard\cite{break-down} describes several problematic query patterns that the query optimizer has problems creating good plans for. The article is applied to SQL Server versions from 2005 to ''Denali'', but according to Nevarez\cite{Nevarez} it's also applicable to SQL Server 2014.\\
+Howard\cite{break-down} describes several problematic query patterns that the query optimizer has problems creating good plans for. The article is applied to SQL Server versions from 2005 to ''Denali'', but according to Nevarez\cite{Nevarez} it's also applicable to SQL Server 2014.\\ Two important query patterns for this thesis are:
+\begin{itemize}
+\item OR logic in Where clause
+\item Joins on aggregated data sets
+\end{itemize}
 
 \subsection{In-Memory Database Technology}
 Relational database management systems were originally designed in the late 70's\cite{Nevarez}. Because of this, they are designed with the assumption that memory is limited, expensive and that the size of the database is many times larger than the main memory. Today, memory is relatively cheap and it is possible to have hundreds of gigabytes of memory in a single server. This makes it possible to put even large databases, completely in memory. In Vizard's article\cite{Vizard12} it is said that having a database completely in-memory can make it a thousand times faster.
