@@ -300,14 +300,27 @@ Howard\cite{break-down} describes several problematic query patterns that the qu
 \end{itemize}
 
 \subparagraph{OR logic in WHERE clause}\mbox{}\\\\
-When the OR operator is evaluated on one and the same table, e.g. \textit{WHERE a.col1=@val OR a.col2=@val2}, the query optimizer is able to create efficient execution plans by using index seek on two indexes and an index union. However if the OR operator is evaluated on different tables, e.g. \textit{WHERE a.col1=@val OR b.col2=@val2}, poor plans may be created. Running the two following queries will create two efficient plans.
+When the OR operator is evaluated on one and the same table, e.g. \textit{WHERE a.col1=@val OR a.col2=@val2}, the query optimizer is able to create efficient execution plans by using index seek on two indexes and an index union. However if the OR operator is evaluated on different tables, e.g. \textit{WHERE a.col1=@val OR b.col2=@val2}, poor plans may be created. Running the two following queries will create two efficient plans.\\
 \begin{lstlisting}[caption={Example of broken-down query, instead of OR operator in WHERE clause on two different tables},label=firstbreak-down]
-SELECT SalesOrderId FROM Sales.SalesOrderDetail
+SELECT SalesOrderID FROM Sales.SalesOrderDetail
 WHERE ProductID=897
 SELECT SalesOrderID FROM Sales.SalesOrderHeader
 WHERE CustomerID=11020
 \end{lstlisting}
+If the to tables are joined using the same selective predicates as in Algorithm \ref{firstbreak-down} the SQL Server will return a very expensive plan. This can be fixed by using the UNION operator instead of the OR operator and allows for seeks on all indexes which results in a more efficient plan, even though the query below looks more redundant and complex:
+\begin{lstlisting}[caption={UNION instead of OR},label=firstbreak-down]
+SELECT SalesOrderID FROM Sales.SalesOrderHeader soh
+	JOIN Sales.SalesOrderDetail sod
+	ON soh.SalesOrderID=sod.SalesOrderID
+WHERE sod.ProductID=897
+UNION
+SELECT SalesOrderID FROM Sales.SalesOrderHeader soh
+	JOIN Sales.SalesOrderDetail sod
+	ON soh.SalesOrderID=sod.SalesOrderID
+WHERE soh.CustomerID=11020
+\end{lstlisting} 
 
+\subparagraph{Joins on aggregated data sets}\mbox{}\\\\
 
 \subsection{In-Memory Database Technology}
 Relational database management systems were originally designed in the late 70's\cite{Nevarez}. Because of this, they are designed with the assumption that memory is limited, expensive and that the size of the database is many times larger than the main memory. Today, memory is relatively cheap and it is possible to have hundreds of gigabytes of memory in a single server. This makes it possible to put even large databases, completely in memory. In Vizard's article\cite{Vizard12} it is said that having a database completely in-memory can make it a thousand times faster.
