@@ -291,7 +291,7 @@ The order of joins is a key factor in controlling the amount of data flowing bet
 
 Since the number of the possibilities are that great the query optimizer needs to balance between the optimization time and the quality of it. So the goal of the query optimizer is to find a good enough plan as quick as possible. 
 
-\paragraph*{Query break down} 
+\paragraph*{Query break down}\mbox{}\\\\ 
 In some cases the query optimizer may not be able to produce/decide a good plan. This is mostly because of complex queries containing a large number of joins and joins with aggregations. Breaking down these complex queries into two or more and storing the intermediate result in temporary tables is a good plan, since it's fairly rare to request all the data in a single query. 
 Howard\cite{break-down} describes several problematic query patterns that the query optimizer has problems creating good plans for. The article is applied to SQL Server versions from 2005 to ''Denali'', but according to Nevarez\cite{Nevarez} it's also applicable to SQL Server 2014.\\ Two important query patterns for this thesis are:
 \begin{itemize}
@@ -300,7 +300,7 @@ Howard\cite{break-down} describes several problematic query patterns that the qu
 \end{itemize}
 
 \subparagraph{\textit{OR} logic in \textit{WHERE} clause}\mbox{}\\\\
-When the OR operator is evaluated on one and the same table, e.g. \textit{WHERE a.col1=@val OR a.col2=@val2}, the query optimizer is able to create efficient execution plans by using index seek on two indexes and an index union. However if the \teztit{OR} operator is evaluated on different tables, e.g. \textit{WHERE a.col1=@val OR b.col2=@val2}, poor plans may be created. Running the two following queries will create two efficient plans.\\
+When the OR operator is evaluated on one and the same table, e.g. \textit{WHERE a.col1=@val OR a.col2=@val2}, the query optimizer is able to create efficient execution plans by using index seek on two indexes and an index union. However if the \textit{OR} operator is evaluated on different tables, e.g. \textit{WHERE a.col1=@val OR b.col2=@val2}, poor plans may be created. Running the two following queries will create two efficient plans.\\
 \begin{lstlisting}[caption={Example of broken-down query, instead of OR operator in WHERE clause on two different tables},label=firstbreak-down]
 SELECT SalesOrderID FROM Sales.SalesOrderDetail
 WHERE ProductID=897
@@ -321,9 +321,9 @@ WHERE soh.CustomerID=11020
 \end{lstlisting} 
 
 \subparagraph{Joins on aggregated data sets}\mbox{}\\\\
-Most large queries join intermediate results from several query blocks involving grouping and aggregation. Earlier aggregation meant grouping of a relation and then apply an aggregate function (e.g. average) on each group. This still applies, but companies and users are not interested in only e.g. the average salary of each department. They want to do further grouping and sorting such as group the above mentioned employees based on their marital status and/or sex\cite{partioned}. Consequently wanting to perform complex processing within each group and grouping among different sets of attributes.\\ A good cardinality estimation can be provided by statistics for operations performed on a table. However, queries using operator such as \textit{GROUP} or \textit{DISTINCT} create result with different number of rows than that are in the stored table.
+Most large queries join intermediate results from several query blocks involving grouping and aggregation. Earlier aggregation meant grouping of a relation and then apply an aggregate function (e.g. average) on each group. This still applies, but companies and users are not interested in only e.g. the average salary of each department. They want to do further grouping and sorting such as group the above mentioned employees based on their marital status and/or sex\cite{partioned}. Consequently wanting to perform complex processing within each group and grouping among different sets of attributes.\\ A good cardinality estimation can be provided by statistics for operations performed on a table. However, queries using operator such as \textit{GROUP} or \textit{DISTINCT} create result with different number of rows than that are in the stored table. Joining these results on other data sets, statistics on these intermediate results do not exist. If an intermediate result must be materialized before used in a subsequent step statistics are not available. The query optimizer tries to estimate the cardinality based upon the original data set, but since the earlier mentioned operators intermediate result differ from the original data set, the estimation can degrade in accuracy.\\\\ By analyzing the execution plan for theses complex queries, one can partition the query where the estimated number of rows differ a lot from actual number of rows. To ensure statistics, one can store the intermediate results in temporary tables as mentioned in the beginning of this section.     
 
-
+ 
 \subsection{In-Memory Database Technology}
 Relational database management systems were originally designed in the late 70's\cite{Nevarez}. Because of this, they are designed with the assumption that memory is limited, expensive and that the size of the database is many times larger than the main memory. Today, memory is relatively cheap and it is possible to have hundreds of gigabytes of memory in a single server. This makes it possible to put even large databases, completely in memory. In Vizard's article\cite{Vizard12} it is said that having a database completely in-memory can make it a thousand times faster.
 
