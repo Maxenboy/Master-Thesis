@@ -100,25 +100,25 @@ Perfect It BeX AB was founded by Lennart Söderberg and Niklas Lindgren in 2007.
 \item History and Business Reports
 \end{itemize}
 
-In recent years, Lennart and Niklas have felt an increasing demand from customers for better business intelligence capabilities. In response to this they have improved the Business Report functionality in BeX Online, to be able to give a wider range of different financial key values. According to Lennart, being able to offer their customers tools enabling for good business intelligence, is key to staying competitive. Therefore, they want to develop these tools further to make them better and to include more functionality. However, they have noticed that generating some of the reports can take a relatively long time, especially for their bigger clients whose system's have a lot of data.
+In recent years, Perfect It has felt an increasing demand from customers for better business intelligence capabilities. In response to this they have improved the Business Report functionality in BeX Online, to be able to give a wider range of different financial key values. According to Lennart, being able to offer their customers tools enabling for good business intelligence, is key to staying competitive. Therefore, they want to develop these tools further to make them better and to include more functionality. However, they have noticed that generating some of the reports can take a relatively long time, especially for their bigger clients whose system's have a lot of data.
 
 \section{Problem description}
-Perfect It BeX AB has ordered this master thesis to investigate how to increase the generation speed of the business intelligence-reports and to implement a solution that increases this speed.
+Perfect It BeX AB was motivated to collaborate with academia in order to investigate how to increase the generation speed of the business intelligence-reports and to find a possible solution that increases this speed.
 
 \section{Thesis Goals} \label{sec:goals}
-The goal of this thesis is to examine, test the feasibility and implement a solution for speeding up the generation of BI reports in Perfect IT \bex AB's product \bex Online. To be able to speed up the BI report generation an optimization needs to be done. The optimization needs to be versatile to handle the current system, to handle new functionality and also future company growth. Hence, the optimization needs to be scalable. Taking in to account that Perfect IT \bex has one physical server, the scalability should be vertically\cite{scalability} since the company will provide the system to more clients in the future.\\\\
+The goal of this thesis is to identify issues related to the problem, and to propose a solution for speeding up the generation of BI reports in Perfect IT \bex AB's product \bex Online. To be able to speed up the BI report generation the processes responsible needs to be analyzed and optimized or rebuilt for speed. The solution needs to be versatile to handle the current system, to handle new functionality and also future company growth. Hence, the suggested changes needs to be scalable. Taking in to account that Perfect IT \bex has one physical server, the scalability should be vertically\cite{scalability} since the company will provide the system to more clients in the future.\\\\
 In order to make the above optimization possible, the following goals have been established:
 \begin{enumerate}
-\item Acquire knowledge about database optimization in general.
-\item The current processes behind generation of the BI-reports must be identified and mapped in Perfect IT \bex AB.
-\item Analyze and identify bottle-necks and inefficiencies.
-\item Solution approach research to solve the problems identified in the analysis. The research will consider as many options as possible to find a long-term solution.
-\item Analyze solution approaches to decide which of them are a best fit and should be used to reach the goal.
-\item Implement the solution in \bex Online and a final analysis should be performed to determine if the goal was met.
+\item Identify the most common causes to db inefficiency.
+\item The current processes behind generation of the BI-reports must be identified and mapped in order to identify bottle-necks and inefficiencies.
+\item The academic approach should be done as a "Problem Solving Research"-process and will propose \& test a possible solution.
+\item Analyze possible solutions to decide which of them are a best fit for the case company.
+\item Implement the solutions in \bex Online and perform a final analysis to determine if the case company's goal was met.
 \end{enumerate}
   
 \section{Scope} \label{sec:scope}
-According to Nevarez\cite{Nevarez} the main areas of investigation while trying to optimize an existing database for speed are:
+\hilight{According to Nevarez\cite{Nevarez} the main areas of investigation while trying to optimize an existing database for speed are:}
+Because of the problems and goals described in the background the focus should be on the following main areas of investigation:
 \begin{itemize}
 \item Query tuning
 \item Execution plan tuning
@@ -150,14 +150,13 @@ The objective is primarily to increase the speed of the ERP-system's business in
 The research questions of this thesis were formulated in relation to the thesis goals in section \ref{sec:goals} and the scope in section \ref{sec:scope}. The thesis is formed to explain and answer the following research questions:
 \begin{itemize}
 \item	How does the current system function and what are the bottle-necks?
-\item 	How does index fragmentation, query tuning and ''In-memory OLTP'' work in general?
-\item	What optimization solutions are best-fit and why?	
-\item 	Is the proposed solution versatile and scalable so that it is a long-term solution?
+\item 	What are the most common approaches for improving database performance, with regard to index fragmentation, query tuning and In-memory-solutions?
+\item	What optimization solutions are best-fit for the case company with regards to the goals, scope and limitations?	
 \item	How can the proposed solution be implemented in Perfect IT \bex AB's current system?
 \end{itemize}
 
 \section{Methodology}
-This thesis is of a problem solving nature and should continuously adapt to changing conditions. The methodology used should therefore preferably be flexible. A methodology that provides valuable support and is intended to improve something while studying it is action research\cite{robson}. Action research begins with an observation phase that identifies and clarifies the problems that are present, for this thesis that is presented in chapter \ref{sec:background}. In chapter \ref{sec:proposedsoluton} the next step in action research is stated, a proposed solution to the problem(s).\\
+This thesis is of a problem solving nature and should continuously adapt to changing conditions. The methodology used should therefore preferably be flexible. A methodology that provides valuable support and is intended to improve something while studying it is action research \cite{robson}. Action research begins with an observation phase that identifies and clarifies the problems that are present, for this thesis that is presented in chapter \ref{sec:background}. In chapter \ref{sec:proposedsoluton} the next step in action research is stated, a proposed solution to the problem(s).\\
 
 After implementing the proposed solution an important, but often neglected, phase is performed namely the evaluation. The evaluation is made to verify the implementation in its context, to analyze and reflect on how it works in its integration. The whole action research is an iterative process and is based on the evaluation. Accordingly to Höst et al.\cite{regnell} an evaluation is hard to keep unbiased, since the ones doing the critical evaluation are also the ones that performed the research. To counter an unbiased evaluation, some evaluation criteria were established based on the above mentioned goals in section \ref{sec:goals}. To ensure that all of the stakeholders goals are met this thesis will on a regular basis be reviewed both by supervisors at Perfect IT and at LTH.
 
