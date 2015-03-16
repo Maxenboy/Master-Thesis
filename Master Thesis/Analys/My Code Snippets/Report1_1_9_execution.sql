@@ -1,6 +1,6 @@
 USE [bex_bob]
 GO
-
+set statistics time on
 DECLARE	@return_value int
 
 EXEC	@return_value = [dbo].[report_1_1_9]
@@ -27,5 +27,5 @@ EXEC	@return_value = [dbo].[report_1_1_9]
 		@allowTB = 1
 
 SELECT	'Return Value' = @return_value
-
+set statistics time off
 GO
