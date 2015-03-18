@@ -299,25 +299,10 @@ Howard\cite{break-down} describes several problematic query patterns that the qu
 \end{itemize}
 
 \subparagraph{\textit{OR} logic in \textit{WHERE} clause}\mbox{}\\\\
-When the OR operator is evaluated on one and the same table, e.g. \textit{WHERE a.col1=@val OR a.col2=@val2}, the query optimizer is able to create efficient execution plans by using index seek on two indexes and an index union. However if the \textit{OR} operator is evaluated on different tables, e.g. \textit{WHERE a.col1=@val OR b.col2=@val2}, poor plans may be created. Running the two following queries will create two efficient plans.\\
-\begin{lstlisting}[caption={Example of broken-down query, instead of OR operator in WHERE clause on two different tables},label=firstbreak-down]
-SELECT SalesOrderID FROM Sales.SalesOrderDetail
-WHERE ProductID=897
-SELECT SalesOrderID FROM Sales.SalesOrderHeader
-WHERE CustomerID=11020
-\end{lstlisting}
-If the to tables are joined using the same selective predicates as in Algorithm \ref{firstbreak-down} the SQL Server will return a very expensive plan. This can be fixed by using the \textit{UNION} operator instead of the \textit{OR} operator and allows for seeks on all indexes which results in a more efficient plan, even though the query below looks more redundant and complex:
-\begin{lstlisting}[caption={UNION instead of OR},label=firstbreak-down]
-SELECT SalesOrderID FROM Sales.SalesOrderHeader soh
-	JOIN Sales.SalesOrderDetail sod
-	ON soh.SalesOrderID=sod.SalesOrderID
-WHERE sod.ProductID=897
-UNION
-SELECT SalesOrderID FROM Sales.SalesOrderHeader soh
-	JOIN Sales.SalesOrderDetail sod
-	ON soh.SalesOrderID=sod.SalesOrderID
-WHERE soh.CustomerID=11020
-\end{lstlisting} 
+When the OR operator is evaluated on one and the same table, e.g. \textit{WHERE a.col1=@val OR a.col2=@val2}, the query optimizer is able to create efficient execution plans by using index seek on two indexes and an index union. However if the \textit{OR} operator is evaluated on different tables, e.g. \textit{WHERE a.col1=@val OR b.col2=@val2}, poor plans may be created. Running the two following queries on page \pageref{lst:fragalg} in Algorithm \ref{firstbreak-down} will create two efficient plans.\\
+
+If the to tables are joined using the same selective predicates as in Algorithm \ref{firstbreak-down} the SQL Server will return a very expensive plan. This can be fixed by using the \textit{UNION} operator instead of the \textit{OR} operator and allows for seeks on all indexes which results in a more efficient plan, even though the query looks more redundant and complex as seen in Algorithm \ref{second-down} on page \pageref{lst:union}.
+
 
 \subparagraph{Joins on aggregated data sets}\mbox{}\\\\
 Most large queries join intermediate results from several query blocks involving grouping and aggregation. Earlier aggregation meant grouping of a relation and then apply an aggregate function (e.g. average) on each group. This still applies, but companies and users are not interested in only e.g. the average salary of each department. They want to do further grouping and sorting such as group the above mentioned employees based on their marital status and/or sex\cite{partioned}. Consequently wanting to perform complex processing within each group and grouping among different sets of attributes.\\ A good cardinality estimation can be provided by statistics for operations performed on a table. However, queries using operator such as \textit{GROUP} or \textit{DISTINCT} create result with different number of rows than that are in the stored table. Joining these results on other data sets, statistics on these intermediate results do not exist. If an intermediate result must be materialized before used in a subsequent step statistics are not available. The query optimizer tries to estimate the cardinality based upon the original data set, but since the earlier mentioned operators intermediate result differ from the original data set, the estimation can degrade in accuracy.\\\\ By analyzing the execution plan for theses complex queries, one can partition the query where the estimated number of rows differ a lot from actual number of rows. To ensure statistics, one can store the intermediate results in temporary tables as mentioned in the beginning of this section.     
@@ -452,5 +437,124 @@ AND si.index_id=dt.index_id AND dt.avg_fragmentation_in_percent>10
 AND dt.avg_page_space_used_in_percent<75 ORDER BY avg_fragmentation_in_percent DESC
 \end{lstlisting}
 \label{lst:fragalg}
+
+\begin{lstlisting}[caption={Example of broken-down query, instead of OR operator in WHERE clause on two different tables},label=firstbreak-down]
+SELECT SalesOrderID FROM Sales.SalesOrderDetail
+WHERE ProductID=897
+SELECT SalesOrderID FROM Sales.SalesOrderHeader
+WHERE CustomerID=11020
+\end{lstlisting}
+\newpage
+\begin{lstlisting}[caption={UNION instead of OR},label=second-down]
+SELECT SalesOrderID FROM Sales.SalesOrderHeader soh
+	JOIN Sales.SalesOrderDetail sod
+	ON soh.SalesOrderID=sod.SalesOrderID
+WHERE sod.ProductID=897
+UNION
+SELECT SalesOrderID FROM Sales.SalesOrderHeader soh
+	JOIN Sales.SalesOrderDetail sod
+	ON soh.SalesOrderID=sod.SalesOrderID
+WHERE soh.CustomerID=11020
+\end{lstlisting} 
+\label{lst:union}
+
+\chapter{Tables}
+
+\newgeometry{left=0.2cm, right=0.5cm}
+\begin{table}[H]
+\centering
+\resizebox{\textwidth}{!}{
+\begin{tabular}{  l | c | c | c | c | c | c | c | c | c | c | c | c | c | c | c | c | c | c | c | c | c | c | c | c | c | c | c | c | c | c | c | }
+Tables&\multicolumn{29}{c}{Stored Procedures for Reports}& \\\hline
+	 & 1\_1\_1 & 1\_1\_2 & 1\_1\_3 & 1\_1\_4 & 1\_1\_5 & 1\_1\_6 & 1\_1\_7 & 1\_1\_8 & 1\_1\_9 & 1\_2\_2 & 1\_3\_2 & 1\_5\_1 & 1\_5\_2 & 1\_5\_7 & 1\_6\_1 & 2\_1\_1 & 2\_1\_2 & 2\_5 & 2\_6 & 3\_1 & 3\_2 & 3\_3 & 3\_4 & 3\_5 & 3\_6 & 3\_7 & 4\_2 & 4\_3 & 4\_4 & 4\_5 & TOTAL \\ \hline
+	EXT\_ACCOUNT & X & X & X & X & X & X & X & X & X & X & X &  &  &  & X & X & X & X & X &  & X & X & X & X & X &  & X & X & X & X & 25 \\ \hline
+	EXT\_BO\_USERS & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & 30 \\ \hline
+	EXT\_COLLECTION & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & 30 \\ \hline
+	EXT\_COLOUR\_GROUP & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & 30 \\ \hline
+	EXT\_COMPANY\_INFORMATION &  &  &  &  &  &  &  &  &  &  &  & X & X & X &  &  &  & X & X & X &  &  &  &  &  & X &  &  &  &  & 7 \\ \hline
+	EXT\_COUNTRY & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & 30 \\ \hline
+	EXT\_CUSTOMER & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & 30 \\ \hline
+	EXT\_CUSTOMER\_GROUP & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & 30 \\ \hline
+	EXT\_CUSTOMER\_INVOICE\_DISCOUNT & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & 30 \\ \hline
+	EXT\_CUSTOMER\_LEDGER\_ENTRY & X & X & X & X & X & X & X & X & X & X & X &  &  &  & X & X & X & X & X &  & X & X & X & X & X &  & X & X & X & X & 25 \\ \hline
+	EXT\_CUSTOMER\_POSTING\_GROUP & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & 30 \\ \hline
+	EXT\_CUSTOMER\_PRICE\_GROUP &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  & 1 \\ \hline
+	EXT\_DELIVERYCHANGE\_REASON &  &  &  &  &  &  &  &  &  &  &  & X & X & X &  &  &  & X & X & X &  &  &  &  &  & X &  &  &  &  & 7 \\ \hline
+	EXT\_DIMENSIONX & X & X & X & X & X & X & X & X & X & X & X &  &  &  & X & X & X & X & X &  & X & X & X & X & X &  & X & X & X & X & 25 \\ \hline
+	EXT\_DIMENSION2 & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & 30 \\ \hline
+	EXT\_DISC\_CODE &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & 1 \\ \hline
+	EXT\_HISTORY\_MASTER & X & X & X & X & X & X & X & X & X & X & X &  &  &  & X & X & X & X & X &  & X & X & X & X & X &  & X & X & X & X & 25 \\ \hline
+	EXT\_ITEM & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & 30 \\ \hline
+	EXT\_ITEM\_CATEGORY & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & 30 \\ \hline
+	EXT\_ITEM\_COMPOSITION & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & 30 \\ \hline
+	EXT\_ITEM\_FREIGHTCLASS & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & 30 \\ \hline
+	EXT\_ITEM\_GENDER & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & 30 \\ \hline
+	EXT\_ITEM\_GROUP & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & 30 \\ \hline
+	EXT\_ITEM\_IMPORT & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & 30 \\ \hline
+	EXT\_ITEM\_LEDGER\_ENTRY & X & X & X & X & X & X & X & X & X & X & X &  &  &  & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & 27 \\ \hline
+	EXT\_ITEM\_VARIANTS & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & 30 \\ \hline
+	EXT\_LENGTH\_GROUP & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & 30 \\ \hline
+	EXT\_LOCATIONS & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & 30 \\ \hline
+	EXT\_ORDER\_TYPE &  &  &  &  &  &  &  &  &  &  &  & X & X & X &  &  &  & X & X & X &  &  &  &  &  & X &  &  &  &  & 7 \\ \hline
+	EXT\_POSTING\_GROUP\_ITEM & X & X & X & X & X & X & X & X & X & X & X &  &  &  & X & X & X & X & X &  & X & X & X & X & X &  & X & X & X & X & 25 \\ \hline
+	EXT\_POSTING\_SETUP &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  & 1 \\ \hline
+	EXT\_PRODUCT\_GROUP & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & 30 \\ \hline
+	EXT\_PROGRAM & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & 30 \\ \hline
+	EXT\_PURCHASE\_HEADER &  &  &  &  &  &  &  &  &  &  &  & X & X & X &  &  &  & X & X & X &  &  &  &  &  & X &  &  &  &  & 7 \\ \hline
+	EXT\_PURCHASE\_LINE &  &  &  &  &  &  &  &  &  &  &  & X & X & X &  &  &  & X & X & X &  &  &  &  &  & X &  &  &  &  & 7 \\ \hline
+	EXT\_REATAIL\_CUSTCERTS &  &  &  &  &  &  &  &  &  &  &  & X & X & X &  &  &  & X & X & X &  &  &  &  &  & X &  &  &  &  & 7 \\ \hline
+	EXT\_REPORT\_HEADER & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & 30 \\ \hline
+	EXT\_REPORT\_RESULT\_1\_1\_1 & X &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & 1 \\ \hline
+	EXT\_REPORT\_RESULT\_1\_1\_2 &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & 1 \\ \hline
+	EXT\_REPORT\_RESULT\_1\_1\_3 &  &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & 1 \\ \hline
+	EXT\_REPORT\_RESULT\_1\_1\_4 &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & 1 \\ \hline
+	EXT\_REPORT\_RESULT\_1\_1\_5 &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & 1 \\ \hline
+	EXT\_REPORT\_RESULT\_1\_1\_6 &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & 1 \\ \hline
+	EXT\_REPORT\_RESULT\_1\_1\_7 &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & 1 \\ \hline
+	EXT\_REPORT\_RESULT\_1\_1\_8 &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & 1 \\ \hline
+	EXT\_REPORT\_RESULT\_1\_1\_9 &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & 1 \\ \hline
+	EXT\_REPORT\_RESULT\_1\_2\_2 &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & 1 \\ \hline
+	EXT\_REPORT\_RESULT\_1\_3\_2 &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & 1 \\ \hline
+	EXT\_REPORT\_RESULT\_1\_5\_1 &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & 1 \\ \hline
+	EXT\_REPORT\_RESULT\_1\_5\_2 &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & 1 \\ \hline
+	EXT\_REPORT\_RESULT\_1\_5\_7 &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & 1 \\ \hline
+	EXT\_REPORT\_RESULT\_1\_6\_1 &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & 1 \\ \hline
+	EXT\_REPORT\_RESULT\_2\_1\_X &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  &  & 1 \\ \hline
+	EXT\_REPORT\_RESULT\_2\_1\_2 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  & 1 \\ \hline
+	EXT\_REPORT\_RESULT\_2\_5 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  &  & 1 \\ \hline
+	EXT\_REPORT\_RESULT\_2\_6 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  & 1 \\ \hline
+	EXT\_REPORT\_RESULT\_3\_1 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  & 1 \\ \hline
+	EXT\_REPORT\_RESULT\_3\_2 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  & 1 \\ \hline
+	EXT\_REPORT\_RESULT\_3\_3 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  & 1 \\ \hline
+	EXT\_REPORT\_RESULT\_3\_4 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  & 1 \\ \hline
+	EXT\_REPORT\_RESULT\_3\_5 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  & 1 \\ \hline
+	EXT\_REPORT\_RESULT\_3\_6 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  & 1 \\ \hline
+	EXT\_REPORT\_RESULT\_3\_7 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  & 1 \\ \hline
+	EXT\_REPORT\_RESULT\_3\_7\_SUB1 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  & 1 \\ \hline
+	EXT\_REPORT\_RESULT\_4\_2 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  & 1 \\ \hline
+	EXT\_REPORT\_RESULT\_4\_3 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  & 1 \\ \hline
+	EXT\_REPORT\_RESULT\_4\_4 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  & 1 \\ \hline
+	EXT\_REPORT\_RESULT\_4\_5 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X & 1 \\ \hline
+	EXT\_RETURN\_REASONS & X & X & X & X & X & X & X & X & X & X & X &  &  &  & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & 27 \\ \hline
+	EXT\_SALES\_HEADER &  &  &  &  &  &  &  &  &  &  &  & X & X & X &  &  &  & X & X & X &  &  &  &  &  & X &  &  &  &  & 7 \\ \hline
+	EXT\_SALES\_LINE &  &  &  &  &  &  &  &  &  &  &  & X & X & X &  &  &  & X & X & X &  &  &  &  &  & X &  &  &  &  & 7 \\ \hline
+	EXT\_SALES\_PRICE &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  & 1 \\ \hline
+	EXT\_SALESPERSON & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & 30 \\ \hline
+	EXT\_SHIPPING\_AGENT &  &  &  &  &  &  &  &  &  &  &  & X & X & X &  &  &  & X & X & X &  &  &  &  &  & X &  &  &  &  & 7 \\ \hline
+	EXT\_SHIPPING\_AGENT\_SERVICE &  &  &  &  &  &  &  &  &  &  &  & X & X & X &  &  &  & X & X & X &  &  &  &  &  & X &  &  &  &  & 7 \\ \hline
+	EXT\_SHOP & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & 30 \\ \hline
+	EXT\_SIZE\_GROUP & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & 30 \\ \hline
+	EXT\_SUPPLIER & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & 30 \\ \hline
+	EXT\_SUPPLIER\_GIROPAYMENT & X & X & X & X & X & X & X & X & X & X & X &  &  &  & X & X & X & X & X &  & X & X & X & X & X &  & X & X & X & X & 25 \\ \hline
+	EXT\_SUPPLIER\_LEDGER\_ENTRY & X & X & X & X & X & X & X & X & X & X & X &  &  &  & X & X & X & X & X &  & X & X & X & X & X &  & X & X & X & X & 25 \\ \hline
+	EXT\_TIMETRACKER &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & 1 \\ \hline
+	EXT\_TIMETRACKER\_WORKCODE &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & 1 \\ \hline
+	TOTAL & 36 & 36 & 36 & 36 & 36 & 36 & 36 & 36 & 36 & 36 & 37 & 37 & 37 & 37 & 38 & 36 & 36 & 46 & 46 & 39 & 39 & 36 & 36 & 36 & 36 & 40 & 36 & 36 & 36 & 36 & \  
+\end{tabular}}
+\caption{The frequency of table-use in the Stored Procedures}
+\end{table}
+\restoregeometry
+
+
 \end{appendices}
 \end{document}
