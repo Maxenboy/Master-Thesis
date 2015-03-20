@@ -105,6 +105,9 @@ In recent years, Perfect It has felt an increasing demand from customers for bet
 \section{Problem description}
 Perfect It BeX AB was motivated to collaborate with academia in order to investigate how to increase the generation speed of the business intelligence-reports and to find a possible solution that increases this speed.
 
+\subsection{BI-reports}
+
+
 \section{Thesis Goals} \label{sec:goals}
 The goal of this thesis is to identify issues related to the problem, and to propose a solution for speeding up the generation of BI reports in Perfect IT \bex AB's product \bex Online. To be able to speed up the BI report generation the processes responsible needs to be analyzed and optimized or rebuilt for speed. The solution needs to be versatile to handle the current system, to handle new functionality and also future company growth. Hence, the suggested changes needs to be scalable. Taking in to account that Perfect IT \bex has one physical server, the scalability should be vertically\cite{scalability} since the company will provide the system to more clients in the future.\\\\
 In order to make the above optimization possible, the following goals have been established:
@@ -208,7 +211,7 @@ The database system used is Microsoft SQL Server 2014 Web edition. It has a maxi
 
 \paragraph*{Tables}\mbox{}\\\\
 For this thesis Perfect It BeX AB has made available a copy of one of their biggest clients database. To ensure the clients privacy, and the privacy of the clients customers, all sensitive data has been removed. \\ 
-The default schema is called \textit{dbo} and consists of a total of 254 tables, including some views for big data queries. Many tables are large, considering the amount of rows, where the largest consists of approximately 10.5$\times 10^6$ rows and 80 columns. This table stores the data associated with every business transaction made by the system from the start of using this system. There are also empty tables, \hilight{usage?}, that \ldots. The tables form a complex relation to each other and the references are many (as seen in this \href{https://drive.google.com/file/d/0B1IYTmE2hnD-eGQ0N2tvYXZNNVE/view?usp=sharing}{\textcolor{blue}{link}}). In the visualized database reference schema there are tables not referencing any tables at all, \hilight{why?}.\\\\ There are also tables needed by third party applications and API's that also are stored in the database and can be seen in the bottom part of the visualized database reference schema mentioned above (\hilight{maybe the answer to the no reference question above?}). Some, \hilight{why not all?} of the BI reports have their own tables in the database, \hilight{why?}.
+The default schema is called \textit{dbo} and consists of a total of 254 tables, including some views for big data queries. Many tables are large, considering the amount of rows, where the largest consists of approximately 10.5$\times 10^6$ rows and 80 columns. This table stores the data associated with every business transaction made by the system from the start of using this system. There are also empty tables, \hilight{usage?}, that \ldots. The tables form a complex relation to each other and the references are many (as seen in this \href{https://drive.google.com/file/d/0B1IYTmE2hnD-eGQ0N2tvYXZNNVE/view?usp=sharing}{\textcolor{blue}{link}}\footnote{https://drive.google.com/file/d/0B1IYTmE2hnD-eGQ0N2tvYXZNNVE/view?usp=sharing}). In the visualized database reference schema there are tables not referencing any tables at all, \hilight{why?}.\\\\ There are also tables needed by third party applications and API's that also are stored in the database and can be seen in the bottom part of the visualized database reference schema mentioned above (\hilight{maybe the answer to the no reference question above?}). Some, \hilight{why not all?} of the BI reports have their own tables in the database, \hilight{why?}.
 
 \paragraph*{Stored procedures}\mbox{}\\\\ 
 Stored procedures are subroutines that are available to applications that access relational database systems. Stored procedures are used as centralized logic and can therefore be used by all applications that share the system. These subroutines can include both SQL statements and host language statements, meaning that it can exist external procedures that has nothing to do with SQL. Often extensive and complex SQL queries, that require a lot of processing and are often being used, are moved to stored procedures for reuse\cite{StoredProcedures}. It's important to know that Stored procedures both bring advantages, e.g. Stored procedures are cached, and drawbacks, e.g. Stored procedure code is not as robust as app code. Subroutines such as Stored procedures should therefore only be used when and if the implementer possess a deep knowledge of the system that is to be affected. It's for example bad practice to store all procedures as Stored procedures for the benefit of the cache-utilization.\\\\
@@ -358,6 +361,8 @@ A complex procedure like this is preferably avoided. The cost of having to rebui
 
 
 \section{Analysis}
+The analysis of the system required several tools and environments for both live and local research, where the local environment setup is further explained in Appendix \ref{Aenviron}. To identify report-relevant parts of the system the tool Microsoft SQL Server Management Studio (SSMS) was mostly used. To identify and study the bottle-necks and problems, in the above mentioned system parts, several other tools such as DBVisualizer, SQL Sentry Plan Explorer etc. were used along side SMSS to extract query duration, query execution plans and much more.\\\\
+Much of the analysis revolved around the stored procedures, since it was there the potential of optimization was greatest, but other optimization areas were also studied such as index fragmentation of the relevant tables.      
 
 \subsection{Index fragmentation}
 By using the script from the theory the following index fragmentation values were produced. The table names and index names has been changed due to confidentiality.
@@ -402,6 +407,14 @@ Table name & Index name & External fragmentation & Internal fragmentation \\ \hl
 \end{table}
 
 This shows that a some of the indexes used have well over an external fragmentation value of 10. The internal fragmentation value is also bad at some of the indexes (i.e less than 75).
+
+\subsection{Stored procedures}
+
+\subsubsection{Execution plans}
+
+\subsubsection{Execution duration}
+
+\subsubsection{Query tuning}
 
 \chapter{Proposed Solution}\label{sec:proposedsoluton}
 
@@ -457,6 +470,9 @@ SELECT SalesOrderID FROM Sales.SalesOrderHeader soh
 WHERE soh.CustomerID=11020
 \end{lstlisting} 
 \label{lst:union}
+
+\chapter{Environments}
+\section{Analysis environment}\label{Aenviron}
 
 \chapter{Tables}
 
