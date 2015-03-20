@@ -41,7 +41,7 @@ captionpos=b
 \newcommand{\bex}{BeX\textsuperscript{\textregistered}}
 \renewcommand{\lstlistingname}{Algorithm}% Listing -> Algorithm
 \renewcommand{\lstlistlistingname}{List of \lstlistingname s}% List of Listings -> List of Algorithms
-
+\newcolumntype{H}{>{\setbox0=\hbox\bgroup}c<{\egroup}@{}}
 
 
 \author{
@@ -214,8 +214,8 @@ For this thesis Perfect It BeX AB has made available a copy of one of their bigg
 The default schema is called \textit{dbo} and consists of a total of 254 tables, including some views for big data queries. Many tables are large, considering the amount of rows, where the largest consists of approximately 10.5$\times 10^6$ rows and 80 columns. This table stores the data associated with every business transaction made by the system from the start of using this system. There are also empty tables, \hilight{usage?}, that \ldots. The tables form a complex relation to each other and the references are many (as seen in this \href{https://drive.google.com/file/d/0B1IYTmE2hnD-eGQ0N2tvYXZNNVE/view?usp=sharing}{\textcolor{blue}{link}}\footnote{https://drive.google.com/file/d/0B1IYTmE2hnD-eGQ0N2tvYXZNNVE/view?usp=sharing}). In the visualized database reference schema there are tables not referencing any tables at all, \hilight{why?}.\\\\ There are also tables needed by third party applications and API's that also are stored in the database and can be seen in the bottom part of the visualized database reference schema mentioned above (\hilight{maybe the answer to the no reference question above?}). Some, \hilight{why not all?} of the BI reports have their own tables in the database, \hilight{why?}.
 
 \paragraph*{Stored procedures}\mbox{}\\\\ 
-Stored procedures are subroutines that are available to applications that access relational database systems. Stored procedures are used as centralized logic and can therefore be used by all applications that share the system. These subroutines can include both SQL statements and host language statements, meaning that it can exist external procedures that has nothing to do with SQL. Often extensive and complex SQL queries, that require a lot of processing and are often being used, are moved to stored procedures for reuse\cite{StoredProcedures}. It's important to know that Stored procedures both bring advantages, e.g. Stored procedures are cached, and drawbacks, e.g. Stored procedure code is not as robust as app code. Subroutines such as Stored procedures should therefore only be used when and if the implementer possess a deep knowledge of the system that is to be affected. It's for example bad practice to store all procedures as Stored procedures for the benefit of the cache-utilization.\\\\
-The database in this thesis had a total of 59 Stored procedures treating repetitive procedures by the database mainly for the sales part of the system and the BI reports (there's also a subroutine for locking crucial information, with respect to concurrent execution). These subroutines do not contain any host language statements and/or external procedures, but only consists of complex SQL statements. They are present in the system, as mentioned above, to make the execution and processing less demanding, as they are often used in \bex Online.
+stored procedures are subroutines that are available to applications that access relational database systems. Stored procedures are used as centralized logic and can therefore be used by all applications that share the system. These subroutines can include both SQL statements and host language statements, meaning that it can exist external procedures that has nothing to do with SQL. Often extensive and complex SQL queries, that require a lot of processing and are often being used, are moved to stored procedures for reuse\cite{StoredProcedures}. It's important to know that stored procedures both bring advantages, e.g. stored procedures are cached, and drawbacks, e.g. stored procedure code is not as robust as app code. Subroutines such as stored procedures should therefore only be used when and if the implementer possess a deep knowledge of the system that is to be affected. It's for example bad practice to store all procedures as stored procedures for the benefit of the cache-utilization.\\\\
+The database in this thesis had a total of 59 stored procedures treating repetitive procedures by the database mainly for the sales part of the system and the BI reports (there's also a subroutine for locking crucial information, with respect to concurrent execution). These subroutines do not contain any host language statements and/or external procedures, but only consists of complex SQL statements. They are present in the system, as mentioned above, to make the execution and processing less demanding, as they are often used in \bex Online.
 
  
 \section{Theory}
@@ -410,6 +410,140 @@ This shows that a some of the indexes used have well over an external fragmentat
 
 \subsection{Stored procedures}
 
+\begin{table}[H]
+\centering
+\scalebox{0.8}{
+\begin{tabular}{  l | l | l | l | l | l | l | l  H   H   H   H   H   H   H   H   H   H   H   H   H   H   H   H   H   H   H   H   H   H   H  l | l  }
+\LARGE{Tables}&\multicolumn{29}{c}{\LARGE{Stored procedures for BI-reports}}& \\\hline
+
+	 & 1\_1\_1 & 1\_1\_2 & 1\_1\_3 & 1\_1\_4 & 1\_1\_5 & 1\_1\_6 &1\_1\_7 & 1\_1\_8 & 1\_1\_9 & 1\_2\_2 & 1\_3\_2 & 1\_5\_1 & 1\_5\_2 & 1\_5\_7 & 1\_6\_1 & 2\_1\_1 & 2\_1\_2 & 2\_5 & 2\_6 & 3\_1 & 3\_2 & 3\_3 & 3\_4 & 3\_5 & 3\_6 & 3\_7 & 4\_2 & 4\_3 & 4\_4 & 4\_5 & \dots & TOTAL \\ \hline
+	EXT\_BO\_USERS & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & \dots & 30 \\ \hline
+	EXT\_COLLECTION & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & \dots & 30 \\ \hline
+	EXT\_COLOUR\_GROUP & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X  & \dots & 30 \\ \hline
+	EXT\_COUNTRY & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X  & \dots & 30 \\ \hline
+	EXT\_CUSTOMER & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X  & \dots & 30 \\ \hline
+	EXT\_CUSTOMER\_GROUP & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X  & \dots & 30 \\ \hline
+	EXT\_CUSTOMER\_INVOICE\_DISCOUNT & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X  & \dots & 30 \\ \hline
+	EXT\_CUSTOMER\_POSTING\_GROUP & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X  & \dots & 30 \\ \hline
+	EXT\_DIMENSION2 & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X  & \dots & 30 \\ \hline
+	EXT\_ITEM & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X  & \dots & 30 \\ \hline
+	EXT\_ITEM\_CATEGORY & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X  & \dots & 30 \\ \hline
+	EXT\_ITEM\_COMPOSITION & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X  & \dots & 30 \\ \hline
+	EXT\_ITEM\_FREIGHTCLASS & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X  & \dots & 30 \\ \hline
+	EXT\_ITEM\_GENDER & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X  & \dots & 30 \\ \hline
+	EXT\_ITEM\_GROUP & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X  & \dots & 30 \\ \hline
+	EXT\_ITEM\_IMPORT & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X  & \dots & 30 \\ \hline
+	EXT\_ITEM\_VARIANTS & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X  & \dots & 30 \\ \hline
+	EXT\_LENGTH\_GROUP & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X  & \dots & 30 \\ \hline
+	EXT\_LOCATIONS & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X  & \dots & 30 \\ \hline
+	EXT\_PRODUCT\_GROUP & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X  & \dots & 30 \\ \hline
+	EXT\_PROGRAM & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X  & \dots & 30 \\ \hline
+	EXT\_REPORT\_HEADER & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X  & \dots & 30 \\ \hline
+	EXT\_SALESPERSON & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X  & \dots & 30 \\ \hline
+	EXT\_SHOP & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X  & \dots & 30 \\ \hline
+	EXT\_SIZE\_GROUP & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X  & \dots & 30 \\ \hline
+	EXT\_SUPPLIER & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X  & \dots & 30 \\ \hline
+\end{tabular}}
+\caption{Top used tables among stored procedures for BI-reports}
+\end{table}
+
+\begin{table}[H]
+\centering
+\scalebox{0.5}{
+
+\begin{tabular}{ l | p{5em} | p{5em}| p{5em}| p{5em}| l  }
+\LARGE{Tables}&\multicolumn{4}{c}{\LARGE{Stored procedures for BI-reports}}& \\\hline
+	 & 2\_5 & 2\_6 & 3\_7 & 3\_1 & 3\_2 \\ \hline
+	EXT\_BO\_USERS & X & X & X & X & X \\ \hline
+	EXT\_COLLECTION & X & X & X & X & X \\ \hline
+	EXT\_COLOUR\_GROUP & X & X & X & X & X \\ \hline
+	EXT\_COUNTRY & X & X & X & X & X \\ \hline
+	EXT\_CUSTOMER & X & X & X & X & X \\ \hline
+	EXT\_CUSTOMER\_GROUP & X & X & X & X & X \\ \hline
+	EXT\_CUSTOMER\_INVOICE\_DISCOUNT & X & X & X & X & X \\ \hline
+	EXT\_CUSTOMER\_POSTING\_GROUP & X & X & X & X & X \\ \hline
+	EXT\_DIMENSION2 & X & X & X & X & X \\ \hline
+	EXT\_ITEM & X & X & X & X & X \\ \hline
+	EXT\_ITEM\_CATEGORY & X & X & X & X & X \\ \hline
+	EXT\_ITEM\_COMPOSITION & X & X & X & X & X \\ \hline
+	EXT\_ITEM\_FREIGHTCLASS & X & X & X & X & X \\ \hline
+	EXT\_ITEM\_GENDER & X & X & X & X & X \\ \hline
+	EXT\_ITEM\_GROUP & X & X & X & X & X \\ \hline
+	EXT\_ITEM\_IMPORT & X & X & X & X & X \\ \hline
+	EXT\_ITEM\_VARIANTS & X & X & X & X & X \\ \hline
+	EXT\_LENGTH\_GROUP & X & X & X & X & X \\ \hline
+	EXT\_LOCATIONS & X & X & X & X & X \\ \hline
+	EXT\_PRODUCT\_GROUP & X & X & X & X & X \\ \hline
+	EXT\_PROGRAM & X & X & X & X & X \\ \hline
+	EXT\_REPORT\_HEADER & X & X & X & X & X \\ \hline
+	EXT\_SALESPERSON & X & X & X & X & X \\ \hline
+	EXT\_SHOP & X & X & X & X & X \\ \hline
+	EXT\_SIZE\_GROUP & X & X & X & X & X \\ \hline
+	EXT\_SUPPLIER & X & X & X & X & X \\ \hline
+	EXT\_ITEM\_LEDGER\_ENTRY & X & X & X & X & X \\ \hline
+	EXT\_RETURN\_REASONS & X & X & X & X & X \\ \hline
+	EXT\_ACCOUNT & X & X &  &  & X \\ \hline
+	EXT\_CUSTOMER\_LEDGER\_ENTRY & X & X &  &  & X \\ \hline
+	EXT\_DIMENSIONX & X & X &  &  & X \\ \hline
+	EXT\_HISTORY\_MASTER & X & X &  &  & X \\ \hline
+	EXT\_POSTING\_GROUP\_ITEM & X & X &  &  & X \\ \hline
+	EXT\_SUPPLIER\_GIROPAYMENT & X & X &  &  & X \\ \hline
+	EXT\_SUPPLIER\_LEDGER\_ENTRY & X & X &  &  & X \\ \hline
+	EXT\_COMPANY\_INFORMATION & X & X & X & X &  \\ \hline
+	EXT\_DELIVERYCHANGE\_REASON & X & X & X & X &  \\ \hline
+	EXT\_ORDER\_TYPE & X & X & X & X &  \\ \hline
+	EXT\_PURCHASE\_HEADER & X & X & X & X &  \\ \hline
+	EXT\_PURCHASE\_LINE & X & X & X & X &  \\ \hline
+	EXT\_REATAIL\_CUSTCERTS & X & X & X & X &  \\ \hline
+	EXT\_SALES\_HEADER & X & X & X & X &  \\ \hline
+	EXT\_SALES\_LINE & X & X & X & X &  \\ \hline
+	EXT\_SHIPPING\_AGENT & X & X & X & X &  \\ \hline
+	EXT\_SHIPPING\_AGENT\_SERVICE & X & X & X & X &  \\ \hline
+	EXT\_CUSTOMER\_PRICE\_GROUP &  &  &  &  & X \\ \hline
+	EXT\_DISC\_CODE &  &  &  &  &  \\ \hline
+	EXT\_POSTING\_SETUP &  &  &  &  & X \\ \hline
+	EXT\_REPORT\_RESULT\_1\_1\_1 &  &  &  &  &  \\ \hline
+	EXT\_REPORT\_RESULT\_1\_1\_2 &  &  &  &  &  \\ \hline
+	EXT\_REPORT\_RESULT\_1\_1\_3 &  &  &  &  &  \\ \hline
+	EXT\_REPORT\_RESULT\_1\_1\_4 &  &  &  &  &  \\ \hline
+	EXT\_REPORT\_RESULT\_1\_1\_5 &  &  &  &  &  \\ \hline
+	EXT\_REPORT\_RESULT\_1\_1\_6 &  &  &  &  &  \\ \hline
+	EXT\_REPORT\_RESULT\_1\_1\_7 &  &  &  &  &  \\ \hline
+	EXT\_REPORT\_RESULT\_1\_1\_8 &  &  &  &  &  \\ \hline
+	EXT\_REPORT\_RESULT\_1\_1\_9 &  &  &  &  &  \\ \hline
+	EXT\_REPORT\_RESULT\_1\_2\_2 &  &  &  &  &  \\ \hline
+	EXT\_REPORT\_RESULT\_1\_3\_2 &  &  &  &  &  \\ \hline
+	EXT\_REPORT\_RESULT\_1\_5\_1 &  &  &  &  &  \\ \hline
+	EXT\_REPORT\_RESULT\_1\_5\_2 &  &  &  &  &  \\ \hline
+	EXT\_REPORT\_RESULT\_1\_5\_7 &  &  &  &  &  \\ \hline
+	EXT\_REPORT\_RESULT\_1\_6\_1 &  &  &  &  &  \\ \hline
+	EXT\_REPORT\_RESULT\_2\_1\_1 &  &  &  &  &  \\ \hline
+	EXT\_REPORT\_RESULT\_2\_1\_2 &  &  &  &  &  \\ \hline
+	EXT\_REPORT\_RESULT\_2\_5 & X &  &  &  &  \\ \hline
+	EXT\_REPORT\_RESULT\_2\_6 &  & X &  &  &  \\ \hline
+	EXT\_REPORT\_RESULT\_3\_1 &  &  &  & X &  \\ \hline
+	EXT\_REPORT\_RESULT\_3\_2 &  &  &  &  & X \\ \hline
+	EXT\_REPORT\_RESULT\_3\_3 &  &  &  &  &  \\ \hline
+	EXT\_REPORT\_RESULT\_3\_4 &  &  &  &  &  \\ \hline
+	EXT\_REPORT\_RESULT\_3\_5 &  &  &  &  &  \\ \hline
+	EXT\_REPORT\_RESULT\_3\_6 &  &  &  &  &  \\ \hline
+	EXT\_REPORT\_RESULT\_3\_7 &  &  & X &  &  \\ \hline
+	EXT\_REPORT\_RESULT\_3\_7\_SUB1 &  &  & X &  &  \\ \hline
+	EXT\_REPORT\_RESULT\_4\_2 &  &  &  &  &  \\ \hline
+	EXT\_REPORT\_RESULT\_4\_3 &  &  &  &  &  \\ \hline
+	EXT\_REPORT\_RESULT\_4\_4 &  &  &  &  &  \\ \hline
+	EXT\_REPORT\_RESULT\_4\_5 &  &  &  &  &  \\ \hline
+	EXT\_SALES\_PRICE &  &  &  &  & X \\ \hline
+	EXT\_TIMETRACKER &  &  &  &  &  \\ \hline
+	EXT\_TIMETRACKER\_WORKCODE &  &  &  &  &  \\ \hline
+	TOTAL & 46 & 46 & 40 & 39 & 39 \\ \hline
+
+
+
+\end{tabular}}
+\caption{Most tables used among stored procedures for BI-reports}
+\end{table}
+
 \subsubsection{Execution plans}
 
 \subsubsection{Execution duration}
@@ -481,7 +615,7 @@ WHERE soh.CustomerID=11020
 \centering
 \resizebox{\textwidth}{!}{
 \begin{tabular}{  l | c | c | c | c | c | c | c | c | c | c | c | c | c | c | c | c | c | c | c | c | c | c | c | c | c | c | c | c | c | c | c | }
-Tables&\multicolumn{29}{c}{Stored Procedures for Reports}& \\\hline
+\LARGE{Tables}&\multicolumn{29}{c}{\LARGE{Stored procedures for BI-reports}}& \\\hline
 	 & 1\_1\_1 & 1\_1\_2 & 1\_1\_3 & 1\_1\_4 & 1\_1\_5 & 1\_1\_6 & 1\_1\_7 & 1\_1\_8 & 1\_1\_9 & 1\_2\_2 & 1\_3\_2 & 1\_5\_1 & 1\_5\_2 & 1\_5\_7 & 1\_6\_1 & 2\_1\_1 & 2\_1\_2 & 2\_5 & 2\_6 & 3\_1 & 3\_2 & 3\_3 & 3\_4 & 3\_5 & 3\_6 & 3\_7 & 4\_2 & 4\_3 & 4\_4 & 4\_5 & TOTAL \\ \hline
 	EXT\_ACCOUNT & X & X & X & X & X & X & X & X & X & X & X &  &  &  & X & X & X & X & X &  & X & X & X & X & X &  & X & X & X & X & 25 \\ \hline
 	EXT\_BO\_USERS & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & 30 \\ \hline
@@ -535,7 +669,7 @@ Tables&\multicolumn{29}{c}{Stored Procedures for Reports}& \\\hline
 	EXT\_REPORT\_RESULT\_1\_5\_2 &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & 1 \\ \hline
 	EXT\_REPORT\_RESULT\_1\_5\_7 &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & 1 \\ \hline
 	EXT\_REPORT\_RESULT\_1\_6\_1 &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & 1 \\ \hline
-	EXT\_REPORT\_RESULT\_2\_1\_X &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  &  & 1 \\ \hline
+	EXT\_REPORT\_RESULT\_2\_1\_1 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  &  & 1 \\ \hline
 	EXT\_REPORT\_RESULT\_2\_1\_2 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  & 1 \\ \hline
 	EXT\_REPORT\_RESULT\_2\_5 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  &  & 1 \\ \hline
 	EXT\_REPORT\_RESULT\_2\_6 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  & 1 \\ \hline
@@ -567,7 +701,7 @@ Tables&\multicolumn{29}{c}{Stored Procedures for Reports}& \\\hline
 	EXT\_TIMETRACKER\_WORKCODE &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & 1 \\ \hline
 	TOTAL & 36 & 36 & 36 & 36 & 36 & 36 & 36 & 36 & 36 & 36 & 37 & 37 & 37 & 37 & 38 & 36 & 36 & 46 & 46 & 39 & 39 & 36 & 36 & 36 & 36 & 40 & 36 & 36 & 36 & 36 & \  
 \end{tabular}}
-\caption{The frequency of table-use in the Stored Procedures}
+\caption{The frequency of table-use in the stored procedures}
 \end{table}
 \restoregeometry
 
