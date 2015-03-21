@@ -19,6 +19,10 @@
 \usepackage{svg}
 \usepackage{listings}
 \usepackage{color}
+\usepackage{tikz}
+\usepackage{tikz-qtree}
+\usetikzlibrary{trees}
+\usepackage{forest}
 \usepackage{capt-of}
 \newcommand{\hilight}[1]{\colorbox{yellow}{#1}}
 
@@ -100,13 +104,99 @@ Perfect It BeX AB was founded by Lennart Söderberg and Niklas Lindgren in 2007.
 \item History and Business Reports
 \end{itemize}
 
-In recent years, Perfect It has felt an increasing demand from customers for better business intelligence capabilities. In response to this they have improved the Business Report functionality in BeX Online, to be able to give a wider range of different financial key values. According to Lennart, being able to offer their customers tools enabling for good business intelligence, is key to staying competitive. Therefore, they want to develop these tools further to make them better and to include more functionality. However, they have noticed that generating some of the reports can take a relatively long time, especially for their bigger clients whose system's have a lot of data.
-
-\section{Problem description}
-Perfect It BeX AB was motivated to collaborate with academia in order to investigate how to increase the generation speed of the business intelligence-reports and to find a possible solution that increases this speed.
+In recent years, Perfect It has felt an increasing demand from customers for better business intelligence capabilities. In response to this they have improved the Business Report functionality in \bex Online, to be able to give a wider range of different financial key values. According to Lennart, being able to offer their customers tools enabling for good business intelligence, is key to staying competitive. Therefore, they want to develop these tools further to make them better and to include more functionality. However, they have noticed that generating some of the reports can take a relatively long time, especially for their bigger clients whose system's have a lot of data.
 
 \subsection{BI-reports}
 
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[level distance=1.25in,sibling distance=.6pt,scale=.5]
+\tikzset{edge from parent/.style= 
+            {thick, draw,
+                edge from parent fork right},every tree node/.style={draw,minimum width=1in,text width=1in, align=center},grow'=right}
+\Tree 
+    [. Reports 
+        [.{Sales}
+            [.{Standard} 
+				[.{Items} ]
+            	[.{Variants} ]
+            	[.{Customers} ]
+            	[.{Locations} ]
+            	[.{Dimension1} ]
+            	[.{Salesperson} ]
+            	[.{Program} ]
+            	[.{Countries} ]
+            	[.{Daily Sales} ]                        
+            ]
+            [.{Key Figures} 
+				[.{Return Frequence/Program} ]
+            	[.{Sales per weekday and hour } ]            
+            ]
+            [.{Codes} 
+            	[.{Return Codes} ]
+            	[.{Discount Codes} ]
+            	[.{Price Change Codes} ]                   
+            ]
+            [.{Compare Period} 
+				[.{Items} ]
+            	[.{Variants} ]
+            	[.{Customers} ]
+            	[.{Locations} ]             
+            ]
+            [.{Order} 
+				[.{Items} ]
+            	[.{Variants} ]
+            	[.{Customers} ]
+            	[.{Locations} ]  
+            	[.{Program} ]
+             	[.{Customer/Sales Line} ]
+            	[.{Daily Ordervalue} ]          
+            ]
+            [.{Timesheets}
+            	[.{Standard} ]                
+            ]
+        ]
+        [.Purchase
+            [.{Standard} 
+				[.{Items} ]
+            	[.{Variants} ]            
+            ]
+            [.{Order} 
+				[.{Items} ]
+            	[.{Variants} ]
+	           	[.{Delivery Control} ]            
+            ]
+            [.{Purchase Planner} 
+				[.{Grouped} ]
+            	[.{Rows} ]
+	           	[.{Advanced} ]              
+            ]
+        ] 
+        [.Location 
+        	[.{Inventory Quantity Rows} ]
+            [.{Inventory Quantity Matrix} ]
+            [.{Inventory Value/Variants} ]
+            [.{Inventory Value/Item Group} ]
+            [.{Inventory Value/Program} ]
+            [.{Inventory Value/Item Category} ]
+            [.{Inventory Value/Location} ]
+        ]
+        [.Accounting 
+			[.{Accounts} ]
+            [.{Accounts, Dimensions Matrix} ]
+            [.{Account, Day Matrix} ]
+            [.{Transactios} ]
+            [.{Income Statements} ]
+            [.{Balance Sheet} ]
+            [.{SIE} ]        
+        ]
+    ]
+\end{tikzpicture}
+\caption{The different BI-reports available in \bex Online}
+\end{figure}
+
+\section{Problem description}
+Perfect It \bex AB was motivated to collaborate with academia in order to investigate how to increase the generation speed of the business intelligence-reports and to find a possible solution that increases this speed.
 
 \section{Thesis Goals} \label{sec:goals}
 The goal of this thesis is to identify issues related to the problem, and to propose a solution for speeding up the generation of BI reports in Perfect IT \bex AB's product \bex Online. To be able to speed up the BI report generation the processes responsible needs to be analyzed and optimized or rebuilt for speed. The solution needs to be versatile to handle the current system, to handle new functionality and also future company growth. Hence, the suggested changes needs to be scalable. Taking in to account that Perfect IT \bex has one physical server, the scalability should be vertically\cite{scalability} since the company will provide the system to more clients in the future.\\\\
@@ -409,7 +499,8 @@ Table name & Index name & External fragmentation & Internal fragmentation \\ \hl
 This shows that a some of the indexes used have well over an external fragmentation value of 10. The internal fragmentation value is also bad at some of the indexes (i.e less than 75).
 
 \subsection{Stored procedures}
-As mentioned in the technical description a total of 59 stored procedures are present in the system. A little more than 50\% (30) of these subroutines are directly involved with the BI-reports. In the web interface there are several more reports that can be produced, but the ones not covered by stored procedures are fundamental and \hilight{ are treated in the back-end of the system}.  
+As mentioned in the technical description a total of 59 stored procedures are present in the system. A little more than 50\% (30) of these subroutines are directly involved with the BI-reports. In the web interface there are several more reports that can be produced, but the ones not covered by stored procedures are fundamental and \hilight{ are treated in the back-end of the system}.  \\\\
+The stored procedures for BI-reports are quite similar considering the logic,  
 
 \begin{table}[H]
 \centering
