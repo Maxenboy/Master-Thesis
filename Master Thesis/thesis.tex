@@ -426,13 +426,12 @@ The data is fetched from the different tables by joining tables on stated condit
 The fetched data is stored as an intermediate result in a table with a name corresponding to the stored procedure name. This intermediate result table is present by reasons mentioned in \ref{querybreakdown}, with the exception that the table isn't temporary. The table is permanently present in the database due to a previously refactorization of the database by the DBA. The table is therefore meant as an optimization shortcut, where the last queried report result is stored until the same query is executed with different parameters.\\
 The intermediate result table is then further altered by updates based on mathematical calculations such as item quantities, contribution margins etc. And in some cases a deletion is performed of rows where the mathematical calculations don't pass the set conditions.   
        
-
-\todo{Skicka mail till Niklas om vilka SP/rapporter som används mest samt hur ofta = kritiska SP }
-\subsubsection{Execution plans}
-
 \subsubsection{Execution statistics}
 
-\subsubsection{Query tuning}
+
+\subsubsection{Execution plans}
+
+
 
 \chapter{Proposed Solution}\label{sec:proposedsoluton}
 
