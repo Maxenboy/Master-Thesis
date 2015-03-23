@@ -1,19 +1,31 @@
 ﻿SQL Server parse and compile time: 
-   CPU time = 15 ms, elapsed time = 106 ms.
+   CPU time = 31 ms, elapsed time = 42 ms.
 
  SQL Server Execution Times:
    CPU time = 0 ms,  elapsed time = 0 ms.
+Table 'Worktable'. Scan count 0, logical reads 0, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0.
+Table 'EXT_REPORT_RESULT_3_7'. Scan count 0, logical reads 0, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0.
+Table 'EXT_ITEM'. Scan count 1, logical reads 91, physical reads 1, read-ahead reads 89, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0.
 
  SQL Server Execution Times:
-   CPU time = 16 ms,  elapsed time = 24 ms.
+   CPU time = 0 ms,  elapsed time = 18 ms.
+Table 'Worktable'. Scan count 0, logical reads 0, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0.
+Table 'EXT_REPORT_RESULT_3_7_SUB1'. Scan count 0, logical reads 0, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0.
+Table 'EXT_REPORT_RESULT_3_7'. Scan count 1, logical reads 3, physical reads 3, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0.
+Table 'EXT_LOCATIONS'. Scan count 1, logical reads 2, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0.
 
  SQL Server Execution Times:
-   CPU time = 0 ms,  elapsed time = 76 ms.
+   CPU time = 0 ms,  elapsed time = 12 ms.
 
  SQL Server Execution Times:
-   CPU time = 31 ms,  elapsed time = 207 ms.
+   CPU time = 31 ms,  elapsed time = 72 ms.
 
 (1 row(s) affected)
+
+ SQL Server Execution Times:
+   CPU time = 0 ms,  elapsed time = 0 ms.
+SQL Server parse and compile time: 
+   CPU time = 0 ms, elapsed time = 0 ms.
 
  SQL Server Execution Times:
    CPU time = 0 ms,  elapsed time = 0 ms.

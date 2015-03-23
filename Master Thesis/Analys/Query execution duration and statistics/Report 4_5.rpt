@@ -1,19 +1,31 @@
 ﻿SQL Server parse and compile time: 
-   CPU time = 0 ms, elapsed time = 0 ms.
+   CPU time = 15 ms, elapsed time = 26 ms.
 
  SQL Server Execution Times:
    CPU time = 0 ms,  elapsed time = 0 ms.
 
  SQL Server-körningstider: 
    Processortid = 0 ms, förfluten tid = 0 ms.
+Analys- och kompileringstid: 
+  processortid = 16 ms, förfluten tid = 23 ms.
+Tabell EXT_ACCOUNT. Avläsningar 9, logiska läsningar 7, fysiska läsningar 0, read-ahead-läsningar 0, logiska lob-läsningar 0, fysiska lob-läsningar 0, read-ahead-lob-läsningar 0.
+Tabell EXT_HISTORY_MASTER. Avläsningar 9, logiska läsningar 99503, fysiska läsningar 2, read-ahead-läsningar 66008, logiska lob-läsningar 0, fysiska lob-läsningar 0, read-ahead-lob-läsningar 0.
+Tabell Worktable. Avläsningar 0, logiska läsningar 0, fysiska läsningar 0, read-ahead-läsningar 0, logiska lob-läsningar 0, fysiska lob-läsningar 0, read-ahead-lob-läsningar 0.
+Tabell EXT_REPORT_HEADER. Avläsningar 1, logiska läsningar 2, fysiska läsningar 0, read-ahead-läsningar 0, logiska lob-läsningar 0, fysiska lob-läsningar 0, read-ahead-lob-läsningar 0.
+Tabell EXT_REPORT_RESULT_4_5. Avläsningar 0, logiska läsningar 4669, fysiska läsningar 2, read-ahead-läsningar 1, logiska lob-läsningar 0, fysiska lob-läsningar 0, read-ahead-lob-läsningar 0.
 
  SQL Server-körningstider: 
-   Processortid = 1217 ms, förfluten tid = 3693 ms.
+   Processortid = 1186 ms, förfluten tid = 3910 ms.
 
  SQL Server Execution Times:
-   CPU time = 1217 ms,  elapsed time = 3693 ms.
+   CPU time = 1217 ms,  elapsed time = 3960 ms.
 
 (1 row(s) affected)
+
+ SQL Server Execution Times:
+   CPU time = 0 ms,  elapsed time = 0 ms.
+SQL Server parse and compile time: 
+   CPU time = 0 ms, elapsed time = 0 ms.
 
  SQL Server Execution Times:
    CPU time = 0 ms,  elapsed time = 0 ms.

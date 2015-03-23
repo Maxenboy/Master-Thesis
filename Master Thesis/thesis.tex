@@ -430,7 +430,7 @@ The intermediate result table is then further altered by updates based on mathem
 \todo{Skicka mail till Niklas om vilka SP/rapporter som används mest samt hur ofta = kritiska SP }
 \subsubsection{Execution plans}
 
-\subsubsection{Execution duration}
+\subsubsection{Execution statistics}
 
 \subsubsection{Query tuning}
 
@@ -491,6 +491,10 @@ WHERE soh.CustomerID=11020
 
 
 \begin{lstlisting}[caption={SQL batch to execute stored procedure report\_2\_5},label=spexec]
+USE [bex_bob]
+GO
+set statistics IO on
+set statistics time on
 DECLARE	@return_value int
 
 EXEC	@return_value = [dbo].[report_2_5]
@@ -514,6 +518,8 @@ EXEC	@return_value = [dbo].[report_2_5]
 SELECT	'Return Value' = @return_value
 
 GO
+set statistics IO off
+set statistics time off
 SELECT * FROM EXT_REPORT_RESULT_2_5
 \end{lstlisting}
 \chapter{Environments}

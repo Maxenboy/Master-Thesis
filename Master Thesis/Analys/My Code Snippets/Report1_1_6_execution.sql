@@ -2,7 +2,7 @@ USE [bex_bob]
 GO
 
 DECLARE	@return_value int
-set statistics time on
+set statistics IO on
 EXEC	@return_value = [dbo].[report_1_1_6]
 		@userId = 1,
 		@headerId = 75641,
@@ -27,5 +27,5 @@ EXEC	@return_value = [dbo].[report_1_1_6]
 		@allowTB = 1
 
 SELECT	'Return Value' = @return_value
-set statistics time off
+
 GO

@@ -1,33 +1,44 @@
 ﻿SQL Server parse and compile time: 
-   CPU time = 16 ms, elapsed time = 24 ms.
+   CPU time = 0 ms, elapsed time = 4 ms.
 
  SQL Server Execution Times:
    CPU time = 0 ms,  elapsed time = 0 ms.
 SQL Server parse and compile time: 
-   CPU time = 15 ms, elapsed time = 26 ms.
+   CPU time = 30 ms, elapsed time = 30 ms.
+Table 'Worktable'. Scan count 0, logical reads 0, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0.
+Table 'EXT_REPORT_RESULT_1_5_2'. Scan count 0, logical reads 0, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0.
+Table 'EXT_ITEM'. Scan count 0, logical reads 3, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0.
+
+ SQL Server Execution Times:
+   CPU time = 0 ms,  elapsed time = 0 ms.
+Table 'EXT_REPORT_RESULT_1_5_2'. Scan count 1, logical reads 0, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0.
 
  SQL Server Execution Times:
    CPU time = 0 ms,  elapsed time = 0 ms.
 
  SQL Server Execution Times:
    CPU time = 0 ms,  elapsed time = 0 ms.
+Table 'EXT_REPORT_RESULT_1_5_2'. Scan count 1, logical reads 0, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0.
 
  SQL Server Execution Times:
    CPU time = 0 ms,  elapsed time = 0 ms.
 
  SQL Server Execution Times:
    CPU time = 0 ms,  elapsed time = 0 ms.
+Table 'EXT_REPORT_RESULT_1_5_2'. Scan count 1, logical reads 0, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0.
 
  SQL Server Execution Times:
    CPU time = 0 ms,  elapsed time = 0 ms.
 
  SQL Server Execution Times:
-   CPU time = 0 ms,  elapsed time = 0 ms.
-
- SQL Server Execution Times:
-   CPU time = 47 ms,  elapsed time = 51 ms.
+   CPU time = 32 ms,  elapsed time = 35 ms.
 
 (1 row(s) affected)
+
+ SQL Server Execution Times:
+   CPU time = 0 ms,  elapsed time = 0 ms.
+SQL Server parse and compile time: 
+   CPU time = 0 ms, elapsed time = 0 ms.
 
  SQL Server Execution Times:
    CPU time = 0 ms,  elapsed time = 0 ms.

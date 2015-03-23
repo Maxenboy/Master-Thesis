@@ -1,16 +1,30 @@
 ﻿SQL Server parse and compile time: 
-   CPU time = 15 ms, elapsed time = 113 ms.
+   CPU time = 16 ms, elapsed time = 86 ms.
 
  SQL Server Execution Times:
    CPU time = 0 ms,  elapsed time = 0 ms.
+Table 'EXT_HISTORY_MASTER'. Scan count 27, logical reads 730470, physical reads 457, read-ahead reads 621461, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0.
+Table 'Worktable'. Scan count 0, logical reads 0, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0.
+Table 'Workfile'. Scan count 64, logical reads 25744, physical reads 1874, read-ahead reads 23870, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0.
+Table 'EXT_ACCOUNT'. Scan count 9, logical reads 7, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0.
+Table 'EXT_REPORT_HEADER'. Scan count 1, logical reads 2, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0.
+Table 'EXT_REPORT_RESULT_4_4'. Scan count 0, logical reads 804, physical reads 2, read-ahead reads 1, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0.
 
  SQL Server Execution Times:
-   CPU time = 31545 ms,  elapsed time = 11364 ms.
+   CPU time = 29171 ms,  elapsed time = 39214 ms.
 
  SQL Server Execution Times:
-   CPU time = 31560 ms,  elapsed time = 11478 ms.
+   CPU time = 29187 ms,  elapsed time = 39300 ms.
 
 (1 row(s) affected)
+
+ SQL Server Execution Times:
+   CPU time = 0 ms,  elapsed time = 0 ms.
+SQL Server parse and compile time: 
+   CPU time = 0 ms, elapsed time = 0 ms.
+
+ SQL Server Execution Times:
+   CPU time = 0 ms,  elapsed time = 0 ms.
 
  SQL Server Execution Times:
    CPU time = 0 ms,  elapsed time = 0 ms.

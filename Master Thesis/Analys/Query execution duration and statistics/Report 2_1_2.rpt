@@ -1,19 +1,35 @@
 ﻿SQL Server parse and compile time: 
-   CPU time = 94 ms, elapsed time = 649 ms.
+   CPU time = 20 ms, elapsed time = 20 ms.
 
  SQL Server Execution Times:
    CPU time = 0 ms,  elapsed time = 0 ms.
+Table 'EXT_REPORT_HEADER'. Scan count 0, logical reads 111018, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0.
+Table 'EXT_REPORT_RESULT_2_1_2'. Scan count 0, logical reads 172674, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0.
+Table 'EXT_COLLECTION'. Scan count 0, logical reads 184574, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0.
+Table 'EXT_PROGRAM'. Scan count 0, logical reads 184574, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0.
+Table 'EXT_PRODUCT_GROUP'. Scan count 0, logical reads 184574, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0.
+Table 'EXT_ITEM_CATEGORY'. Scan count 0, logical reads 184574, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0.
+Table 'EXT_ITEM_GROUP'. Scan count 0, logical reads 184574, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0.
+Table 'EXT_ITEM_VARIANTS'. Scan count 0, logical reads 276861, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0.
+Table 'EXT_HISTORY_MASTER'. Scan count 39754, logical reads 529192, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0.
+Table 'EXT_ITEM'. Scan count 1, logical reads 119793, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0.
 
  SQL Server Execution Times:
-   CPU time = 2250 ms,  elapsed time = 2776 ms.
+   CPU time = 2625 ms,  elapsed time = 2946 ms.
+Table 'EXT_REPORT_RESULT_2_1_2'. Scan count 1, logical reads 16012, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0.
 
  SQL Server Execution Times:
-   CPU time = 188 ms,  elapsed time = 1149 ms.
+   CPU time = 469 ms,  elapsed time = 465 ms.
 
  SQL Server Execution Times:
-   CPU time = 2532 ms,  elapsed time = 4576 ms.
+   CPU time = 3125 ms,  elapsed time = 3433 ms.
 
 (1 row(s) affected)
+
+ SQL Server Execution Times:
+   CPU time = 0 ms,  elapsed time = 0 ms.
+SQL Server parse and compile time: 
+   CPU time = 0 ms, elapsed time = 0 ms.
 
  SQL Server Execution Times:
    CPU time = 0 ms,  elapsed time = 0 ms.
