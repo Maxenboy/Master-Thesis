@@ -255,7 +255,7 @@ Another important factor is that external fragmentation mostly causes problems w
 
 \subsection{Query optimization}\label{sec:qopt}
 When talking about query optimization one imagines that the logic in the SQL statements are altered and optimized. Even if this is true, by tuning the actual SQL statements an optimization can be accomplished, it's done with respect to the execution plan. Query optimization can also been seen as mapping of the logical query operations to physical operations that the execution engine can execute.It does this by implementing a number of algorithms, which the query optimizer must choose from when formulating an execution plan. In summary a query optimization is actually a strategic manner to optimize the execution functionality of the execution engine\cite{Nevarez}. \\\\ 
-The purpose of the query optimization is to provide a good enough and hopefully optimal execution plan. In order to do so a query must go through a query-processing process as can be viewed in Figure~\ref{fig:qpp}. The query-processing starts with a simplification of tree representation that is sent from the Algebrizer, which checks the syntax and appropriate bindings of the SQL statement(s). There are 4 stages in the query-processing that return an execution plan and if the simplification of the logic tree representation qualifies as a trivial plan a trivial execution plan is returned and the optimization process ends immediately. Otherwise a full optimization process will be run in up to three stages and an execution plan may be created at the end of any of these stages. All the alternatives the full optimization returns are stored and evaluated by the SQL server based on the cost. The whole optimization is a cost/benefit trade-off regarding the query optimization time. The number of varying plans can easily rise, an effect known as the combinatorial explosion\cite{combo}, and the optimization will therefore not be feasible as it takes too long. Therefore during this full optimization process the query optimizer uses statistics, transformation rules, heuristics and cost estimations to limit and assure the quality of the executions plans that are returned.\\\\ 
+The purpose of the query optimization is to provide a good enough and hopefully optimal execution plan. In order to do so a query must go through a query-processing process as can be viewed in Figure~\ref{fig:qpp}. But before optimizing a query, the SQL Server first checks if there is a execution plan in the cache for the SQL batch. Since the Query optimization is a relative expensive operation, an available execution plan in the cache entails that the optimization process can be skipped as well as the associated cost such as CPU resources and optimization time.\\ The query-processing starts with a simplification of tree representation that is sent from the Algebrizer, which checks the syntax and appropriate bindings of the SQL statement(s). There are 4 stages in the query-processing that return an execution plan and if the simplification of the logic tree representation qualifies as a trivial plan a trivial execution plan is returned and the optimization process ends immediately. Otherwise a full optimization process will be run in up to three stages and an execution plan may be created at the end of any of these stages. All the alternatives the full optimization returns are stored and evaluated by the SQL server based on the cost. The whole optimization is a cost/benefit trade-off regarding the query optimization time. The number of varying plans can easily rise, an effect known as the combinatorial explosion\cite{combo}, and the optimization will therefore not be feasible as it takes too long. Therefore during this full optimization process the query optimizer uses statistics, transformation rules, heuristics and cost estimations to limit and assure the quality of the executions plans that are returned.\\\\ 
 As the query optimizer limits the available alternatives two problems arise. The entire search space is not evaluated and the chosen execution plan is therefore impossible to 
 \begin{figure}[H] 
 \begin{center}
@@ -761,6 +761,38 @@ SELECT * FROM EXT_REPORT_RESULT_2_5
 \caption{Most tables used among stored procedures for BI-reports}
 \label{tab:mosttab}
 \end{table}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{  l | l | l | l  H  H  H  H  }
+	Stored procedure & \multicolumn{3}{c} {Local} &   Back-End &  & Live &  \\ \hline
+	 & CPU & elapsed & efficiency & CPU & elapsed & CPU & elapsed \\ \hline
+	Report 2\_6 & 464372 & 427017 & 1.087478952828576 &  &  &  & \  \\ \hline
+	Report 2\_5 & 174594 & 202116 & 0.8638306714955768 &  &  &  & \  \\ \hline
+	Report 3\_1 & 138000 & 147443 & 0.93595491138948606 &  &  &  & \  \\ \hline
+	Report 4\_2 & 35187 & 33168 & 1.0608719247467437 &  &  &  & \  \\ \hline
+	Report 4\_4 & 29187 & 39300 & 0.74267175572519084 &  &  &  & \  \\ \hline
+	Report 1\_1\_2 & 18375 & 21785 & 0.84347027771402339 &  &  &  & \  \\ \hline
+	Report 1\_1\_1 & 9002 & 10634 & 0.84652999811924012 &  &  &  & \  \\ \hline
+	Report 1\_3\_2 & 8343 & 9522 & 0.87618147448015127 &  &  &  & \  \\ \hline
+	Report 4\_3 & 8046 & 1123 & 7.1647373107747105 &  &  &  & \  \\ \hline
+	Report 1\_1\_3 & 7860 & 12655 & 0.6210983800869222 &  &  &  & \  \\ \hline
+	Report 1\_1\_9 & 7687 & 8998 & 0.8543009557679484 &  &  &  & \  \\ \hline
+	Report 1\_1\_6 & 6813 & 11381 & 0.59862929443809854 &  &  &  & \  \\ \hline
+	Report 1\_1\_7 & 5968 & 6429 & 0.92829366931093482 &  &  &  & \  \\ \hline
+	Report 1\_1\_4 & 5937 & 6347 & 0.93540255238695447 &  &  &  & \  \\ \hline
+	Report 1\_1\_5 & 5860 & 6249 & 0.93775004000640105 &  &  &  & \  \\ \hline
+	Report 1\_1\_8 & 5344 & 5973 & 0.89469278419554665 &  &  &  & \  \\ \hline
+	Report 1\_2\_2 & 4452 & 1244 & 3.5787781350482315 &  &  &  & \  \\ \hline
+	Report 2\_1\_2 & 3125 & 3433 & 0.91028255170404893 &  &  &  & \  \\ \hline
+	Report 1\_5\_7 & 3094 & 5483 & 0.56428962246945102 &  &  &  & \  \\ \hline
+	Report 2\_1\_1 & 2360 & 2650 & 0.89056603773584908 &  &  &  & \  \\ \hline
+	Report 4\_5 & 1217 & 3960 & 0.30732323232323233 &  &  &  & \  \\ \hline
+	\vdots & \vdots & \vdots & \vdots &  &  &  & \  
+\end{tabular}
+\caption{Stored procedure execution duration on local database instance}
+\end{table}
+
 
 \begin{figure}[H]
 \centering
