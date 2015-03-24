@@ -105,14 +105,14 @@ Perfect It BeX AB was founded by Lennart Söderberg and Niklas Lindgren in 2007.
 
 In recent years, Perfect It has felt an increasing demand from customers for better business intelligence capabilities. In response to this they have improved the Business Report functionality in \bex Online, to be able to give a wider range of different financial key values. According to Lennart, being able to offer their customers tools enabling for good business intelligence, is key to staying competitive. Therefore, they want to develop these tools further to make them better and to include more functionality. However, they have noticed that generating some of the reports can take a relatively long time, especially for their bigger clients whose system's have a lot of data.
 
-\subsection{BI-reports}
+\subsection{BI-reports}\label{sec:BI}
 see Figure \ref{fig:BI} in Appendix \ref{sec:appTabIll}
 
 \begin{itemize}
-\item What are they for?
+\item What are they used for?
 \item How are they done?
 \item Where are they?
-\item What are they used for?
+\item Which of them are used most and/or are critical for the system?
 \end{itemize}
 
 \section{Problem description}
@@ -439,9 +439,10 @@ The statistics measurements were taken on a system with a quad core processor as
 
 \begin{table}[H]
 \centering
+\scalebox{0.9}{
 \begin{tabular}{  l | l | l | l  H  H  H  H  H  }
 	Stored procedure & \multicolumn{4}{c} {Local} &   Back-End &  & Live &  \\ \hline
-	 & CPU (quad core) & CPU (single core) & elapsed & efficiency & CPU & elapsed & CPU & elapsed \\ \hline
+	 & CPU (quad core) ms & CPU (single core) ms & elapsed ms & efficiency & CPU & elapsed & CPU & elapsed \\ \hline
 	Report 2\_6 & 464372 & 116093 & 427017 & 0.271869738207144 &  &  &  & \  \\ \hline
 	Report 2\_5 & 174594 & 43648.5 & 202116 & 0.2159576678738942 &  &  &  & \  \\ \hline
 	Report 3\_1 & 138000 & 34500 & 147443 & 0.23398872784737151 &  &  &  & \  \\ \hline
@@ -465,11 +466,12 @@ The statistics measurements were taken on a system with a quad core processor as
 	Report 4\_5 & 1217 & 304.25 & 3960 & 7.6830808080808083E-2 &  &  &  & \  \\ \hline
 	
 	\vdots & \vdots & \vdots & \vdots &  &  &  & \  
-\end{tabular}
+\end{tabular}}
 \caption{Stored procedure execution duration on local database instance}
 \label{tab:duration}
 \end{table}
 
+In the above table the most crucial stored procedures are listed, considering execution duration. As seen in section \ref{sec:BI} some of the critical reports are the ones that are troublesome time-wise. 
 
 \subsubsection{Execution plans}
 
@@ -567,7 +569,17 @@ SELECT * FROM EXT_REPORT_RESULT_2_5
 \section{General environment}
 
 \section{Analysis environment}\label{Aenviron}
-
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{l l}
+OS: & Windows 8.1 64-bit\\
+CPU: & ?\\
+RAM: & ?\\
+HD: & ? \\
+Tools/Programs: & SQL Server Management Studio, SQL Sentry Plan Explorer\\
+\end{tabular}
+\end{center}
+\end{table}
 \section{Test environment}
 
 \section{Implementation environment}
