@@ -427,34 +427,43 @@ The fetched data is stored as an intermediate result in a table with a name corr
 The intermediate result table is then further altered by updates based on mathematical calculations such as item quantities, contribution margins etc. And in some cases a deletion is performed of rows where the mathematical calculations don't pass the set conditions.   
        
 \subsubsection{Execution statistics}
-The first step taken to tune the stored procedure was to produce statistics. The goal of our thesis is to speed up the BI-report generation and thereby speeding up the stored procedures. Therefore execution duration was of utter importance and was established with the Transact-SQL SET STATISTICS TIME command, as can be seen in Algorithm \ref{spexec}. This command is used to measure variety of time, some of which may or may not be of much importance considering query tuning.    
+The first step taken to tune the stored procedure was to produce statistics. The goal of our thesis is to speed up the BI-report generation and thereby speeding up the stored procedures. Therefore execution duration was of utter importance and was established with the Transact-SQL \texttt{SET STATISTICS TIME} command, as can be seen in Algorithm \ref{spexec}. This command is used to measure variety of time, some of which may or may not be of much importance considering query tuning. The result varies from query to query and can look something like this: \\\\\texttt{SQL Server parse and compile time:\\
+CPU time = 0 ms, elapsed time = 0 ms.\\
+SQL Server parse and compile time:\\
+CPU time = 0 ms,  elapsed time = 0 ms.\\
+SQL Server Execution Times:\\
+CPU time = 9002 ms,  elapsed time = 10634 ms.
+}\\\\
+To explain the above result we first need to clarify the two different measurements CPU-time and elapsed time. The CPU time is a relatively consistent measurement of the amount of CPU resources it takes for a query to run.This is obviously relatively independent of how busy the CPU is on the system the query is run. The elapsed time number is a measurement of how long the whole query took to execute (not including the time for locks or reads). This number is heavily dependent on the server load and can therefore change drastically \cite{statistics}. \\ In the above result example the first measurement block tells us how much time the SQL server to parse, compile and put the execution plan in cache. The second measurement block tells us the amount of time it took the SQL server to retrieve the execution plan from the cache. But what is most of interest is the third and frequently last measurement, it's the sum of all earlier measurements and therefore the measurement for the total duration of the query execution. This measurement will help us to determine of the future improvements actually were improvements considering execution speed.\\
+The statistics measurements were taken on a system with a quad core processor as seen in Appendix \ref{Aenviron}. Because of this, the CPU-time will in some cases be bigger than the elapsed time since the time stated in the result is then the sum of all busy processors' time. The parse and compile time were all the same for all stored procedures, 0ms, since the environment was established to simulate a live version as close as possible, meaning that almost every table, procedure and execution plan was present in the systems cache. But even though the almost everything was in the system cache, many of the stored procedures execution time were over a comfortable threshold, as can be seen in Table \ref{tab:duration}. 
 
 \begin{table}[H]
 \centering
-\begin{tabular}{  l | l | l | l  H  H  H  H  }
-	Stored procedure & \multicolumn{3}{c} {Local} &   Back-End &  & Live &  \\ \hline
-	 & CPU & elapsed & efficiency & CPU & elapsed & CPU & elapsed \\ \hline
-	Report 2\_6 & 464372 & 427017 & 1.087478952828576 &  &  &  & \  \\ \hline
-	Report 2\_5 & 174594 & 202116 & 0.8638306714955768 &  &  &  & \  \\ \hline
-	Report 3\_1 & 138000 & 147443 & 0.93595491138948606 &  &  &  & \  \\ \hline
-	Report 4\_2 & 35187 & 33168 & 1.0608719247467437 &  &  &  & \  \\ \hline
-	Report 4\_4 & 29187 & 39300 & 0.74267175572519084 &  &  &  & \  \\ \hline
-	Report 1\_1\_2 & 18375 & 21785 & 0.84347027771402339 &  &  &  & \  \\ \hline
-	Report 1\_1\_1 & 9002 & 10634 & 0.84652999811924012 &  &  &  & \  \\ \hline
-	Report 1\_3\_2 & 8343 & 9522 & 0.87618147448015127 &  &  &  & \  \\ \hline
-	Report 4\_3 & 8046 & 1123 & 7.1647373107747105 &  &  &  & \  \\ \hline
-	Report 1\_1\_3 & 7860 & 12655 & 0.6210983800869222 &  &  &  & \  \\ \hline
-	Report 1\_1\_9 & 7687 & 8998 & 0.8543009557679484 &  &  &  & \  \\ \hline
-	Report 1\_1\_6 & 6813 & 11381 & 0.59862929443809854 &  &  &  & \  \\ \hline
-	Report 1\_1\_7 & 5968 & 6429 & 0.92829366931093482 &  &  &  & \  \\ \hline
-	Report 1\_1\_4 & 5937 & 6347 & 0.93540255238695447 &  &  &  & \  \\ \hline
-	Report 1\_1\_5 & 5860 & 6249 & 0.93775004000640105 &  &  &  & \  \\ \hline
-	Report 1\_1\_8 & 5344 & 5973 & 0.89469278419554665 &  &  &  & \  \\ \hline
-	Report 1\_2\_2 & 4452 & 1244 & 3.5787781350482315 &  &  &  & \  \\ \hline
-	Report 2\_1\_2 & 3125 & 3433 & 0.91028255170404893 &  &  &  & \  \\ \hline
-	Report 1\_5\_7 & 3094 & 5483 & 0.56428962246945102 &  &  &  & \  \\ \hline
-	Report 2\_1\_1 & 2360 & 2650 & 0.89056603773584908 &  &  &  & \  \\ \hline
-	Report 4\_5 & 1217 & 3960 & 0.30732323232323233 &  &  &  & \  \\ \hline
+\begin{tabular}{  l | l | l | l  H  H  H  H  H  }
+	Stored procedure & \multicolumn{4}{c} {Local} &   Back-End &  & Live &  \\ \hline
+	 & CPU (quad core) & CPU (single core) & elapsed & efficiency & CPU & elapsed & CPU & elapsed \\ \hline
+	Report 2\_6 & 464372 & 116093 & 427017 & 0.271869738207144 &  &  &  & \  \\ \hline
+	Report 2\_5 & 174594 & 43648.5 & 202116 & 0.2159576678738942 &  &  &  & \  \\ \hline
+	Report 3\_1 & 138000 & 34500 & 147443 & 0.23398872784737151 &  &  &  & \  \\ \hline
+	Report 4\_2 & 35187 & 8796.75 & 33168 & 0.26521798118668594 &  &  &  & \  \\ \hline
+	Report 4\_4 & 29187 & 7296.75 & 39300 & 0.18566793893129771 &  &  &  & \  \\ \hline
+	Report 1\_1\_2 & 18375 & 4593.75 & 21785 & 0.21086756942850585 &  &  &  & \  \\ \hline
+	Report 1\_1\_1 & 9002 & 2250.5 & 10634 & 0.21163249952981003 &  &  &  & \  \\ \hline
+	Report 1\_3\_2 & 8343 & 2085.75 & 9522 & 0.21904536862003782 &  &  &  & \  \\ \hline
+	Report 4\_3 & 8046 & 2011.5 & 2536 & 0.79317823343848581 &  &  &  & \  \\ \hline
+	Report 1\_1\_3 & 7860 & 1965 & 12655 & 0.15527459502173055 &  &  &  & \  \\ \hline
+	Report 1\_1\_9 & 7687 & 1921.75 & 8998 & 0.2135752389419871 &  &  &  & \  \\ \hline
+	Report 1\_1\_6 & 6813 & 1703.25 & 11381 & 0.14965732360952463 &  &  &  & \  \\ \hline
+	Report 1\_1\_7 & 5968 & 1492 & 6429 & 0.23207341732773371 &  &  &  & \  \\ \hline
+	Report 1\_1\_4 & 5937 & 1484.25 & 6347 & 0.23385063809673862 &  &  &  & \  \\ \hline
+	Report 1\_1\_5 & 5860 & 1465 & 6249 & 0.23443751000160026 &  &  &  & \  \\ \hline
+	Report 1\_1\_8 & 5344 & 1336 & 5973 & 0.22367319604888666 &  &  &  & \  \\ \hline
+	Report 1\_2\_2 & 4452 & 1113 & 1244 & 0.89469453376205788 &  &  &  & \  \\ \hline
+	Report 2\_1\_2 & 3125 & 781.25 & 3433 & 0.22757063792601223 &  &  &  & \  \\ \hline
+	Report 1\_5\_7 & 3094 & 773.5 & 5483 & 0.14107240561736276 &  &  &  & \  \\ \hline
+	Report 2\_1\_1 & 2360 & 590 & 2650 & 0.22264150943396227 &  &  &  & \  \\ \hline
+	Report 4\_5 & 1217 & 304.25 & 3960 & 7.6830808080808083E-2 &  &  &  & \  \\ \hline
+	
 	\vdots & \vdots & \vdots & \vdots &  &  &  & \  
 \end{tabular}
 \caption{Stored procedure execution duration on local database instance}
