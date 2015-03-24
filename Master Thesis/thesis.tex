@@ -471,7 +471,54 @@ The statistics measurements were taken on a system with a quad core processor as
 \label{tab:duration}
 \end{table}
 
-In the above table the most crucial stored procedures are listed, considering execution duration. As seen in section \ref{sec:BI} some of the critical reports are the ones that are troublesome time-wise. 
+In the above table the most crucial stored procedures are listed, considering execution duration. As seen in section \ref{sec:BI} some of the critical reports are the ones that are troublesome time-wise.
+\begin{table}[H]
+\centering
+\scalebox{0.8}{
+\begin{tabular}{  l | H  l | l | l | l | l  H H H }
+
+	Stored procedure &  & Object name & Scan count & Logical reads & Physical reads & Read-Ahead Reads & Lob Logical Reads & Lob Physical Reads & Lob read-ahead reads  \  \\ \hline
+	3\_1 & Table 'EXT\_SALES\_HEADER'. Scan count 0, logical reads 68850420, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0. & EXT\_SALES\_HEADER & 0 & 68850420 & 0 & 0 & 0 & 0 & 0 \\ \hline
+	2\_6 & Table 'Worktable'. Scan count 1589989, logical reads 49956351, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0. & Worktable & 1589989 & 49956351 & 0 & 0 & 0 & 0 & 0 \\ \hline
+	2\_6 & Table 'Worktable'. Scan count 1589989, logical reads 47508411, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0. & Worktable & 1589989 & 47508411 & 0 & 0 & 0 & 0 & 0 \\ \hline
+	2\_5 & Table 'Worktable'. Scan count 1318326, logical reads 46380365, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0. & Worktable & 1318326 & 46380365 & 0 & 0 & 0 & 0 & 0 \\ \hline
+	2\_6 & Table 'Worktable'. Scan count 370813, logical reads 40890291, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0. & Worktable & 370813 & 40890291 & 0 & 0 & 0 & 0 & 0 \\ \hline
+	2\_5 & Table 'EXT\_HISTORY\_MASTER'. Scan count 2257991, logical reads 20336741, physical reads 241, read-ahead reads 27358, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0. & EXT\_HISTORY\_MASTER & 2257991 & 20336741 & 241 & 27358 & 0 & 0 & 0 \\ \hline
+	4\_2 & Table 'EXT\_HISTORY\_MASTER'. Scan count 9, logical reads 15318541, physical reads 1940, read-ahead reads 167916, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0. & EXT\_HISTORY\_MASTER & 9 & 15318541 & 1940 & 167916 & 0 & 0 & 0 \\ \hline
+	3\_1 & Table 'Worktable'. Scan count 1116354, logical reads 13974108, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0. & Worktable & 1116354 & 13974108 & 0 & 0 & 0 & 0 & 0 \\ \hline
+	2\_6 & Table 'EXT\_HISTORY\_MASTER'. Scan count 370836, logical reads 13801901, physical reads 1184, read-ahead reads 177558, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0. & EXT\_HISTORY\_MASTER & 370836 & 13801901 & 1184 & 177558 & 0 & 0 & 0 \\ \hline
+	2\_6 & Table 'EXT\_ITEM\_LEDGER\_ENTRY'. Scan count 1589989, logical reads 11407484, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0. & EXT\_ITEM\_LEDGER\_ENTRY & 1589989 & 11407484 & 0 & 0 & 0 & 0 & 0 \\ \hline
+	2\_6 & Table 'EXT\_SALES\_HEADER'. Scan count 5307607, logical reads 10645764, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0. & EXT\_SALES\_HEADER & 5307607 & 10645764 & 0 & 0 & 0 & 0 & 0 \\ \hline
+	3\_1 & Table 'Worktable'. Scan count 2232708, logical reads 10205255, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0. & Worktable & 2232708 & 10205255 & 0 & 0 & 0 & 0 & 0 \\ \hline
+	2\_5 & Table 'EXT\_SALES\_HEADER'. Scan count 4868901, logical reads 9765541, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0. & EXT\_SALES\_HEADER & 4868901 & 9765541 & 0 & 0 & 0 & 0 & 0 \\ \hline
+	2\_5 & Table 'EXT\_ITEM\_LEDGER\_ENTRY'. Scan count 1318326, logical reads 9644543, physical reads 0, read-ahead reads 4, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0. & EXT\_ITEM\_LEDGER\_ENTRY & 1318326 & 9644543 & 0 & 4 & 0 & 0 & 0 \\ \hline
+	2\_6 & Table 'Worktable'. Scan count 1589989, logical reads 8500919, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0. & Worktable & 1589989 & 8500919 & 0 & 0 & 0 & 0 & 0 \\ \hline
+	2\_5 & Table 'Worktable'. Scan count 1318326, logical reads 7530165, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0. & Worktable & 1318326 & 7530165 & 0 & 0 & 0 & 0 & 0 \\ \hline
+	3\_1 & Table 'EXT\_PURCHASE\_HEADER'. Scan count 0, logical reads 5453698, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0. & EXT\_PURCHASE\_HEADER & 0 & 5453698 & 0 & 0 & 0 & 0 & 0 \\ \hline
+	2\_6 & Table 'EXT\_REPORT\_RESULT\_2\_6'. Scan count 1, logical reads 4950883, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0. & EXT\_REPORT\_RESULT\_2\_6 & 1 & 4950883 & 0 & 0 & 0 & 0 & 0 \\ \hline
+	2\_5 & Table 'EXT\_REPORT\_RESULT\_2\_5'. Scan count 1, logical reads 4116135, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0. & EXT\_REPORT\_RESULT\_2\_5 & 1 & 4116135 & 0 & 0 & 0 & 0 & 0 \\ \hline
+	1\_1\_2 & Table 'EXT\_REPORT\_RESULT\_1\_1\_2'. Scan count 1, logical reads 3811767, physical reads 65, read-ahead reads 63, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0. & EXT\_REPORT\_RESULT\_1\_1\_2 & 1 & 3811767 & 65 & 63 & 0 & 0 & 0 \\ \hline
+	1\_5\_7 & Table 'EXT\_SALES\_HEADER'. Scan count 0, logical reads 2117142, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0. & EXT\_SALES\_HEADER & 0 & 2117142 & 0 & 0 & 0 & 0 & 0 \\ \hline
+	 1\_1\_1 & Table 'EXT\_HISTORY\_MASTER'. Scan count 79508, logical reads 1632621, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0. & EXT\_HISTORY\_MASTER & 79508 & 1632621 & 0 & 0 & 0 & 0 & 0 \\ \hline
+	1\_1\_2 & Table 'EXT\_HISTORY\_MASTER'. Scan count 79508, logical reads 1632621, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0. & EXT\_HISTORY\_MASTER & 79508 & 1632621 & 0 & 0 & 0 & 0 & 0 \\ \hline
+	1\_1\_3 & Table 'EXT\_HISTORY\_MASTER'. Scan count 79508, logical reads 1632621, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0. & EXT\_HISTORY\_MASTER & 79508 & 1632621 & 0 & 0 & 0 & 0 & 0 \\ \hline
+	1\_1\_4 & Table 'EXT\_HISTORY\_MASTER'. Scan count 79508, logical reads 1632621, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0. & EXT\_HISTORY\_MASTER & 79508 & 1632621 & 0 & 0 & 0 & 0 & 0 \\ \hline
+	1\_1\_5 & Table 'EXT\_HISTORY\_MASTER'. Scan count 79508, logical reads 1632621, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0. & EXT\_HISTORY\_MASTER & 79508 & 1632621 & 0 & 0 & 0 & 0 & 0 \\ \hline
+	1\_1\_6 & Table 'EXT\_HISTORY\_MASTER'. Scan count 79508, logical reads 1632621, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0. & EXT\_HISTORY\_MASTER & 79508 & 1632621 & 0 & 0 & 0 & 0 & 0 \\ \hline
+	1\_1\_7 & Table 'EXT\_HISTORY\_MASTER'. Scan count 79508, logical reads 1632621, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0. & EXT\_HISTORY\_MASTER & 79508 & 1632621 & 0 & 0 & 0 & 0 & 0 \\ \hline
+	1\_1\_8 & Table 'EXT\_HISTORY\_MASTER'. Scan count 79508, logical reads 1632621, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0. & EXT\_HISTORY\_MASTER & 79508 & 1632621 & 0 & 0 & 0 & 0 & 0 \\ \hline
+	1\_1\_9 & Table 'EXT\_HISTORY\_MASTER'. Scan count 79508, logical reads 1632621, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0. & EXT\_HISTORY\_MASTER & 79508 & 1632621 & 0 & 0 & 0 & 0 & 0 \\ \hline
+	1\_3\_2 & Table 'EXT\_HISTORY\_MASTER'. Scan count 79508, logical reads 1632621, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0. & EXT\_HISTORY\_MASTER & 79508 & 1632621 & 0 & 0 & 0 & 0 & 0 \\ \hline
+	1\_3\_2 & Table 'EXT\_HISTORY\_MASTER'. Scan count 79508, logical reads 1632621, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0. & EXT\_HISTORY\_MASTER & 79508 & 1632621 & 0 & 0 & 0 & 0 & 0 \\ \hline
+	1\_2\_2 & Table 'EXT\_HISTORY\_MASTER'. Scan count 9, logical reads 1445404, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0. & EXT\_HISTORY\_MASTER & 9 & 1445404 & 0 & 0 & 0 & 0 & 0 \\ \hline
+	2\_5 & Table 'EXT\_ITEM\_LEDGER\_ENTRY'. Scan count 234290, logical reads 1242358, physical reads 0, read-ahead reads 437, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0. & EXT\_ITEM\_LEDGER\_ENTRY & 234290 & 1242358 & 0 & 437 & 0 & 0 & 0 \\ \hline
+	2\_6 & Table 'EXT\_REPORT\_RESULT\_2\_6'. Scan count 0, logical reads 1235223, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0. & EXT\_REPORT\_RESULT\_2\_6 & 0 & 1235223 & 0 & 0 & 0 & 0 & 0 \\ \hline
+	\vdots & \vdots & \vdots & \vdots & \vdots  & \vdots & \vdots & \vdots\ & \vdots & \vdots 
+\end{tabular}}
+\caption{Something}
+\label{tab:IO}
+\end{table}
+ 
 
 \subsubsection{Execution plans}
 
