@@ -1,0 +1,68 @@
+﻿SQL Server parse and compile time: 
+   CPU time = 213 ms, elapsed time = 213 ms.
+
+ SQL Server Execution Times:
+   CPU time = 0 ms,  elapsed time = 0 ms.
+Table 'EXT_HISTORY_MASTER'. Scan count 370838, logical reads 13800512, physical reads 4829, read-ahead reads 451490, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0.
+Table 'EXT_ITEM_GROUP'. Scan count 1, logical reads 3, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0.
+Table 'Workfile'. Scan count 80, logical reads 5024, physical reads 356, read-ahead reads 4668, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0.
+Table 'Worktable'. Scan count 370813, logical reads 40890291, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0.
+Table 'EXT_ITEM'. Scan count 9, logical reads 2165, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0.
+Table 'EXT_ITEM_VARIANTS'. Scan count 9, logical reads 3222, physical reads 3, read-ahead reads 2931, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0.
+Table 'Worktable'. Scan count 0, logical reads 0, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0.
+Table 'EXT_REPORT_HEADER'. Scan count 1, logical reads 2, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0.
+Table 'EXT_REPORT_RESULT_2_6'. Scan count 0, logical reads 1235223, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0.
+
+ SQL Server Execution Times:
+   CPU time = 116279 ms,  elapsed time = 72957 ms.
+SQL Server parse and compile time: 
+   CPU time = 157 ms, elapsed time = 159 ms.
+Table 'EXT_REPORT_RESULT_2_6'. Scan count 1, logical reads 72064, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0.
+Table 'Worktable'. Scan count 1328737, logical reads 48249006, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0.
+Table 'EXT_HISTORY_MASTER'. Scan count 1, logical reads 605680, physical reads 1, read-ahead reads 267957, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0.
+
+ SQL Server Execution Times:
+   CPU time = 203515 ms,  elapsed time = 205147 ms.
+SQL Server parse and compile time: 
+   CPU time = 4 ms, elapsed time = 4 ms.
+Table 'EXT_REPORT_RESULT_2_6'. Scan count 1, logical reads 4150381, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0.
+Table 'EXT_ITEM_LEDGER_ENTRY'. Scan count 1328737, logical reads 9511656, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0.
+
+ SQL Server Execution Times:
+   CPU time = 40500 ms,  elapsed time = 40878 ms.
+SQL Server parse and compile time: 
+   CPU time = 9 ms, elapsed time = 9 ms.
+Table 'EXT_REPORT_RESULT_2_6'. Scan count 1, logical reads 72064, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0.
+Table 'EXT_SALES_HEADER'. Scan count 4281856, logical reads 8588325, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0.
+Table 'Worktable'. Scan count 1328737, logical reads 7440404, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0.
+Table 'EXT_SALES_LINE'. Scan count 1, logical reads 43068, physical reads 0, read-ahead reads 42866, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0.
+
+ SQL Server Execution Times:
+   CPU time = 44781 ms,  elapsed time = 44893 ms.
+SQL Server parse and compile time: 
+   CPU time = 0 ms, elapsed time = 7 ms.
+Table 'EXT_REPORT_RESULT_2_6'. Scan count 1, logical reads 72064, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0.
+Table 'Worktable'. Scan count 1328737, logical reads 46377018, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0.
+Table 'EXT_HISTORY_MASTER'. Scan count 1, logical reads 605680, physical reads 0, read-ahead reads 540781, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0.
+
+ SQL Server Execution Times:
+   CPU time = 57844 ms,  elapsed time = 59755 ms.
+SQL Server parse and compile time: 
+   CPU time = 156 ms, elapsed time = 627 ms.
+Table 'EXT_REPORT_RESULT_2_6'. Scan count 9, logical reads 949686, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0.
+
+ SQL Server Execution Times:
+   CPU time = 890 ms,  elapsed time = 2363 ms.
+
+ SQL Server Execution Times:
+   CPU time = 464372 ms,  elapsed time = 427017 ms.
+
+(1 row(s) affected)
+
+ SQL Server Execution Times:
+   CPU time = 0 ms,  elapsed time = 0 ms.
+SQL Server parse and compile time: 
+   CPU time = 0 ms, elapsed time = 0 ms.
+
+ SQL Server Execution Times:
+   CPU time = 0 ms,  elapsed time = 0 ms.
