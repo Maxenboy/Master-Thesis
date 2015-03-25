@@ -240,7 +240,7 @@ At first, internal fragmentation might seem like a good thing. If the phone book
 
 External fragmentation often makes reading the database non-sequential, i.e it cannot be read in order but must be read in random order. This is especially bad in classic magnetic hard drives where the reader head must move around to multiple locations on the drive. Some magnetic hard drives only get 1\% of their sequential reading speed when performing random reads.\cite{Toshiba12}
 
-\subsubsection{Measuring fragmentation}
+\subsubsection{Measuring fragmentation} \label{measurefrag}
 In Al-Farooque Shubho's article "Top 10 ways to optimize data access in SQL Server"\cite{Shubho09} he explains how to measure if index fragmentation has occurred. By executing the script in Algorithm \ref{See DB-Fragmentation} in Appendix \ref{appCode}, index fragmentation is analyzed on every table in the database and presented in a table with an internal and external fragmentation value. \\
 
 According to Shubho, only tables with an internal fragmentation value of less than 75 and/or an external fragmentation value of more than 10 should be considered as fragmented, which this code takes into account.
@@ -416,10 +416,10 @@ Table name & Index name & External fragmentation & Internal fragmentation \\ \hl
 \end{center}
 \end{table}
 
-This shows that a some of the indexes used have much over an external fragmentation value of 10. The internal fragmentation value is also bad at some of the indexes (i.e less than 75). This indicates that the database system is in need of index maintenance.
+This shows that some of the indexes used have an external fragmentation well above the value of 10, which is the threshold according to Shubho as mentioned in section \ref{measurefrag}. The internal fragmentation value is also bad at some of the indexes (i.e less than 75).
 
 \subsection{Stored procedures}
-As mentioned in the technical description a total of 59 stored procedures are present in the system. A little more than 50\% (30) of these subroutines are directly involved with the BI-reports. In the web interface there are several more reports that can be produced, but the ones not covered by stored procedures are fundamental and \hilight{ are treated in the back-end of the system}.  \\\\\todo{Koppla ihop SP till de olika rapporter}
+As mentioned in the technical description a total of 59 stored procedures are present in the system. A little more than 50\% (30) of these subroutines are directly involved with the BI-reports. In the web interface there are several more reports that can be produced, but the ones not covered by stored procedures are treated in the back-end of the system.  \\\\\todo{Koppla ihop SP till de olika rapporter}
 To execute the stored procedures, SQL batches such as Algorithm \ref{spexec} in Appendix \ref{appCode} were produced and executed. The SQL batches simply specifies the essential parameters and the optional ones as wildcards to get a wide range of data as possible.\\\\  
 The stored procedures for BI-reports are quite similar considering the block of statements. The majority of the subroutines contain \texttt{SELECT}, \texttt{INSERT}, \texttt{UPDATE} and \texttt{DELETE} SQL block statements with variety in amount and order. The \texttt{SELECT} statements vary greatly in the different stored procedure both in conditions and amount/which tables the data is fetched from. As can been seen in Table \ref{tab:tabfreq} in Appendix \ref{sec:appTabIll} a total of 84 tables are of interest for the BI-report stored procedures and the average amount of tables for a stored procedure is approximately $\approx37$.\\
 The data is fetched from the different tables by joining tables on stated conditions and then selected, at most, there is a stored procedure that joins a total of 46 different tables in its execution (see Table \ref{tab:mosttab} in Appendix \ref{sec:appTabIll}). The various stored procedures also have a similarity from which tables the \texttt{JOIN} is done on. Table \ref{tab:tabinall} in Appendix \ref{sec:appTabIll} shows that a total of 26 tables are involved in all of the stored procedures.\\
@@ -474,7 +474,7 @@ The statistics measurements were taken on a system with a quad core processor as
 In the above table the most crucial stored procedures are listed, considering execution duration. As seen in section \ref{sec:BI} some of the critical reports are the ones that are troublesome time-wise.\\\\
 The second Transact-SQL command that was used to produce useful statistics was \texttt{SET STATISTICS ION ON}, also seen in Algorithm \ref{spexec}.  The command provides detailed information about the query's impact on the SQL Server. An example of the output is shown below:\\\\
 \texttt{Table 'EXT\_HISTORY\_MASTER'. Scan count 79508, logical reads 1632621, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0.}\\\\
-Considering query tuning some of this information is helpful, and some note \cite{IO}. The Scan count indicates how many times the referenced table was accessed
+Considering query tuning some of this information is helpful, and some not \cite{IO}. The Scan count indicates how many times the referenced table was accessed
 \begin{table}[H]
 \centering
 \scalebox{0.8}{
