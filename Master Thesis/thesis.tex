@@ -474,7 +474,7 @@ The statistics measurements were taken on a system with a quad core processor as
 In the above table the most crucial stored procedures are listed, considering execution duration. As seen in section \ref{sec:BI} some of the critical reports are the ones that are troublesome time-wise.\\\\
 The second Transact-SQL command that was used to produce useful statistics was \texttt{SET STATISTICS ION ON}, also seen in Algorithm \ref{spexec}.  The command provides detailed information about the query's impact on the SQL Server. An example of the output is shown below:\\\\
 \texttt{Table 'EXT\_HISTORY\_MASTER'. Scan count 79508, logical reads 1632621, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0.}\\\\
-Considering query tuning some of this information is helpful, and some not \cite{IO}. The Scan count indicates how many times the referenced table was accessed
+Considering query tuning some of this information is helpful, and some not. The Scan count indicates how many times the referenced table was accessed. For queries including joins this information is quite helpful. The smaller the Scan count, the less resources needed and the better performance of the query. If the value is 0 it means that a unique index is used or a clustered index on a primary key. This information is good to keep an eye on when tuning the queries. \cite{IO}
 \begin{table}[H]
 \centering
 \scalebox{0.8}{
