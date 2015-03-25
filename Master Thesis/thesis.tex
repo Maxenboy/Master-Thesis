@@ -416,7 +416,7 @@ Table name & Index name & External fragmentation & Internal fragmentation \\ \hl
 \end{center}
 \end{table}
 
-This shows that a some of the indexes used have well over an external fragmentation value of 10. The internal fragmentation value is also bad at some of the indexes (i.e less than 75).
+This shows that a some of the indexes used have much over an external fragmentation value of 10. The internal fragmentation value is also bad at some of the indexes (i.e less than 75). This indicates that the database system is in need of index maintenance.
 
 \subsection{Stored procedures}
 As mentioned in the technical description a total of 59 stored procedures are present in the system. A little more than 50\% (30) of these subroutines are directly involved with the BI-reports. In the web interface there are several more reports that can be produced, but the ones not covered by stored procedures are fundamental and \hilight{ are treated in the back-end of the system}.  \\\\\todo{Koppla ihop SP till de olika rapporter}
