@@ -535,7 +535,7 @@ Generally a maintenance plan aims to correct or validate three things.
 \item Statistics
 \end{enumerate}
 
-\subsubsection{Data and Log file management}
+\subsubsection{Data and Log File Management}
 This topic doesn't necessarily need to be in a regular maintenance plan\cite{Randal08}, with the exception of log-file growth. Data and log file management is mostly handled through settings, which should be reviewed so that they follow best practices for performance and security. The following checklist should be considered when looking at these settings.
 
 \begin{enumerate}
@@ -545,7 +545,7 @@ This topic doesn't necessarily need to be in a regular maintenance plan\cite{Ran
 \item Auto-shrink is not enabled and shrink is not part of any maintenance plan.
 \end{enumerate}
 
-Looking at the database system's settings, the data and log files are indeed separate files, but not on different discs. This can cause corruption to the log-file caused by writes by other systems to the disc. This can be a small factor to poorly performing queries, especially the queries that handles large amount of data. It should be considered to move this file to a separate disc. \\\\
+Looking at the database system's settings, the data and log files are indeed separate files, but not on different discs. This can cause corruption to the log-file caused by writes by other systems to the disk. This can be a small factor to poorly performing queries, especially the queries that handles large amount of data. It should be considered to move this file to a separate disk. \\\\
 
 The auto-growth is on and it is set to grow by 10\%. The fact that the auto-grow is set to a percentage can cause an escalation problem with the file size which in turn can cause performance issues. For example, with the auto-grow set to a percentage of file size, the file could first grow with say 10 GB, then 11 GB, then 12 GB and so on even though the rate at which the file grows is constant. Although there is an auto-grow setting, the file sizes should be monitored regularly and proactively grown as part of the maintenance plan, since auto-grow of small amounts can cause file fragmentation and is a time-consuming process which could stall the application workload. The auto-grow setting should still be on though, as a safety net. \\\\
 
@@ -554,7 +554,7 @@ The initial size of the files should be set to an appropriate value based on the
 Shrinking can be used to reduce the size of the data and log files but is a resource-heavy process that causes large amounts of logical read fragmentation in a file. Both auto-shrink and shrinking made by maintenance plans should be avoided. The problems that shrinking tries to solve are better prevented by growing the files at a steady rate. The setting for auto-shrinking is already set to off in the system.
 
 \subsubsection{Index}
-
+Since some of the indexes were quite heavily fragmented in the system, there is a need to care for them in the maintenance plan.
 
 \chapter{Proposed Solution}\label{sec:proposedsoluton}
 
