@@ -431,7 +431,25 @@ This shows that 29 out of 572 indexes have both internal and external fragmentat
 \end{itemize} 
 
 \subsection{Stored procedures}
-As mentioned in the technical description a total of 59 stored procedures are present in the system. A little more than 50\% (30) of these subroutines are directly involved with the BI-reports. In the web interface there are several more reports that can be produced, but the ones not covered by stored procedures are treated in the back-end of the system.  \\\\\todo{Koppla ihop SP till de olika rapporter}
+As mentioned in the technical description a total of 59 stored procedures are present in the system. A little more than 50\% (30) of these subroutines are directly involved with the BI-reports. In the web interface there are several more reports that can be produced, but the ones not covered by stored procedures are treated in the back-end of the system.  
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{l l}
+Stored procedure: & Report(s)\\
+1\_1\_1-1\_1\_9: & Sales $\rightarrow$ Standard\\
+1\_2\_2: & Sales $\rightarrow$ Key Figures $\rightarrow$ Sales per weekday and hour \\
+1\_3\_2: & Sales $\rightarrow$ Codes $\rightarrow$ Discount Codes  \\
+1\_5\_1,1\_5\_2,1\_5\_7: & Sales $\rightarrow$ Order $\rightarrow$ Items, Variants, Daily Ordervalue\\
+1\_6\_1: & Sales $\rightarrow$ Timesheets $\rightarrow$ Standard \\
+2\_1\_1, 2\_1\_2: & ? \\
+2\_5, 2\_6: & ? \\
+3\_1-3\_7: & ? \\
+4\_2-4\_5: & ? \\
+\end{tabular}
+\caption{The relation between stored procedures and BI-reports}
+\end{center}
+\end{table}
+
 To execute the stored procedures, SQL batches such as Algorithm \ref{spexec} in Appendix \ref{appCode} were produced and executed. The SQL batches simply specifies the essential parameters and the optional ones as wildcards to get a wide range of data as possible.\\\\  
 The stored procedures for BI-reports are quite similar considering the block of statements. The majority of the subroutines contain \texttt{SELECT}, \texttt{INSERT}, \texttt{UPDATE} and \texttt{DELETE} SQL block statements with variety in amount and order. The \texttt{SELECT} statements vary greatly in the different stored procedure both in conditions and amount/which tables the data is fetched from. As can been seen in Table \ref{tab:tabfreq} in Appendix \ref{sec:appTabIll} a total of 84 tables are of interest for the BI-report stored procedures and the average amount of tables for a stored procedure is approximately $\approx37$.\\
 The data is fetched from the different tables by joining tables on stated conditions and then selected, at most, there is a stored procedure that joins a total of 46 different tables in its execution (see Table \ref{tab:mosttab} in Appendix \ref{sec:appTabIll}). The various stored procedures also have a similarity from which tables the \texttt{JOIN} is done on. Table \ref{tab:tabinall} in Appendix \ref{sec:appTabIll} shows that a total of 26 tables are involved in all of the stored procedures.\\
@@ -548,7 +566,7 @@ Generally a maintenance plan aims to correct or validate three things.
 \end{enumerate}
 
 \subsubsection{Data and Log file management}
-This topic doesn't necessarily need to be in a regular maintenance plan\cite{Randal08}, with the exception of log-file growth. Data and log file management is mostly handled through settings, which should be reviewed so that they follow best practices for performance and security. The following checklist should be considered when looking at these settings.
+This topic doesn't necessarily need to be in a regular maintenance plan \cite{Randal08}, with the exception of log-file growth. Data and log file management is mostly handled through settings, which should be reviewed so that they follow best practices for performance and security. The following checklist should be considered when looking at these settings.
 
 \begin{enumerate}
 \item Data and log files should be separate from each other and isolated from any other systems. (I.e. they should be kept on different drives).
