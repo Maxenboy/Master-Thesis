@@ -114,6 +114,9 @@ see Figure \ref{fig:BI} in Appendix \ref{sec:appTabIll}
 \item How are they done?
 \item Where are they?
 \item Which of them are used most and/or are critical for the system?
+\item Which are the critical ones
+
+\todo{Någon lista om vilka rapporter som finns; Sales, Accounting osv.}
 \end{itemize}
 
 \section{Problem description}
@@ -154,7 +157,11 @@ The objective is primarily to increase the speed of the ERP-system's business in
 \end{itemize}
 
 \section{Related Work}
-
+\begin{itemize}
+\item Neo4J
+\item generellt om RDBMS
+\item Andra liknande system (hur andra reatail-butiker/kedjor gör)
+\end{itemize}
 
 \section{Contributions}
 
@@ -416,7 +423,12 @@ Table name & Index name & External fragmentation & Internal fragmentation \\ \hl
 \caption{Results from index fragmentation search}
 \end{center}
 \end{table}
-This shows that 29 out of 572 indexes have both internal and external fragmentation. Some of the indexes used have an external fragmentation well above the value of 10, which is the threshold according to Shubho as mentioned in section \ref{measurefrag}. The internal fragmentation value is also bad at some of the indexes (i.e less than 75). This shows that BeX Online over time gives rise to fragmented indexes which has to be taken care of. 
+This shows that 29 out of 572 indexes have both internal and external fragmentation. Some of the indexes used have an external fragmentation well above the value of 10, which is the threshold according to Shubho as mentioned in section \ref{measurefrag}. The internal fragmentation value is also bad at some of the indexes (i.e less than 75). This shows that BeX Online over time gives rise to fragmented indexes which has to be taken care of.
+\begin{itemize}
+\item Är tabellerna i tabellen ovan relaterade till de kritiska SP/rapporter?
+\item Varför ser det ut som det gör?
+ 
+\end{itemize} 
 
 \subsection{Stored procedures}
 As mentioned in the technical description a total of 59 stored procedures are present in the system. A little more than 50\% (30) of these subroutines are directly involved with the BI-reports. In the web interface there are several more reports that can be produced, but the ones not covered by stored procedures are treated in the back-end of the system.  \\\\\todo{Koppla ihop SP till de olika rapporter}
