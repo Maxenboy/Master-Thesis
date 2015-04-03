@@ -423,12 +423,7 @@ Table name & Index name & External fragmentation & Internal fragmentation \\ \hl
 \caption{Results from index fragmentation search}
 \end{center}
 \end{table}
-This shows that 29 out of 572 indexes have both internal and external fragmentation. Some of the indexes used have an external fragmentation well above the value of 10, which is the threshold according to Shubho as mentioned in section \ref{measurefrag}. The internal fragmentation value is also bad at some of the indexes (i.e less than 75). This shows that BeX Online over time gives rise to fragmented indexes which has to be taken care of.
-\begin{itemize}
-\item Är tabellerna i tabellen ovan relaterade till de kritiska SP/rapporter?
-\item Varför ser det ut som det gör?
- 
-\end{itemize} 
+This shows that 29 out of 572 indexes have both internal and external fragmentation. Some of the indexes used have an external fragmentation well above the value of 10, which is the threshold according to Shubho as mentioned in section \ref{measurefrag}. The internal fragmentation value is also bad at some of the indexes (i.e less than 75). This shows that BeX Online over time gives rise to fragmented indexes which has to be taken care of. The indexes with heavy fragmentation are used in tables that are the most frequently used by the stored procedures to create business intelligence reports. This fragmentation is most likely a reason to poor performance in these queries.
 
 \subsection{Stored procedures}
 As mentioned in the technical description a total of 59 stored procedures are present in the system. A little more than 50\% (30) of these subroutines are directly involved with the BI-reports. In the web interface there are several more reports that can be produced, but the ones not covered by stored procedures are treated in the back-end of the system.  
@@ -565,6 +560,8 @@ Generally a maintenance plan aims to correct or validate three things.
 \item Statistics
 \end{enumerate}
 
+Ola Hallengren\cite{Hallengren15} is an award winning database administrator that has released a maintenance script bundle called "SQL Sever Maintenance Solution". For these maintenance scripts he has received several community's choice awards and been declared "MVP: Most Valuable Professional" by Microsoft. His scripts are free to use and easy to install. Because of this, the case company's database will be analyzed so that the best implementation of Hallengren's scripts can be used.
+
 \subsubsection{Data and Log File Management}
 This topic doesn't necessarily need to be in a regular maintenance plan\cite{Randal08}, with the exception of log-file growth. Data and log file management is mostly handled through settings, which should be reviewed so that they follow best practices for performance and security. The following checklist should be considered when looking at these settings.
 
@@ -584,7 +581,10 @@ The initial size of the files should be set to an appropriate value based on the
 Shrinking can be used to reduce the size of the data and log files but is a resource-heavy process that causes large amounts of logical read fragmentation in a file. Both auto-shrink and shrinking made by maintenance plans should be avoided. The problems that shrinking tries to solve are better prevented by growing the files at a steady rate. The setting for auto-shrinking is already set to off in the system.
 
 \subsubsection{Index}
-Since some of the indexes were quite heavily fragmented in the system, there is a need to care for them in the maintenance plan.
+Some of the indexes were heavily fragmented. When looking at the tables that use these indexes it was found that those were the tables that are used the most by the system. This indicates that most of the fragmentation caused to those indexes are caused by a high number of transactions, and not necessarily by bad queries. These indexes should therefore be monitored for fragmentation and actions should be taken when necessary to prevent heavy fragmentation. Many maintenance plans however, rebuilds or reorganizes indexes on a regular basis, without checking if the actual fragmentation is causing problems yet. Since correcting indexes is a high cost procedure, it should only be done when it is necessary. Hallengren's\cite{Hallengren15} scripts monitors the indexes regularly and reorganizes when needed and rebuilds them when it is necessary.
+
+\subsubsection{Statistics}
+The default setting in SQL Server is to have auto-update statistics to on. This is also the case in the case company's database. This is good, since statistics need to be accurate and up to date in order for the query planner to to it's job properly.
 
 \chapter{Proposed Solution}\label{sec:proposedsoluton}
 
