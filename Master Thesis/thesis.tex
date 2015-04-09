@@ -88,10 +88,13 @@ ERP-system’s database}
 \makefrontmatter
 
 \chapter[Introduction]{Introduction}
-2014 was the year of the cloud. Software companies strived to make their services cloud based in order to meet the increasing demands from the market of availability, accessibility and reliability. Users have got used to having their mail, their music, their documents, their pictures and so on in the cloud. Now the market pull is on tools for businesses that exist in the cloud. Most tools have been available for a couple of years already, notably Microsoft Sharepoint that has been available since 2001. There is however one market that has been lagging behind, the ERP-market\cite{Wilson14}. According to a Gartner study made in 2013\cite{Rayner13}, only 2\% of survey respondents used a cloud based ERP-system. However, over half of the respondents said that they have planned to make the move within the next five years. One of the big attractions of CLoud ERP is, besides convenience, cost. Large ERP implementations can last for years and require massive investments. "Cloud ERP reduces the time and cost of maintaining infrastructure," said Christine Hansen, product marketing manager, Epicor. "Less money spent on IT means a lower cost of product delivery, enabling businesses to get a competitive pricing edge and/or higher margins. This also frees up dollars to devote to hiring, R\&D and other growth initiatives."\cite{Robb14} \\\\
+2014 was the year of the cloud. Software companies strived to make their services cloud based in order to meet the increasing demands from the market of availability, accessibility and reliability. Users have got used to having their mail, their music, their documents, their pictures and so on in the cloud. Now the market pull is on tools for businesses that exist in the cloud. Most tools have been available for a couple of years already, notably Microsoft Sharepoint that has been available since 2001. There is however one market that has been lagging behind, the ERP-market\cite{Wilson14}. According to a Gartner study made in 2013\cite{Rayner13}, only 2\% of survey respondents used a cloud based ERP-system. However, over half of the respondents said that they have planned to make the move within the next five years. One of the big attractions of Cloud ERP is, besides convenience, cost. Large ERP implementations can last for years and require massive investments. "Cloud ERP reduces the time and cost of maintaining infrastructure," said Christine Hansen, product marketing manager, Epicor. "Less money spent on IT means a lower cost of product delivery, enabling businesses to get a competitive pricing edge and/or higher margins. This also frees up dollars to devote to hiring, R\&D and other growth initiatives."\cite{Robb14} \\\\
 In 2014 Oracle announced it's Oracle Customer 2 Cloud program, stating that they had 29 million cloud users. Microsoft has also been slow at adopting the cloud for its ERP solutions, but are now pushing their partner community for hosting it's cloud-based SaaS solution Microsoft Dynamics.
 The biggest player on the market seems to be SAP, who claims to have over 35 million users. The large investments made by these companies shows that there is indeed a strong belief that ERP needs to be in the cloud.\\\\
-As more and more services has been made available in the cloud, more and more data has become available and users are starting to become used to being presented data in meaningful ways. This is especially true for businesses. Steve Farr, product marketing manager at Tibco Software, noticed that in web-based forums about ERP, business intelligence is one of the most popular trending subjects\cite{RobbOkt14}. "ERP systems are not sexy; they are expensive to implement, and in general it is a replacement market where everybody already has one," Farr said. "So what's going to make you throw out the old for something else when they all have broadly similar functionality? If you look at VARs selling ERP, they are all trying to use BI as a way of beating the competition."	
+As more and more services has been made available in the cloud, more and more data has become available and users are starting to become used to being presented data in meaningful ways. This is especially true for businesses. Steve Farr, product marketing manager at Tibco Software, noticed that in web-based forums about ERP, business intelligence is one of the most popular trending subjects\cite{RobbOkt14}. "ERP systems are not sexy; they are expensive to implement, and in general it is a replacement market where everybody already has one," Farr said. "So what's going to make you throw out the old for something else when they all have broadly similar functionality? If you look at VARs selling ERP, they are all trying to use BI as a way of beating the competition."\\\\
+One of the biggest challenges that companies developing cloud solutions has to tackle is scale. One of the key points of the cloud is that users don't have to worry about how their system is hosted physically, since this is done by the supplier of the service. But the supplier is not very likely going to give separate resources to each client, since this isn't very cost effective. In fact, some industry experts claim that a service isn't a true cloud service unless the technical implementation of the service is that all users share the same physical resources, i.e all customers access the same resources from the same cloud\cite{Netsuite15}. This has started something of a performance race in the cloud industry. By making sure that the service is using the best technologies and is programmed in the best way, suppliers can lower cost by needing less hardware, as well as delivering a faster product to their customers. This need has given rise to many new technologies in recent years, especially in the database industry.\\\\
+Ten years ago a classical relational database was the go to solution when building an application. This type of database has been used for more than 30 years and has been one of the core products from giants such as Microsoft and Oracle. But when the content of databases started to become more and more complex with more and more relations, new types of databases emerged in response to the critique that classical table bases databases were ineffective. This trend has been called NoSql, which, depending on who you ask, stands for "Not Only SQL" or "No Sql"-at all\cite{Fowler12}. Whichever definition one may chose the main point behind NoSql is that a table is not the best data structure for all sorts of data. Rather, applications can experience a major performance increase by using more appropriate data structures for their type of data, e.g. hash maps, node trees or graphs. Some developers even propagate getting rid of schemas for data objects, aiming to let the data structures be as versatile as possible. In response to NoSql, Oracle and Microsoft have in turn released powerful technologies that put parts of the database in RAM, making it much faster than before.\\\\
+Today's users expect their applications to be fast and there are certainly a lot of technologies for developing fast web applications. For companies that develop cloud services, there is no longer an excuse for poor performance.
 
 \chapter{Background}\label{sec:background}
 
@@ -136,8 +139,7 @@ In order to make the above optimization possible, the following goals have been 
 \end{enumerate}
   
 \section{Scope} \label{sec:scope}
-\hilight{According to Nevarez  \cite{Nevarez} the main areas of investigation while trying to optimize an existing database for speed are:}
-Because of the problems and goals described in the background the focus should be on the following main areas of investigation:
+Because of the problems and goals described in the background the focus should be on the following main areas of investigation\cite{Nevarez}:
 \begin{itemize}
 \item Query tuning
 \item Execution plan tuning
@@ -149,7 +151,6 @@ Because of the problems and goals described in the background the focus should b
 Due to the limited time frame of this thesis, all of these areas won't be explored. With respect to this and the company's preferences the following focus areas were decided upon: Query tuning, index tuning and "In-Memory OLTP"-solutions.
 
 \section{Limitations}
-
 The objective is primarily to increase the speed of the ERP-system's business intelligence reporting module by optimizing the database. The database is used by all parts of \bex Online. This means that the following limitations to the developed solution must be in place.
 
 \begin{itemize}
@@ -159,11 +160,15 @@ The objective is primarily to increase the speed of the ERP-system's business in
 \end{itemize}
 
 \section{Related Work}
+There has been a lot of attempts at solving many of the problems that occur when building a database system of this size. Some of these attempts have completely redefined the classical definition of a database.
 \begin{itemize}
 \item Neo4J
 \item generellt om RDBMS
-\item Andra liknande system (hur andra reatail-butiker/kedjor gör)
+\item Andra liknande system (hur andra retail-butiker/kedjor gör)
 \end{itemize}
+
+\subsubsection{Neo4J}
+Neo4J 1.0 was released in february 2010\cite{Neo4J10}. It is a graph database that store its data as nodes and relationships. Neo4j was developed to counter a new scaling problem. Applications that handles entities, such as people, do not grow linearly but exponentially, since the more entities there are, the more relationships there are. Graph databases  
 
 \section{Contributions}
 
