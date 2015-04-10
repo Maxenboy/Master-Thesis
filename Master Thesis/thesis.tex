@@ -191,10 +191,11 @@ After implementing the proposed solution the next phase is the evaluation. The e
 \section{Work}
 First of all an acquaintance of Perfect IT \bex AB's system needed to be established. In conjunction with the examination of the current system and its parts a literature research was performed. The area this research treats is extensively and the research done is almost indefinite. Therefore the literature research scope needed to be narrowed with its base in the currents systems examination.\\\\    
 To find the literature and related work Engineering Village   \cite{Enginvillage} and Google Scholar   \cite{Googlescholar} together with DBLP   \cite{DBLP} was used. A lot of time was dedicated to find relevant literature and information for this thesis and at the same time examine if the ideas established during the system examination phase were possible and solid solutions.\\\\
-Using the paper written by Gruian and Lekebjer on formatting a master’s thesis   \cite{Reportmall} and guidelines from the book by Höst et. al.    \cite{regnell} the initial work on the master thesis report was conducted. 
-\todo{to be continued\ldots}
+Using the paper written by Gruian and Lekebjer on formatting a master’s thesis   \cite{Reportmall} and guidelines from the book by Höst et. al.    \cite{regnell} the initial work on the master thesis report was conducted.\\\\ 
+To arrive at a solution an analysis of the current system took place. The analysis was performed in conjunction with the scope, seen in section \ref{sec:scope}, hence ensuring that the thesis's focus doesn't become ambiguous. To explain to the reader how and why the proposed solution and analysis is of interest in this thesis , an approach, chapter \ref{sec:approach}, was established.
+\todo{to be continued..}   
 
-\chapter{Approach}
+\chapter{Approach}\label{sec:approach}
 
 \section{Technical System Description}
 Perfect IT delivers web-based business systems and services specialized for the retail industry. The \bex Online ERP-system is distributed as a SaaS-solution and all clients share servers which makes it a true cloud based service. The clients access \bex Online's front-end through a web browser. \bex Retail and \bex B2B are connected directly to \bex Online's back-end.
@@ -385,7 +386,7 @@ When a procedure is saved as a natively  compiled stored procedure it locks all 
 A complex procedure like this is preferably avoided. The cost of having to rebuild the in-memory tables from scratch could be high so it is important to plan and choose parameters wisely.
 
 
-\section{Analysis}
+\section{Analysis}\label{sec:analysis}
 The analysis of the system required several tools and environments for both live and local research, where the local environment setup is further explained in Appendix \ref{Aenviron}. To identify report-relevant parts of the system the tool Microsoft SQL Server Management Studio (SSMS) was mostly used. To identify and study the bottle-necks and problems, in the above mentioned system parts, several other tools such as DBVisualizer, SQL Sentry Plan Explorer etc. were used along side SMSS to extract query duration, query execution plans and much more.\\\\
 Much of the analysis revolved around the stored procedures, since it was there the potential of optimization was greatest, but other optimization areas were also studied such as index fragmentation of the relevant tables.      
 
