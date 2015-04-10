@@ -216,17 +216,7 @@ The database for \bex Online is a Microsoft Server 2014 Web Edition.
 
 \subsubsection{Server}
 Currently all the clients instances of /bex Online are placed on a single server hosted by a third party hosting company. This server also hosts the database system.
-The technical specification of the server is:
-\begin{table}[H]
-\begin{center}
-\begin{tabular}{l l}
-OS: & Windows Server 2012 Standard 64-bit\\
-CPU: & Intel(R) Xeon(R) CPU E5-2440 @ 2.40 GHz 64-bit based\\
-RAM: & 64 GB \\
-HD: & 500 GB Disk drive
-\end{tabular}
-\end{center}
-\end{table}
+The technical specification of the server is specified in Appendix \ref{sec:Genviron}
 
 \subsubsection{\bex Online}
 \bex Online is a web based system and has a front-end built with HTML5, CSS and JavaScript and a back-end written in C\# and .net with Webforms.
@@ -691,15 +681,27 @@ set statistics time off
 SELECT * FROM EXT_REPORT_RESULT_2_5
 \end{lstlisting}
 \chapter{Environments}
-\section{General environment}
+\section{General environment}\label{sec:Genviron}
+\begin{table}[H]
+\begin{center}
+\caption*{\textbf{Server}}
+\begin{tabular}{l l}
+OS: & Windows Server 2012 Standard 64-bit\\
+CPU: & Intel(R) Xeon(R) CPU E5-2440 @ 2.40 GHz 64-bit based\\
+RAM: & 64 GB \\
+HD: & 500 GB Disk drive
+\end{tabular}
+\end{center}
+\end{table}
 
 \section{Analysis environment}\label{Aenviron}
 \begin{table}[H]
 \begin{center}
+\caption*{\textbf{Local System}}
 \begin{tabular}{l l}
 OS: & Windows 8.1 64-bit\\
-CPU: & ?\\
-RAM: & ?\\
+CPU: & Intel Quad-Core I7 4GHz\\
+RAM: & 16Gb, 1566Hz\\
 HD: & ? \\
 Tools/Programs: & SQL Server Management Studio, SQL Sentry Plan Explorer\\
 \end{tabular}
