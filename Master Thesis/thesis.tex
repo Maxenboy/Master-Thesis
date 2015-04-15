@@ -8,6 +8,7 @@
 \usepackage{amssymb}
 \usepackage{amsthm}
 %\usepackage{makeidx}
+\usepackage[table]{xcolor}
 \usepackage{graphicx}
 \usepackage[titletoc, header, page]{appendix}
 \usepackage{todo}
@@ -191,10 +192,11 @@ After implementing the proposed solution the next phase is the evaluation. The e
 \section{Work}
 First of all an acquaintance of Perfect IT \bex AB's system needed to be established. In conjunction with the examination of the current system and its parts a literature research was performed. The area this research treats is extensively and the research done is almost indefinite. Therefore the literature research scope needed to be narrowed with its base in the currents systems examination.\\\\    
 To find the literature and related work Engineering Village   \cite{Enginvillage} and Google Scholar   \cite{Googlescholar} together with DBLP   \cite{DBLP} was used. A lot of time was dedicated to find relevant literature and information for this thesis and at the same time examine if the ideas established during the system examination phase were possible and solid solutions.\\\\
-Using the paper written by Gruian and Lekebjer on formatting a master’s thesis   \cite{Reportmall} and guidelines from the book by Höst et. al.    \cite{regnell} the initial work on the master thesis report was conducted. 
-\todo{to be continued\ldots}
+Using the paper written by Gruian and Lekebjer on formatting a master’s thesis   \cite{Reportmall} and guidelines from the book by Höst et. al.    \cite{regnell} the initial work on the master thesis report was conducted.\\\\ 
+To arrive at a solution an analysis of the current system took place. The analysis was performed in conjunction with the scope, seen in section \ref{sec:scope}, hence ensuring that the thesis's focus doesn't become ambiguous. To explain to the reader how and why the proposed solution and analysis is of interest in this thesis , an approach, chapter \ref{sec:approach}, was established.
+\todo{to be continued..}   
 
-\chapter{Approach}
+\chapter{Approach}\label{sec:approach}
 
 \section{Technical System Description}
 Perfect IT delivers web-based business systems and services specialized for the retail industry. The \bex Online ERP-system is distributed as a SaaS-solution and all clients share servers which makes it a true cloud based service. The clients access \bex Online's front-end through a web browser. \bex Retail and \bex B2B are connected directly to \bex Online's back-end.
@@ -215,17 +217,7 @@ The database for \bex Online is a Microsoft Server 2014 Web Edition.
 
 \subsubsection{Server}
 Currently all the clients instances of /bex Online are placed on a single server hosted by a third party hosting company. This server also hosts the database system.
-The technical specification of the server is:
-\begin{table}[H]
-\begin{center}
-\begin{tabular}{l l}
-OS: & Windows Server 2012 Standard 64-bit\\
-CPU: & Intel(R) Xeon(R) CPU E5-2440 @ 2.40 GHz 64-bit based\\
-RAM: & 64 GB \\
-HD: & 500 GB Disk drive
-\end{tabular}
-\end{center}
-\end{table}
+The technical specification of the server is specified in Appendix \ref{sec:Genviron}
 
 \subsubsection{\bex Online}
 \bex Online is a web based system and has a front-end built with HTML5, CSS and JavaScript and a back-end written in C\# and .net with Webforms.
@@ -385,7 +377,7 @@ When a procedure is saved as a natively  compiled stored procedure it locks all 
 A complex procedure like this is preferably avoided. The cost of having to rebuild the in-memory tables from scratch could be high so it is important to plan and choose parameters wisely.
 
 
-\section{Analysis}
+\section{Analysis}\label{sec:analysis}
 The analysis of the system required several tools and environments for both live and local research, where the local environment setup is further explained in Appendix \ref{Aenviron}. To identify report-relevant parts of the system the tool Microsoft SQL Server Management Studio (SSMS) was mostly used. To identify and study the bottle-necks and problems, in the above mentioned system parts, several other tools such as DBVisualizer, SQL Sentry Plan Explorer etc. were used along side SMSS to extract query duration, query execution plans and much more.\\\\
 Much of the analysis revolved around the stored procedures, since it was there the potential of optimization was greatest, but other optimization areas were also studied such as index fragmentation of the relevant tables.      
 
@@ -462,7 +454,7 @@ The statistics measurements were taken on a system with a quad core processor as
 
 In the above table the most crucial stored procedures are listed, considering execution duration. As seen in section \ref{sec:BI} some of the critical reports are the ones that are troublesome time-wise.\\\\
 The second Transact-SQL command that was used to produce useful statistics was \texttt{SET STATISTICS IO ON}, also seen in Algorithm \ref{spexec}.  The command provides detailed information about the query's impact on the SQL Server. An example of the output is shown below:\\\\
-\texttt{Table 'EXT\_HISTORY\_MASTER'. Scan count 79508, logical reads 1632621, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0.}\\\\
+\texttt{Table 'HISTORY\_M'. Scan count 79508, logical reads 1632621, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0.}\\\\
 Considering query tuning some of this information is helpful, and some not. The Scan count indicates how many times the referenced table was accessed. For queries including joins this information is quite helpful. The smaller the Scan count, the less resources needed and the better performance of the query. If the value is 0 it means that a unique index is used or a clustered index on a primary key. This information is good to keep an eye on when tuning the queries.\\ Logical reads is the most valuable information produced by the \texttt{SET STATISTICS IO ON} command, since it never changes from execution to execution on the same query and exact same data    \cite{IO}. A logical read is the number of pages (see section \ref{sec:indexbad}) the SQL Server has to read from the cache to retrieve the result asked by the query. This is achieved due to the SQL Servers initial presence check, it checks if the pages it needs are in the data cache upon execution of a query. Fewer logical reads equals less resources used and hence better/faster performance, assuming all other thing are held equal as prior to tuning.\\ Wen considering query tuning physical reads are often a discarded information. As mentioned above, the SQL Server checks if the needed data/pages are in the data cache, if not, the server needs to read the disk and store the information obtained in the data cache. The physical reads are dependent on the SQL Servers data cache and will diminish when executing the same query over and over again,  so long there is enough room in the RAM. If this figure changes over time and/or execution, the changes can be caused due to memory pressure. The goal is of course to have a small figure as possible for this read, ergo having the needed pages in cache, ergo ensure that the physical RAM is plenty.\\ The Read-Ahead reads is directly tied to physical read and therefore not of interest to query tuning. SQL Server has a read-ahead mechanism that reads the physical data pages ahead, what the SQL server suspects, of when it's needed    \cite{readahead}. These pages may or may not be used, depending on the SQL Servers assumption. This information fluctuates, same as for physical reads, as pages are moved in/out of memory and can be affected by index fragmentation.\\ The LOB logical-, physical- and read-ahead give respectively the same information as mentioned above but for large objects, data with the maximum size of 4 GB such as ASCII text, files in graphics formats etc.    \cite{LOB}.  Since such data isn't present in the system, the importance of this information is out of this thesis scope.\\\\
 The \texttt{SET STATISTICS IO ON} command was, as for the \texttt{SET STATISTICS TIME ON} command, was executed on every stored procedure available in the system. Resulting in an output file of 300 lines of text. This was of course not manageable to analyze and read, so with the help of Vicky Harts excel template    \cite{Vicky} and Richie Rumps Statistics Parser web application    \cite{Rump}, an Excel worksheet was developed (with a few alterations and improvements). In table \ref{tab:IO} a fraction of the output is listed. Even here the most critical reports top the list for IO statistics. The total sum of pages read logical is $\approx$ 4.7$\times 10^9$ pages for all stored procedure. In the table below the LOB information is cut out due to non existence of LOB's in the system.\\ Only a total of 9956 pages were read from disk, meaning that a lot of the necessary data is present in the SQL Servers data cache. The anomalies should be the result of full memory and the system therefore priorities what should be in cache. 
 \begin{table}[H]
@@ -471,41 +463,41 @@ The \texttt{SET STATISTICS IO ON} command was, as for the \texttt{SET STATISTICS
 \begin{tabular}{  l | H  l | l | l | l | l  H H H }
 
 	Stored procedure &  & Object name & Scan count & Logical reads & Physical reads & Read-Ahead Reads & Lob Logical Reads & Lob Physical Reads & Lob read-ahead reads  \  \\ \hline
-	3\_1 & Table 'EXT\_SALES\_HEADER'. Scan count 0, logical reads 68850420, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0. & EXT\_SALES\_HEADER & 0 & 68850420 & 0 & 0 & 0 & 0 & 0 \\ \hline
+	3\_1 & Table ' SALES\_H'. Scan count 0, logical reads 68850420, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0. &  SALES\_H & 0 & 68850420 & 0 & 0 & 0 & 0 & 0 \\ \hline
 	2\_6 & Table 'Worktable'. Scan count 1589989, logical reads 49956351, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0. & Worktable & 1589989 & 49956351 & 0 & 0 & 0 & 0 & 0 \\ \hline
 	2\_6 & Table 'Worktable'. Scan count 1589989, logical reads 47508411, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0. & Worktable & 1589989 & 47508411 & 0 & 0 & 0 & 0 & 0 \\ \hline
 	2\_5 & Table 'Worktable'. Scan count 1318326, logical reads 46380365, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0. & Worktable & 1318326 & 46380365 & 0 & 0 & 0 & 0 & 0 \\ \hline
 	2\_6 & Table 'Worktable'. Scan count 370813, logical reads 40890291, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0. & Worktable & 370813 & 40890291 & 0 & 0 & 0 & 0 & 0 \\ \hline
-	2\_5 & Table 'EXT\_HISTORY\_MASTER'. Scan count 2257991, logical reads 20336741, physical reads 241, read-ahead reads 27358, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0. & EXT\_HISTORY\_MASTER & 2257991 & 20336741 & 241 & 27358 & 0 & 0 & 0 \\ \hline
-	4\_2 & Table 'EXT\_HISTORY\_MASTER'. Scan count 9, logical reads 15318541, physical reads 1940, read-ahead reads 167916, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0. & EXT\_HISTORY\_MASTER & 9 & 15318541 & 1940 & 167916 & 0 & 0 & 0 \\ \hline
+	2\_5 & Table ' HISTORY\_M'. Scan count 2257991, logical reads 20336741, physical reads 241, read-ahead reads 27358, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0. &  HISTORY\_M & 2257991 & 20336741 & 241 & 27358 & 0 & 0 & 0 \\ \hline
+	4\_2 & Table ' HISTORY\_M'. Scan count 9, logical reads 15318541, physical reads 1940, read-ahead reads 167916, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0. &  HISTORY\_M & 9 & 15318541 & 1940 & 167916 & 0 & 0 & 0 \\ \hline
 	3\_1 & Table 'Worktable'. Scan count 1116354, logical reads 13974108, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0. & Worktable & 1116354 & 13974108 & 0 & 0 & 0 & 0 & 0 \\ \hline
-	2\_6 & Table 'EXT\_HISTORY\_MASTER'. Scan count 370836, logical reads 13801901, physical reads 1184, read-ahead reads 177558, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0. & EXT\_HISTORY\_MASTER & 370836 & 13801901 & 1184 & 177558 & 0 & 0 & 0 \\ \hline
-	2\_6 & Table 'EXT\_ITEM\_LEDGER\_ENTRY'. Scan count 1589989, logical reads 11407484, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0. & EXT\_ITEM\_LEDGER\_ENTRY & 1589989 & 11407484 & 0 & 0 & 0 & 0 & 0 \\ \hline
-	2\_6 & Table 'EXT\_SALES\_HEADER'. Scan count 5307607, logical reads 10645764, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0. & EXT\_SALES\_HEADER & 5307607 & 10645764 & 0 & 0 & 0 & 0 & 0 \\ \hline
+	2\_6 & Table ' HISTORY\_M'. Scan count 370836, logical reads 13801901, physical reads 1184, read-ahead reads 177558, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0. &  HISTORY\_M & 370836 & 13801901 & 1184 & 177558 & 0 & 0 & 0 \\ \hline
+	2\_6 & Table ' ITEM\_L\_E'. Scan count 1589989, logical reads 11407484, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0. &  ITEM\_L\_E & 1589989 & 11407484 & 0 & 0 & 0 & 0 & 0 \\ \hline
+	2\_6 & Table ' SALES\_H'. Scan count 5307607, logical reads 10645764, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0. &  SALES\_H & 5307607 & 10645764 & 0 & 0 & 0 & 0 & 0 \\ \hline
 	3\_1 & Table 'Worktable'. Scan count 2232708, logical reads 10205255, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0. & Worktable & 2232708 & 10205255 & 0 & 0 & 0 & 0 & 0 \\ \hline
-	2\_5 & Table 'EXT\_SALES\_HEADER'. Scan count 4868901, logical reads 9765541, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0. & EXT\_SALES\_HEADER & 4868901 & 9765541 & 0 & 0 & 0 & 0 & 0 \\ \hline
-	2\_5 & Table 'EXT\_ITEM\_LEDGER\_ENTRY'. Scan count 1318326, logical reads 9644543, physical reads 0, read-ahead reads 4, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0. & EXT\_ITEM\_LEDGER\_ENTRY & 1318326 & 9644543 & 0 & 4 & 0 & 0 & 0 \\ \hline
+	2\_5 & Table ' SALES\_H'. Scan count 4868901, logical reads 9765541, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0. &  SALES\_H & 4868901 & 9765541 & 0 & 0 & 0 & 0 & 0 \\ \hline
+	2\_5 & Table ' ITEM\_L\_E'. Scan count 1318326, logical reads 9644543, physical reads 0, read-ahead reads 4, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0. &  ITEM\_L\_E & 1318326 & 9644543 & 0 & 4 & 0 & 0 & 0 \\ \hline
 	2\_6 & Table 'Worktable'. Scan count 1589989, logical reads 8500919, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0. & Worktable & 1589989 & 8500919 & 0 & 0 & 0 & 0 & 0 \\ \hline
 	2\_5 & Table 'Worktable'. Scan count 1318326, logical reads 7530165, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0. & Worktable & 1318326 & 7530165 & 0 & 0 & 0 & 0 & 0 \\ \hline
-	3\_1 & Table 'EXT\_PURCHASE\_HEADER'. Scan count 0, logical reads 5453698, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0. & EXT\_PURCHASE\_HEADER & 0 & 5453698 & 0 & 0 & 0 & 0 & 0 \\ \hline
-	2\_6 & Table 'EXT\_REPORT\_RESULT\_2\_6'. Scan count 1, logical reads 4950883, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0. & EXT\_REPORT\_RESULT\_2\_6 & 1 & 4950883 & 0 & 0 & 0 & 0 & 0 \\ \hline
-	2\_5 & Table 'EXT\_REPORT\_RESULT\_2\_5'. Scan count 1, logical reads 4116135, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0. & EXT\_REPORT\_RESULT\_2\_5 & 1 & 4116135 & 0 & 0 & 0 & 0 & 0 \\ \hline
-	1\_1\_2 & Table 'EXT\_REPORT\_RESULT\_1\_1\_2'. Scan count 1, logical reads 3811767, physical reads 65, read-ahead reads 63, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0. & EXT\_REPORT\_RESULT\_1\_1\_2 & 1 & 3811767 & 65 & 63 & 0 & 0 & 0 \\ \hline
-	1\_5\_7 & Table 'EXT\_SALES\_HEADER'. Scan count 0, logical reads 2117142, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0. & EXT\_SALES\_HEADER & 0 & 2117142 & 0 & 0 & 0 & 0 & 0 \\ \hline
-	 1\_1\_1 & Table 'EXT\_HISTORY\_MASTER'. Scan count 79508, logical reads 1632621, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0. & EXT\_HISTORY\_MASTER & 79508 & 1632621 & 0 & 0 & 0 & 0 & 0 \\ \hline
-	1\_1\_2 & Table 'EXT\_HISTORY\_MASTER'. Scan count 79508, logical reads 1632621, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0. & EXT\_HISTORY\_MASTER & 79508 & 1632621 & 0 & 0 & 0 & 0 & 0 \\ \hline
-	1\_1\_3 & Table 'EXT\_HISTORY\_MASTER'. Scan count 79508, logical reads 1632621, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0. & EXT\_HISTORY\_MASTER & 79508 & 1632621 & 0 & 0 & 0 & 0 & 0 \\ \hline
-	1\_1\_4 & Table 'EXT\_HISTORY\_MASTER'. Scan count 79508, logical reads 1632621, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0. & EXT\_HISTORY\_MASTER & 79508 & 1632621 & 0 & 0 & 0 & 0 & 0 \\ \hline
-	1\_1\_5 & Table 'EXT\_HISTORY\_MASTER'. Scan count 79508, logical reads 1632621, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0. & EXT\_HISTORY\_MASTER & 79508 & 1632621 & 0 & 0 & 0 & 0 & 0 \\ \hline
-	1\_1\_6 & Table 'EXT\_HISTORY\_MASTER'. Scan count 79508, logical reads 1632621, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0. & EXT\_HISTORY\_MASTER & 79508 & 1632621 & 0 & 0 & 0 & 0 & 0 \\ \hline
-	1\_1\_7 & Table 'EXT\_HISTORY\_MASTER'. Scan count 79508, logical reads 1632621, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0. & EXT\_HISTORY\_MASTER & 79508 & 1632621 & 0 & 0 & 0 & 0 & 0 \\ \hline
-	1\_1\_8 & Table 'EXT\_HISTORY\_MASTER'. Scan count 79508, logical reads 1632621, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0. & EXT\_HISTORY\_MASTER & 79508 & 1632621 & 0 & 0 & 0 & 0 & 0 \\ \hline
-	1\_1\_9 & Table 'EXT\_HISTORY\_MASTER'. Scan count 79508, logical reads 1632621, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0. & EXT\_HISTORY\_MASTER & 79508 & 1632621 & 0 & 0 & 0 & 0 & 0 \\ \hline
-	1\_3\_2 & Table 'EXT\_HISTORY\_MASTER'. Scan count 79508, logical reads 1632621, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0. & EXT\_HISTORY\_MASTER & 79508 & 1632621 & 0 & 0 & 0 & 0 & 0 \\ \hline
-	1\_3\_2 & Table 'EXT\_HISTORY\_MASTER'. Scan count 79508, logical reads 1632621, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0. & EXT\_HISTORY\_MASTER & 79508 & 1632621 & 0 & 0 & 0 & 0 & 0 \\ \hline
-	1\_2\_2 & Table 'EXT\_HISTORY\_MASTER'. Scan count 9, logical reads 1445404, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0. & EXT\_HISTORY\_MASTER & 9 & 1445404 & 0 & 0 & 0 & 0 & 0 \\ \hline
-	2\_5 & Table 'EXT\_ITEM\_LEDGER\_ENTRY'. Scan count 234290, logical reads 1242358, physical reads 0, read-ahead reads 437, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0. & EXT\_ITEM\_LEDGER\_ENTRY & 234290 & 1242358 & 0 & 437 & 0 & 0 & 0 \\ \hline
-	2\_6 & Table 'EXT\_REPORT\_RESULT\_2\_6'. Scan count 0, logical reads 1235223, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0. & EXT\_REPORT\_RESULT\_2\_6 & 0 & 1235223 & 0 & 0 & 0 & 0 & 0 \\ \hline
+	3\_1 & Table ' PURCHASE\_H'. Scan count 0, logical reads 5453698, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0. &  PURCHASE\_H & 0 & 5453698 & 0 & 0 & 0 & 0 & 0 \\ \hline
+	2\_6 & Table ' REPORT\_RESULT\_2\_6'. Scan count 1, logical reads 4950883, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0. &  REPORT\_RESULT\_2\_6 & 1 & 4950883 & 0 & 0 & 0 & 0 & 0 \\ \hline
+	2\_5 & Table ' REPORT\_RESULT\_2\_5'. Scan count 1, logical reads 4116135, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0. &  REPORT\_RESULT\_2\_5 & 1 & 4116135 & 0 & 0 & 0 & 0 & 0 \\ \hline
+	1\_1\_2 & Table ' REPORT\_RESULT\_1\_1\_2'. Scan count 1, logical reads 3811767, physical reads 65, read-ahead reads 63, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0. &  REPORT\_RESULT\_1\_1\_2 & 1 & 3811767 & 65 & 63 & 0 & 0 & 0 \\ \hline
+	1\_5\_7 & Table ' SALES\_H'. Scan count 0, logical reads 2117142, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0. &  SALES\_H & 0 & 2117142 & 0 & 0 & 0 & 0 & 0 \\ \hline
+	 1\_1\_1 & Table ' HISTORY\_M'. Scan count 79508, logical reads 1632621, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0. &  HISTORY\_M & 79508 & 1632621 & 0 & 0 & 0 & 0 & 0 \\ \hline
+	1\_1\_2 & Table ' HISTORY\_M'. Scan count 79508, logical reads 1632621, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0. &  HISTORY\_M & 79508 & 1632621 & 0 & 0 & 0 & 0 & 0 \\ \hline
+	1\_1\_3 & Table ' HISTORY\_M'. Scan count 79508, logical reads 1632621, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0. &  HISTORY\_M & 79508 & 1632621 & 0 & 0 & 0 & 0 & 0 \\ \hline
+	1\_1\_4 & Table ' HISTORY\_M'. Scan count 79508, logical reads 1632621, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0. &  HISTORY\_M & 79508 & 1632621 & 0 & 0 & 0 & 0 & 0 \\ \hline
+	1\_1\_5 & Table ' HISTORY\_M'. Scan count 79508, logical reads 1632621, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0. &  HISTORY\_M & 79508 & 1632621 & 0 & 0 & 0 & 0 & 0 \\ \hline
+	1\_1\_6 & Table ' HISTORY\_M'. Scan count 79508, logical reads 1632621, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0. &  HISTORY\_M & 79508 & 1632621 & 0 & 0 & 0 & 0 & 0 \\ \hline
+	1\_1\_7 & Table ' HISTORY\_M'. Scan count 79508, logical reads 1632621, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0. &  HISTORY\_M & 79508 & 1632621 & 0 & 0 & 0 & 0 & 0 \\ \hline
+	1\_1\_8 & Table ' HISTORY\_M'. Scan count 79508, logical reads 1632621, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0. &  HISTORY\_M & 79508 & 1632621 & 0 & 0 & 0 & 0 & 0 \\ \hline
+	1\_1\_9 & Table ' HISTORY\_M'. Scan count 79508, logical reads 1632621, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0. &  HISTORY\_M & 79508 & 1632621 & 0 & 0 & 0 & 0 & 0 \\ \hline
+	1\_3\_2 & Table ' HISTORY\_M'. Scan count 79508, logical reads 1632621, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0. &  HISTORY\_M & 79508 & 1632621 & 0 & 0 & 0 & 0 & 0 \\ \hline
+	1\_3\_2 & Table ' HISTORY\_M'. Scan count 79508, logical reads 1632621, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0. &  HISTORY\_M & 79508 & 1632621 & 0 & 0 & 0 & 0 & 0 \\ \hline
+	1\_2\_2 & Table ' HISTORY\_M'. Scan count 9, logical reads 1445404, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0. &  HISTORY\_M & 9 & 1445404 & 0 & 0 & 0 & 0 & 0 \\ \hline
+	2\_5 & Table ' ITEM\_L\_E'. Scan count 234290, logical reads 1242358, physical reads 0, read-ahead reads 437, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0. &  ITEM\_L\_E & 234290 & 1242358 & 0 & 437 & 0 & 0 & 0 \\ \hline
+	2\_6 & Table ' REPORT\_RESULT\_2\_6'. Scan count 0, logical reads 1235223, physical reads 0, read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob read-ahead reads 0. &  REPORT\_RESULT\_2\_6 & 0 & 1235223 & 0 & 0 & 0 & 0 & 0 \\ \hline
 	\vdots & \vdots & \vdots & \vdots & \vdots  & \vdots & \vdots & \vdots\ & \vdots & \vdots 
 \end{tabular}}
 \caption{The top part, sorted by logical reads, of stored procedure execution IO statistics}
@@ -514,6 +506,31 @@ The \texttt{SET STATISTICS IO ON} command was, as for the \texttt{SET STATISTICS
 \noindent The above information is part of the key information to tuning the stored procedures, especially the Scan count and Logical reads. But to properly alter the key item we need to use the information in conjunction with the queries execution plans  \cite{IO}.  
 
 \subsubsection{Execution plans}
+
+
+\begin{table}[H]
+\begin{center}
+\hspace*{-2cm}
+\begin{tabular}{|l|l|l|l|l|l|l|}
+\hline
+Statement & Est. Cost & Est CPU & Est IO Cost & Est Rows & Actual Rows & Key Lookups\\\hline
+insert into  Table X &	37,6\% & 20,1\% & 46,7\% & \cellcolor{orange} 296 024 & \cellcolor{orange} 370 813	2 & 8\\\hline 
+update  Table X set PurchaseQty & 23,0\% & 38,6\% & 17,5\% & 632 065 & 632 065 & 0 \\\hline 
+update  Table X set StockValue & 22,9\% & 38,6\% & 17,5\% & 632 065 & 632 065 & 0 \\\hline 
+update  Table X set AvailableQty & 8,3\% & 2,7\% & 6,5\% & 632 065 & 632 065 & 0 \\\hline 
+update  Table X set PhysicalQty & 7,2\% & 0,0\% & 9,9\% & 632 065 & 632 065 & 0 \\\hline 
+delete from  Table X & 1,0\% & 0,0\% & 1,9\% & \cellcolor{orange} 167 001 & \cellcolor{orange} 283 729 & 0 \\\hline 
+
+\end{tabular}
+\caption{Stored procedure 2\_6's statement blocks in execution plan}
+\end{center}
+\end{table}
+
+\begin{figure}[H]
+\hspace*{-2.5cm}
+\includegraphics[scale=0.7]{Pictures/plan.png}
+\caption{Graphical execution plan snippet of \texttt{INSERT} statement in stored procedure 2\_6}
+\end{figure}
 
 \subsection{Index fragmentation}
 By using the script from the theory the following index fragmentation values were produced. The table names and index names has been changed due to confidentiality.
@@ -690,15 +707,27 @@ set statistics time off
 SELECT * FROM EXT_REPORT_RESULT_2_5
 \end{lstlisting}
 \chapter{Environments}
-\section{General environment}
+\section{General environment}\label{sec:Genviron}
+\begin{table}[H]
+\begin{center}
+\caption*{\textbf{Server}}
+\begin{tabular}{l l}
+OS: & Windows Server 2012 Standard 64-bit\\
+CPU: & Intel(R) Xeon(R) CPU E5-2440 @ 2.40 GHz 64-bit based\\
+RAM: & 64 GB \\
+HD: & 500 GB Disk drive
+\end{tabular}
+\end{center}
+\end{table}
 
 \section{Analysis environment}\label{Aenviron}
 \begin{table}[H]
 \begin{center}
+\caption*{\textbf{Local System}}
 \begin{tabular}{l l}
 OS: & Windows 8.1 64-bit\\
-CPU: & ?\\
-RAM: & ?\\
+CPU: & Intel Quad-Core I7 4GHz\\
+RAM: & 16Gb, 1566Hz\\
 HD: & ? \\
 Tools/Programs: & SQL Server Management Studio, SQL Sentry Plan Explorer\\
 \end{tabular}
@@ -716,34 +745,34 @@ Tools/Programs: & SQL Server Management Studio, SQL Sentry Plan Explorer\\
 \LARGE{Table}&\multicolumn{29}{c}{\LARGE{Stored procedure for BI-report}}& \\\hline
 
 	 & 1\_1\_1 & 1\_1\_2 & 1\_1\_3 & 1\_1\_4 & 1\_1\_5 & 1\_1\_6 &1\_1\_7 & 1\_1\_8 & 1\_1\_9 & 1\_2\_2 & 1\_3\_2 & 1\_5\_1 & 1\_5\_2 & 1\_5\_7 & 1\_6\_1 & 2\_1\_1 & 2\_1\_2 & 2\_5 & 2\_6 & 3\_1 & 3\_2 & 3\_3 & 3\_4 & 3\_5 & 3\_6 & 3\_7 & 4\_2 & 4\_3 & 4\_4 & 4\_5 & \dots & TOTAL \\ \hline
-	EXT\_BO\_USERS & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & \dots & 30 \\ \hline
-	EXT\_COLLECTION & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & \dots & 30 \\ \hline
-	EXT\_COLOUR\_GROUP & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X  & \dots & 30 \\ \hline
-	EXT\_COUNTRY & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X  & \dots & 30 \\ \hline
-	EXT\_CUSTOMER & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X  & \dots & 30 \\ \hline
-	EXT\_CUSTOMER\_GROUP & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X  & \dots & 30 \\ \hline
-	EXT\_CUSTOMER\_INVOICE\_DISCOUNT & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X  & \dots & 30 \\ \hline
-	EXT\_CUSTOMER\_POSTING\_GROUP & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X  & \dots & 30 \\ \hline
-	EXT\_DIMENSION2 & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X  & \dots & 30 \\ \hline
-	EXT\_ITEM & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X  & \dots & 30 \\ \hline
-	EXT\_ITEM\_CATEGORY & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X  & \dots & 30 \\ \hline
-	EXT\_ITEM\_COMPOSITION & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X  & \dots & 30 \\ \hline
-	EXT\_ITEM\_FREIGHTCLASS & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X  & \dots & 30 \\ \hline
-	EXT\_ITEM\_GENDER & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X  & \dots & 30 \\ \hline
-	EXT\_ITEM\_GROUP & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X  & \dots & 30 \\ \hline
-	EXT\_ITEM\_IMPORT & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X  & \dots & 30 \\ \hline
-	EXT\_ITEM\_VARIANTS & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X  & \dots & 30 \\ \hline
-	EXT\_LENGTH\_GROUP & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X  & \dots & 30 \\ \hline
-	EXT\_LOCATIONS & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X  & \dots & 30 \\ \hline
-	EXT\_PRODUCT\_GROUP & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X  & \dots & 30 \\ \hline
-	EXT\_PROGRAM & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X  & \dots & 30 \\ \hline
-	EXT\_REPORT\_HEADER & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X  & \dots & 30 \\ \hline
-	EXT\_SALESPERSON & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X  & \dots & 30 \\ \hline
-	EXT\_SHOP & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X  & \dots & 30 \\ \hline
-	EXT\_SIZE\_GROUP & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X  & \dots & 30 \\ \hline
-	EXT\_SUPPLIER & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X  & \dots & 30 \\ \hline
+	 BO\_U & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & \dots & 30 \\ \hline
+	 COLLECTION & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & \dots & 30 \\ \hline
+	 COLOUR\_G & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X  & \dots & 30 \\ \hline
+	 COUNTRY & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X  & \dots & 30 \\ \hline
+	 CUSTOMER & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X  & \dots & 30 \\ \hline
+	 CUSTOMER\_G & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X  & \dots & 30 \\ \hline
+	 CUSTOMER\_I\_D & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X  & \dots & 30 \\ \hline
+	 CUSTOMER\_P\_G & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X  & \dots & 30 \\ \hline
+	 DIMENSION2 & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X  & \dots & 30 \\ \hline
+	 ITEM & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X  & \dots & 30 \\ \hline
+	 ITEM\_CA & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X  & \dots & 30 \\ \hline
+	 ITEM\_CO & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X  & \dots & 30 \\ \hline
+	 ITEM\_F & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X  & \dots & 30 \\ \hline
+	 ITEM\_GE & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X  & \dots & 30 \\ \hline
+	 ITEM\_GR & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X  & \dots & 30 \\ \hline
+	 ITEM\_I & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X  & \dots & 30 \\ \hline
+	 ITEM\_V & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X  & \dots & 30 \\ \hline
+	 LENGTH\_G & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X  & \dots & 30 \\ \hline
+	 LOCATIONS & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X  & \dots & 30 \\ \hline
+	 PRODUCT\_G & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X  & \dots & 30 \\ \hline
+	 PROGRAM & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X  & \dots & 30 \\ \hline
+	 REPORT\_H & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X  & \dots & 30 \\ \hline
+	 SALESPERSON & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X  & \dots & 30 \\ \hline
+	 SHOP & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X  & \dots & 30 \\ \hline
+	 SIZE\_G & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X  & \dots & 30 \\ \hline
+	 SUPPLIER & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X  & \dots & 30 \\ \hline
 \end{tabular}}
-\caption{Most common used tables among stored procedures for BI-reports}
+\caption{tables used among all stored procedures for BI-reports}
 \label{tab:tabinall}
 \end{table}
 
@@ -755,88 +784,88 @@ Tools/Programs: & SQL Server Management Studio, SQL Sentry Plan Explorer\\
 \begin{tabular}{  l | c | c | c | c | c | c | c | c | c | c | c | c | c | c | c | c | c | c | c | c | c | c | c | c | c | c | c | c | c | c | c  }
 \LARGE{Table}&\multicolumn{29}{c}{\LARGE{Stored procedure for BI-report}}& \\\hline
 	 & 1\_1\_1 & 1\_1\_2 & 1\_1\_3 & 1\_1\_4 & 1\_1\_5 & 1\_1\_6 & 1\_1\_7 & 1\_1\_8 & 1\_1\_9 & 1\_2\_2 & 1\_3\_2 & 1\_5\_1 & 1\_5\_2 & 1\_5\_7 & 1\_6\_1 & 2\_1\_1 & 2\_1\_2 & 2\_5 & 2\_6 & 3\_1 & 3\_2 & 3\_3 & 3\_4 & 3\_5 & 3\_6 & 3\_7 & 4\_2 & 4\_3 & 4\_4 & 4\_5 & TOTAL \\ \hline
-	EXT\_ACCOUNT & X & X & X & X & X & X & X & X & X & X & X &  &  &  & X & X & X & X & X &  & X & X & X & X & X &  & X & X & X & X & 25 \\ \hline
-	EXT\_BO\_USERS & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & 30 \\ \hline
-	EXT\_COLLECTION & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & 30 \\ \hline
-	EXT\_COLOUR\_GROUP & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & 30 \\ \hline
-	EXT\_COMPANY\_INFORMATION &  &  &  &  &  &  &  &  &  &  &  & X & X & X &  &  &  & X & X & X &  &  &  &  &  & X &  &  &  &  & 7 \\ \hline
-	EXT\_COUNTRY & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & 30 \\ \hline
-	EXT\_CUSTOMER & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & 30 \\ \hline
-	EXT\_CUSTOMER\_GROUP & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & 30 \\ \hline
-	EXT\_CUSTOMER\_INVOICE\_DISCOUNT & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & 30 \\ \hline
-	EXT\_CUSTOMER\_LEDGER\_ENTRY & X & X & X & X & X & X & X & X & X & X & X &  &  &  & X & X & X & X & X &  & X & X & X & X & X &  & X & X & X & X & 25 \\ \hline
-	EXT\_CUSTOMER\_POSTING\_GROUP & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & 30 \\ \hline
-	EXT\_CUSTOMER\_PRICE\_GROUP &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  & 1 \\ \hline
-	EXT\_DELIVERYCHANGE\_REASON &  &  &  &  &  &  &  &  &  &  &  & X & X & X &  &  &  & X & X & X &  &  &  &  &  & X &  &  &  &  & 7 \\ \hline
-	EXT\_DIMENSIONX & X & X & X & X & X & X & X & X & X & X & X &  &  &  & X & X & X & X & X &  & X & X & X & X & X &  & X & X & X & X & 25 \\ \hline
-	EXT\_DIMENSION2 & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & 30 \\ \hline
-	EXT\_DISC\_CODE &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & 1 \\ \hline
-	EXT\_HISTORY\_MASTER & X & X & X & X & X & X & X & X & X & X & X &  &  &  & X & X & X & X & X &  & X & X & X & X & X &  & X & X & X & X & 25 \\ \hline
-	EXT\_ITEM & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & 30 \\ \hline
-	EXT\_ITEM\_CATEGORY & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & 30 \\ \hline
-	EXT\_ITEM\_COMPOSITION & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & 30 \\ \hline
-	EXT\_ITEM\_FREIGHTCLASS & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & 30 \\ \hline
-	EXT\_ITEM\_GENDER & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & 30 \\ \hline
-	EXT\_ITEM\_GROUP & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & 30 \\ \hline
-	EXT\_ITEM\_IMPORT & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & 30 \\ \hline
-	EXT\_ITEM\_LEDGER\_ENTRY & X & X & X & X & X & X & X & X & X & X & X &  &  &  & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & 27 \\ \hline
-	EXT\_ITEM\_VARIANTS & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & 30 \\ \hline
-	EXT\_LENGTH\_GROUP & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & 30 \\ \hline
-	EXT\_LOCATIONS & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & 30 \\ \hline
-	EXT\_ORDER\_TYPE &  &  &  &  &  &  &  &  &  &  &  & X & X & X &  &  &  & X & X & X &  &  &  &  &  & X &  &  &  &  & 7 \\ \hline
-	EXT\_POSTING\_GROUP\_ITEM & X & X & X & X & X & X & X & X & X & X & X &  &  &  & X & X & X & X & X &  & X & X & X & X & X &  & X & X & X & X & 25 \\ \hline
-	EXT\_POSTING\_SETUP &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  & 1 \\ \hline
-	EXT\_PRODUCT\_GROUP & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & 30 \\ \hline
-	EXT\_PROGRAM & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & 30 \\ \hline
-	EXT\_PURCHASE\_HEADER &  &  &  &  &  &  &  &  &  &  &  & X & X & X &  &  &  & X & X & X &  &  &  &  &  & X &  &  &  &  & 7 \\ \hline
-	EXT\_PURCHASE\_LINE &  &  &  &  &  &  &  &  &  &  &  & X & X & X &  &  &  & X & X & X &  &  &  &  &  & X &  &  &  &  & 7 \\ \hline
-	EXT\_REATAIL\_CUSTCERTS &  &  &  &  &  &  &  &  &  &  &  & X & X & X &  &  &  & X & X & X &  &  &  &  &  & X &  &  &  &  & 7 \\ \hline
-	EXT\_REPORT\_HEADER & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & 30 \\ \hline
-	EXT\_REPORT\_RESULT\_1\_1\_1 & X &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & 1 \\ \hline
-	EXT\_REPORT\_RESULT\_1\_1\_2 &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & 1 \\ \hline
-	EXT\_REPORT\_RESULT\_1\_1\_3 &  &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & 1 \\ \hline
-	EXT\_REPORT\_RESULT\_1\_1\_4 &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & 1 \\ \hline
-	EXT\_REPORT\_RESULT\_1\_1\_5 &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & 1 \\ \hline
-	EXT\_REPORT\_RESULT\_1\_1\_6 &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & 1 \\ \hline
-	EXT\_REPORT\_RESULT\_1\_1\_7 &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & 1 \\ \hline
-	EXT\_REPORT\_RESULT\_1\_1\_8 &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & 1 \\ \hline
-	EXT\_REPORT\_RESULT\_1\_1\_9 &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & 1 \\ \hline
-	EXT\_REPORT\_RESULT\_1\_2\_2 &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & 1 \\ \hline
-	EXT\_REPORT\_RESULT\_1\_3\_2 &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & 1 \\ \hline
-	EXT\_REPORT\_RESULT\_1\_5\_1 &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & 1 \\ \hline
-	EXT\_REPORT\_RESULT\_1\_5\_2 &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & 1 \\ \hline
-	EXT\_REPORT\_RESULT\_1\_5\_7 &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & 1 \\ \hline
-	EXT\_REPORT\_RESULT\_1\_6\_1 &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & 1 \\ \hline
-	EXT\_REPORT\_RESULT\_2\_1\_1 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  &  & 1 \\ \hline
-	EXT\_REPORT\_RESULT\_2\_1\_2 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  & 1 \\ \hline
-	EXT\_REPORT\_RESULT\_2\_5 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  &  & 1 \\ \hline
-	EXT\_REPORT\_RESULT\_2\_6 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  & 1 \\ \hline
-	EXT\_REPORT\_RESULT\_3\_1 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  & 1 \\ \hline
-	EXT\_REPORT\_RESULT\_3\_2 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  & 1 \\ \hline
-	EXT\_REPORT\_RESULT\_3\_3 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  & 1 \\ \hline
-	EXT\_REPORT\_RESULT\_3\_4 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  & 1 \\ \hline
-	EXT\_REPORT\_RESULT\_3\_5 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  & 1 \\ \hline
-	EXT\_REPORT\_RESULT\_3\_6 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  & 1 \\ \hline
-	EXT\_REPORT\_RESULT\_3\_7 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  & 1 \\ \hline
-	EXT\_REPORT\_RESULT\_3\_7\_SUB1 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  & 1 \\ \hline
-	EXT\_REPORT\_RESULT\_4\_2 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  & 1 \\ \hline
-	EXT\_REPORT\_RESULT\_4\_3 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  & 1 \\ \hline
-	EXT\_REPORT\_RESULT\_4\_4 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  & 1 \\ \hline
-	EXT\_REPORT\_RESULT\_4\_5 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X & 1 \\ \hline
-	EXT\_RETURN\_REASONS & X & X & X & X & X & X & X & X & X & X & X &  &  &  & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & 27 \\ \hline
-	EXT\_SALES\_HEADER &  &  &  &  &  &  &  &  &  &  &  & X & X & X &  &  &  & X & X & X &  &  &  &  &  & X &  &  &  &  & 7 \\ \hline
-	EXT\_SALES\_LINE &  &  &  &  &  &  &  &  &  &  &  & X & X & X &  &  &  & X & X & X &  &  &  &  &  & X &  &  &  &  & 7 \\ \hline
-	EXT\_SALES\_PRICE &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  & 1 \\ \hline
-	EXT\_SALESPERSON & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & 30 \\ \hline
-	EXT\_SHIPPING\_AGENT &  &  &  &  &  &  &  &  &  &  &  & X & X & X &  &  &  & X & X & X &  &  &  &  &  & X &  &  &  &  & 7 \\ \hline
-	EXT\_SHIPPING\_AGENT\_SERVICE &  &  &  &  &  &  &  &  &  &  &  & X & X & X &  &  &  & X & X & X &  &  &  &  &  & X &  &  &  &  & 7 \\ \hline
-	EXT\_SHOP & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & 30 \\ \hline
-	EXT\_SIZE\_GROUP & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & 30 \\ \hline
-	EXT\_SUPPLIER & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & 30 \\ \hline
-	EXT\_SUPPLIER\_GIROPAYMENT & X & X & X & X & X & X & X & X & X & X & X &  &  &  & X & X & X & X & X &  & X & X & X & X & X &  & X & X & X & X & 25 \\ \hline
-	EXT\_SUPPLIER\_LEDGER\_ENTRY & X & X & X & X & X & X & X & X & X & X & X &  &  &  & X & X & X & X & X &  & X & X & X & X & X &  & X & X & X & X & 25 \\ \hline
-	EXT\_TIMETRACKER &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & 1 \\ \hline
-	EXT\_TIMETRACKER\_WORKCODE &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & 1 \\ \hline
+	 ACCOUNT & X & X & X & X & X & X & X & X & X & X & X &  &  &  & X & X & X & X & X &  & X & X & X & X & X &  & X & X & X & X & 25 \\ \hline
+	 BO\_U & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & 30 \\ \hline
+	 COLLECTION & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & 30 \\ \hline
+	 COLOUR\_G & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & 30 \\ \hline
+	 COMPANY\_I &  &  &  &  &  &  &  &  &  &  &  & X & X & X &  &  &  & X & X & X &  &  &  &  &  & X &  &  &  &  & 7 \\ \hline
+	 COUNTRY & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & 30 \\ \hline
+	 CUSTOMER & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & 30 \\ \hline
+	 CUSTOMER\_G & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & 30 \\ \hline
+	 CUSTOMER\_I\_D & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & 30 \\ \hline
+	 CUSTOMER\_L\_E & X & X & X & X & X & X & X & X & X & X & X &  &  &  & X & X & X & X & X &  & X & X & X & X & X &  & X & X & X & X & 25 \\ \hline
+	 CUSTOMER\_P\_G & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & 30 \\ \hline
+	 CUSTOMER\_P\_G &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  & 1 \\ \hline
+	 DELIVERYCHANGE\_R &  &  &  &  &  &  &  &  &  &  &  & X & X & X &  &  &  & X & X & X &  &  &  &  &  & X &  &  &  &  & 7 \\ \hline
+	 DIMENSION1 & X & X & X & X & X & X & X & X & X & X & X &  &  &  & X & X & X & X & X &  & X & X & X & X & X &  & X & X & X & X & 25 \\ \hline
+	 DIMENSION2 & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & 30 \\ \hline
+	 DISC\_C &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & 1 \\ \hline
+	 HISTORY\_M & X & X & X & X & X & X & X & X & X & X & X &  &  &  & X & X & X & X & X &  & X & X & X & X & X &  & X & X & X & X & 25 \\ \hline
+	 ITEM & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & 30 \\ \hline
+	 ITEM\_CA & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & 30 \\ \hline
+	 ITEM\_CO & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & 30 \\ \hline
+	 ITEM\_F & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & 30 \\ \hline
+	 ITEM\_GE & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & 30 \\ \hline
+	 ITEM\_GR & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & 30 \\ \hline
+	 ITEM\_I & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & 30 \\ \hline
+	 ITEM\_L\_E & X & X & X & X & X & X & X & X & X & X & X &  &  &  & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & 27 \\ \hline
+	 ITEM\_V & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & 30 \\ \hline
+	 LENGTH\_G & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & 30 \\ \hline
+	 LOCATIONS & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & 30 \\ \hline
+	 ORDER\_T &  &  &  &  &  &  &  &  &  &  &  & X & X & X &  &  &  & X & X & X &  &  &  &  &  & X &  &  &  &  & 7 \\ \hline
+	 POSTING\_G\_I & X & X & X & X & X & X & X & X & X & X & X &  &  &  & X & X & X & X & X &  & X & X & X & X & X &  & X & X & X & X & 25 \\ \hline
+	 POSTING\_S &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  & 1 \\ \hline
+	 PRODUCT\_G & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & 30 \\ \hline
+	 PROGRAM & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & 30 \\ \hline
+	 PURCHASE\_H &  &  &  &  &  &  &  &  &  &  &  & X & X & X &  &  &  & X & X & X &  &  &  &  &  & X &  &  &  &  & 7 \\ \hline
+	 PURCHASE\_L &  &  &  &  &  &  &  &  &  &  &  & X & X & X &  &  &  & X & X & X &  &  &  &  &  & X &  &  &  &  & 7 \\ \hline
+	 REATAIL\_C &  &  &  &  &  &  &  &  &  &  &  & X & X & X &  &  &  & X & X & X &  &  &  &  &  & X &  &  &  &  & 7 \\ \hline
+	 REPORT\_H & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & 30 \\ \hline
+	 REPORT\_RESULT\_1\_1\_1 & X &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & 1 \\ \hline
+	 REPORT\_RESULT\_1\_1\_2 &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & 1 \\ \hline
+	 REPORT\_RESULT\_1\_1\_3 &  &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & 1 \\ \hline
+	 REPORT\_RESULT\_1\_1\_4 &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & 1 \\ \hline
+	 REPORT\_RESULT\_1\_1\_5 &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & 1 \\ \hline
+	 REPORT\_RESULT\_1\_1\_6 &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & 1 \\ \hline
+	 REPORT\_RESULT\_1\_1\_7 &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & 1 \\ \hline
+	 REPORT\_RESULT\_1\_1\_8 &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & 1 \\ \hline
+	 REPORT\_RESULT\_1\_1\_9 &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & 1 \\ \hline
+	 REPORT\_RESULT\_1\_2\_2 &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & 1 \\ \hline
+	 REPORT\_RESULT\_1\_3\_2 &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & 1 \\ \hline
+	 REPORT\_RESULT\_1\_5\_1 &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & 1 \\ \hline
+	 REPORT\_RESULT\_1\_5\_2 &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & 1 \\ \hline
+	 REPORT\_RESULT\_1\_5\_7 &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & 1 \\ \hline
+	 REPORT\_RESULT\_1\_6\_1 &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & 1 \\ \hline
+	 REPORT\_RESULT\_2\_1\_1 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  &  & 1 \\ \hline
+	 REPORT\_RESULT\_2\_1\_2 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  & 1 \\ \hline
+	 REPORT\_RESULT\_2\_5 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  &  & 1 \\ \hline
+	 REPORT\_RESULT\_2\_6 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  & 1 \\ \hline
+	 REPORT\_RESULT\_3\_1 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  & 1 \\ \hline
+	 REPORT\_RESULT\_3\_2 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  & 1 \\ \hline
+	 REPORT\_RESULT\_3\_3 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  & 1 \\ \hline
+	 REPORT\_RESULT\_3\_4 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  & 1 \\ \hline
+	 REPORT\_RESULT\_3\_5 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  & 1 \\ \hline
+	 REPORT\_RESULT\_3\_6 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  & 1 \\ \hline
+	 REPORT\_RESULT\_3\_7 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  & 1 \\ \hline
+	 REPORT\_RESULT\_3\_7\_SUB1 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  & 1 \\ \hline
+	 REPORT\_RESULT\_4\_2 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  & 1 \\ \hline
+	 REPORT\_RESULT\_4\_3 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  & 1 \\ \hline
+	 REPORT\_RESULT\_4\_4 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  & 1 \\ \hline
+	 REPORT\_RESULT\_4\_5 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X & 1 \\ \hline
+	 RETURN\_R & X & X & X & X & X & X & X & X & X & X & X &  &  &  & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & 27 \\ \hline
+	 SALES\_H &  &  &  &  &  &  &  &  &  &  &  & X & X & X &  &  &  & X & X & X &  &  &  &  &  & X &  &  &  &  & 7 \\ \hline
+	 SALES\_L &  &  &  &  &  &  &  &  &  &  &  & X & X & X &  &  &  & X & X & X &  &  &  &  &  & X &  &  &  &  & 7 \\ \hline
+	 SALES\_P &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  & 1 \\ \hline
+	 SALESPERSON & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & 30 \\ \hline
+	 SHIPPING\_A &  &  &  &  &  &  &  &  &  &  &  & X & X & X &  &  &  & X & X & X &  &  &  &  &  & X &  &  &  &  & 7 \\ \hline
+	 SHIPPING\_A\_S &  &  &  &  &  &  &  &  &  &  &  & X & X & X &  &  &  & X & X & X &  &  &  &  &  & X &  &  &  &  & 7 \\ \hline
+	 SHOP & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & 30 \\ \hline
+	 SIZE\_G & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & 30 \\ \hline
+	 SUPPLIER & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & X & 30 \\ \hline
+	 SUPPLIER\_G & X & X & X & X & X & X & X & X & X & X & X &  &  &  & X & X & X & X & X &  & X & X & X & X & X &  & X & X & X & X & 25 \\ \hline
+	 SUPPLIER\_L\_E & X & X & X & X & X & X & X & X & X & X & X &  &  &  & X & X & X & X & X &  & X & X & X & X & X &  & X & X & X & X & 25 \\ \hline
+	 TIMETRACKER &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & 1 \\ \hline
+	 TIMETRACKER\_W &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & 1 \\ \hline
 	TOTAL & 36 & 36 & 36 & 36 & 36 & 36 & 36 & 36 & 36 & 36 & 37 & 37 & 37 & 37 & 38 & 36 & 36 & 46 & 46 & 39 & 39 & 36 & 36 & 36 & 36 & 40 & 36 & 36 & 36 & 36 & \  
 \end{tabular}}
 \caption{The frequency of table-use in the stored
@@ -851,88 +880,88 @@ Tools/Programs: & SQL Server Management Studio, SQL Sentry Plan Explorer\\
 \begin{tabular}{ l | p{5em} | p{5em}| p{5em}| p{5em}| l  }
 \LARGE{Table}&\multicolumn{4}{c}{\LARGE{Stored procedure for BI-report}}& \\\hline
 	 & 2\_5 & 2\_6 & 3\_7 & 3\_1 & 3\_2 \\ \hline
-	EXT\_BO\_USERS & X & X & X & X & X \\ \hline
-	EXT\_COLLECTION & X & X & X & X & X \\ \hline
-	EXT\_COLOUR\_GROUP & X & X & X & X & X \\ \hline
-	EXT\_COUNTRY & X & X & X & X & X \\ \hline
-	EXT\_CUSTOMER & X & X & X & X & X \\ \hline
-	EXT\_CUSTOMER\_GROUP & X & X & X & X & X \\ \hline
-	EXT\_CUSTOMER\_INVOICE\_DISCOUNT & X & X & X & X & X \\ \hline
-	EXT\_CUSTOMER\_POSTING\_GROUP & X & X & X & X & X \\ \hline
-	EXT\_DIMENSION2 & X & X & X & X & X \\ \hline
-	EXT\_ITEM & X & X & X & X & X \\ \hline
-	EXT\_ITEM\_CATEGORY & X & X & X & X & X \\ \hline
-	EXT\_ITEM\_COMPOSITION & X & X & X & X & X \\ \hline
-	EXT\_ITEM\_FREIGHTCLASS & X & X & X & X & X \\ \hline
-	EXT\_ITEM\_GENDER & X & X & X & X & X \\ \hline
-	EXT\_ITEM\_GROUP & X & X & X & X & X \\ \hline
-	EXT\_ITEM\_IMPORT & X & X & X & X & X \\ \hline
-	EXT\_ITEM\_VARIANTS & X & X & X & X & X \\ \hline
-	EXT\_LENGTH\_GROUP & X & X & X & X & X \\ \hline
-	EXT\_LOCATIONS & X & X & X & X & X \\ \hline
-	EXT\_PRODUCT\_GROUP & X & X & X & X & X \\ \hline
-	EXT\_PROGRAM & X & X & X & X & X \\ \hline
-	EXT\_REPORT\_HEADER & X & X & X & X & X \\ \hline
-	EXT\_SALESPERSON & X & X & X & X & X \\ \hline
-	EXT\_SHOP & X & X & X & X & X \\ \hline
-	EXT\_SIZE\_GROUP & X & X & X & X & X \\ \hline
-	EXT\_SUPPLIER & X & X & X & X & X \\ \hline
-	EXT\_ITEM\_LEDGER\_ENTRY & X & X & X & X & X \\ \hline
-	EXT\_RETURN\_REASONS & X & X & X & X & X \\ \hline
-	EXT\_ACCOUNT & X & X &  &  & X \\ \hline
-	EXT\_CUSTOMER\_LEDGER\_ENTRY & X & X &  &  & X \\ \hline
-	EXT\_DIMENSIONX & X & X &  &  & X \\ \hline
-	EXT\_HISTORY\_MASTER & X & X &  &  & X \\ \hline
-	EXT\_POSTING\_GROUP\_ITEM & X & X &  &  & X \\ \hline
-	EXT\_SUPPLIER\_GIROPAYMENT & X & X &  &  & X \\ \hline
-	EXT\_SUPPLIER\_LEDGER\_ENTRY & X & X &  &  & X \\ \hline
-	EXT\_COMPANY\_INFORMATION & X & X & X & X &  \\ \hline
-	EXT\_DELIVERYCHANGE\_REASON & X & X & X & X &  \\ \hline
-	EXT\_ORDER\_TYPE & X & X & X & X &  \\ \hline
-	EXT\_PURCHASE\_HEADER & X & X & X & X &  \\ \hline
-	EXT\_PURCHASE\_LINE & X & X & X & X &  \\ \hline
-	EXT\_REATAIL\_CUSTCERTS & X & X & X & X &  \\ \hline
-	EXT\_SALES\_HEADER & X & X & X & X &  \\ \hline
-	EXT\_SALES\_LINE & X & X & X & X &  \\ \hline
-	EXT\_SHIPPING\_AGENT & X & X & X & X &  \\ \hline
-	EXT\_SHIPPING\_AGENT\_SERVICE & X & X & X & X &  \\ \hline
-	EXT\_CUSTOMER\_PRICE\_GROUP &  &  &  &  & X \\ \hline
-	EXT\_DISC\_CODE &  &  &  &  &  \\ \hline
-	EXT\_POSTING\_SETUP &  &  &  &  & X \\ \hline
-	EXT\_REPORT\_RESULT\_1\_1\_1 &  &  &  &  &  \\ \hline
-	EXT\_REPORT\_RESULT\_1\_1\_2 &  &  &  &  &  \\ \hline
-	EXT\_REPORT\_RESULT\_1\_1\_3 &  &  &  &  &  \\ \hline
-	EXT\_REPORT\_RESULT\_1\_1\_4 &  &  &  &  &  \\ \hline
-	EXT\_REPORT\_RESULT\_1\_1\_5 &  &  &  &  &  \\ \hline
-	EXT\_REPORT\_RESULT\_1\_1\_6 &  &  &  &  &  \\ \hline
-	EXT\_REPORT\_RESULT\_1\_1\_7 &  &  &  &  &  \\ \hline
-	EXT\_REPORT\_RESULT\_1\_1\_8 &  &  &  &  &  \\ \hline
-	EXT\_REPORT\_RESULT\_1\_1\_9 &  &  &  &  &  \\ \hline
-	EXT\_REPORT\_RESULT\_1\_2\_2 &  &  &  &  &  \\ \hline
-	EXT\_REPORT\_RESULT\_1\_3\_2 &  &  &  &  &  \\ \hline
-	EXT\_REPORT\_RESULT\_1\_5\_1 &  &  &  &  &  \\ \hline
-	EXT\_REPORT\_RESULT\_1\_5\_2 &  &  &  &  &  \\ \hline
-	EXT\_REPORT\_RESULT\_1\_5\_7 &  &  &  &  &  \\ \hline
-	EXT\_REPORT\_RESULT\_1\_6\_1 &  &  &  &  &  \\ \hline
-	EXT\_REPORT\_RESULT\_2\_1\_1 &  &  &  &  &  \\ \hline
-	EXT\_REPORT\_RESULT\_2\_1\_2 &  &  &  &  &  \\ \hline
-	EXT\_REPORT\_RESULT\_2\_5 & X &  &  &  &  \\ \hline
-	EXT\_REPORT\_RESULT\_2\_6 &  & X &  &  &  \\ \hline
-	EXT\_REPORT\_RESULT\_3\_1 &  &  &  & X &  \\ \hline
-	EXT\_REPORT\_RESULT\_3\_2 &  &  &  &  & X \\ \hline
-	EXT\_REPORT\_RESULT\_3\_3 &  &  &  &  &  \\ \hline
-	EXT\_REPORT\_RESULT\_3\_4 &  &  &  &  &  \\ \hline
-	EXT\_REPORT\_RESULT\_3\_5 &  &  &  &  &  \\ \hline
-	EXT\_REPORT\_RESULT\_3\_6 &  &  &  &  &  \\ \hline
-	EXT\_REPORT\_RESULT\_3\_7 &  &  & X &  &  \\ \hline
-	EXT\_REPORT\_RESULT\_3\_7\_SUB1 &  &  & X &  &  \\ \hline
-	EXT\_REPORT\_RESULT\_4\_2 &  &  &  &  &  \\ \hline
-	EXT\_REPORT\_RESULT\_4\_3 &  &  &  &  &  \\ \hline
-	EXT\_REPORT\_RESULT\_4\_4 &  &  &  &  &  \\ \hline
-	EXT\_REPORT\_RESULT\_4\_5 &  &  &  &  &  \\ \hline
-	EXT\_SALES\_PRICE &  &  &  &  & X \\ \hline
-	EXT\_TIMETRACKER &  &  &  &  &  \\ \hline
-	EXT\_TIMETRACKER\_WORKCODE &  &  &  &  &  \\ \hline
+	 BO\_U & X & X & X & X & X \\ \hline
+	 COLLECTION & X & X & X & X & X \\ \hline
+	 COLOUR\_G & X & X & X & X & X \\ \hline
+	 COUNTRY & X & X & X & X & X \\ \hline
+	 CUSTOMER & X & X & X & X & X \\ \hline
+	 CUSTOMER\_G & X & X & X & X & X \\ \hline
+	 CUSTOMER\_I\_D & X & X & X & X & X \\ \hline
+	 CUSTOMER\_P\_G & X & X & X & X & X \\ \hline
+	 DIMENSION2 & X & X & X & X & X \\ \hline
+	 ITEM & X & X & X & X & X \\ \hline
+	 ITEM\_CA & X & X & X & X & X \\ \hline
+	 ITEM\_CO & X & X & X & X & X \\ \hline
+	 ITEM\_F & X & X & X & X & X \\ \hline
+	 ITEM\_GE & X & X & X & X & X \\ \hline
+	 ITEM\_GR & X & X & X & X & X \\ \hline
+	 ITEM\_I & X & X & X & X & X \\ \hline
+	 ITEM\_V & X & X & X & X & X \\ \hline
+	 LENGTH\_G & X & X & X & X & X \\ \hline
+	 LOCATIONS & X & X & X & X & X \\ \hline
+	 PRODUCT\_G & X & X & X & X & X \\ \hline
+	 PROGRAM & X & X & X & X & X \\ \hline
+	 REPORT\_H & X & X & X & X & X \\ \hline
+	 SALESPERSON & X & X & X & X & X \\ \hline
+	 SHOP & X & X & X & X & X \\ \hline
+	 SIZE\_G & X & X & X & X & X \\ \hline
+	 SUPPLIER & X & X & X & X & X \\ \hline
+	 ITEM\_L\_E& X & X & X & X & X \\ \hline
+	 RETURN\_R & X & X & X & X & X \\ \hline
+	 ACCOUNT & X & X &  &  & X \\ \hline
+	 CUSTOMER\_L\_E & X & X &  &  & X \\ \hline
+	 DIMENSION1 & X & X &  &  & X \\ \hline
+	 HISTORY\_M & X & X &  &  & X \\ \hline
+	 POSTING\_G\_I& X & X &  &  & X \\ \hline
+	 SUPPLIER\_G & X & X &  &  & X \\ \hline
+	 SUPPLIER\_L\_E & X & X &  &  & X \\ \hline
+	 COMPANY\_I & X & X & X & X &  \\ \hline
+	 DELIVERYCHANGE\_R & X & X & X & X &  \\ \hline
+	 ORDER\_T & X & X & X & X &  \\ \hline
+	 PURCHASE\_H & X & X & X & X &  \\ \hline
+	 PURCHASE\_L & X & X & X & X &  \\ \hline
+	 REATAIL\_C & X & X & X & X &  \\ \hline
+	 SALES\_H & X & X & X & X &  \\ \hline
+	 SALES\_L & X & X & X & X &  \\ \hline
+	 SHIPPING\_A & X & X & X & X &  \\ \hline
+	 SHIPPING\_A\_S & X & X & X & X &  \\ \hline
+	 CUSTOMER\_P\_G &  &  &  &  & X \\ \hline
+	 DISC\_C &  &  &  &  &  \\ \hline
+	 POSTING\_S &  &  &  &  & X \\ \hline
+	 REPORT\_RESULT\_1\_1\_1 &  &  &  &  &  \\ \hline
+	 REPORT\_RESULT\_1\_1\_2 &  &  &  &  &  \\ \hline
+	 REPORT\_RESULT\_1\_1\_3 &  &  &  &  &  \\ \hline
+	 REPORT\_RESULT\_1\_1\_4 &  &  &  &  &  \\ \hline
+	 REPORT\_RESULT\_1\_1\_5 &  &  &  &  &  \\ \hline
+	 REPORT\_RESULT\_1\_1\_6 &  &  &  &  &  \\ \hline
+	 REPORT\_RESULT\_1\_1\_7 &  &  &  &  &  \\ \hline
+	 REPORT\_RESULT\_1\_1\_8 &  &  &  &  &  \\ \hline
+	 REPORT\_RESULT\_1\_1\_9 &  &  &  &  &  \\ \hline
+	 REPORT\_RESULT\_1\_2\_2 &  &  &  &  &  \\ \hline
+	 REPORT\_RESULT\_1\_3\_2 &  &  &  &  &  \\ \hline
+	 REPORT\_RESULT\_1\_5\_1 &  &  &  &  &  \\ \hline
+	 REPORT\_RESULT\_1\_5\_2 &  &  &  &  &  \\ \hline
+	 REPORT\_RESULT\_1\_5\_7 &  &  &  &  &  \\ \hline
+	 REPORT\_RESULT\_1\_6\_1 &  &  &  &  &  \\ \hline
+	 REPORT\_RESULT\_2\_1\_1 &  &  &  &  &  \\ \hline
+	 REPORT\_RESULT\_2\_1\_2 &  &  &  &  &  \\ \hline
+	 REPORT\_RESULT\_2\_5 & X &  &  &  &  \\ \hline
+	 REPORT\_RESULT\_2\_6 &  & X &  &  &  \\ \hline
+	 REPORT\_RESULT\_3\_1 &  &  &  & X &  \\ \hline
+	 REPORT\_RESULT\_3\_2 &  &  &  &  & X \\ \hline
+	 REPORT\_RESULT\_3\_3 &  &  &  &  &  \\ \hline
+	 REPORT\_RESULT\_3\_4 &  &  &  &  &  \\ \hline
+	 REPORT\_RESULT\_3\_5 &  &  &  &  &  \\ \hline
+	 REPORT\_RESULT\_3\_6 &  &  &  &  &  \\ \hline
+	 REPORT\_RESULT\_3\_7 &  &  & X &  &  \\ \hline
+	 REPORT\_RESULT\_3\_7\_SUB1 &  &  & X &  &  \\ \hline
+	 REPORT\_RESULT\_4\_2 &  &  &  &  &  \\ \hline
+	 REPORT\_RESULT\_4\_3 &  &  &  &  &  \\ \hline
+	 REPORT\_RESULT\_4\_4 &  &  &  &  &  \\ \hline
+	 REPORT\_RESULT\_4\_5 &  &  &  &  &  \\ \hline
+	 SALES\_P &  &  &  &  & X \\ \hline
+	 TIMETRACKER &  &  &  &  &  \\ \hline
+	 TIMETRACKER\_W &  &  &  &  &  \\ \hline
 	TOTAL & 46 & 46 & 40 & 39 & 39 \\ \hline
 
 \end{tabular}}
