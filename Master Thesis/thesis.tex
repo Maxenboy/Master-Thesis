@@ -168,8 +168,10 @@ There has been a lot of attempts at solving many of the problems that occur when
 \item Andra liknande system (hur andra retail-butiker/kedjor gör)
 \end{itemize}
 
-\subsubsection{Neo4J}
-Neo4J 1.0 was released in February 2010 \cite{Neo4J10}. It is a graph database that store its data as nodes and relationships. Neo4j was developed to counter a new scaling problem. Applications that handles entities, such as people, do not grow linearly but exponentially, since the more entities there are, the more relationships there are. Graph databases were developed with the philosophy that relationships are just as important as the data stored.
+\subsubsection{Neo4J \& Graph Databases}
+Neo4J 1.0 was released in February 2010 \cite{Neo4J10}. It is a graph database that store its data as nodes and relationships. Neo4j was developed to counter a new scaling problem. Applications that handles entities, such as people, do not grow linearly but exponentially, since the more entities there are, the more relationships there are. Graph databases were developed with the philosophy that relationships are just as important as the data stored. So what would traditionally be stored as a table or even as a row in a table is in Neo4J stored as a data structure (node) with properties and relationships to other nodes. This is especially powerful in path operation problems like the "friend of a friend of a friend..."-search problem in social media platforms. Finding friends of friends of friends in a relational database involves emulating path operations by recursively joining data sets. This can cause query latency and memory usage to grow unpredictably, especially in large data-sets. In a graph database, relationships are stored physically on disk. This means that in a query, one can look at the relationships, which are first-class entities, right away, instead of having to find them at runtime. \\
+Different kinds of nodes and edges can be used to add many layers of meaning.
+One of the biggest argument against these types of databases is that it is bad at handling data sets. If a list of 
 
 \section{Contributions}
 
