@@ -516,22 +516,22 @@ The \texttt{SET STATISTICS IO ON} command was, as for the \texttt{SET STATISTICS
 \begin{tabular}{|l|l|l|l|l|l|l|}
 \hline
 Statement & Est. Cost & Est CPU & Est IO Cost & Est Rows & Actual Rows & Key Lookups\\\hline
-insert into  Table X &	37,6\% & 20,1\% & 46,7\% & \cellcolor{orange} 296 024 & \cellcolor{orange} 370 813	2 & 8\\\hline 
-update  Table X set PurchaseQty & 23,0\% & 38,6\% & 17,5\% & 632 065 & 632 065 & 0 \\\hline 
-update  Table X set StockValue & 22,9\% & 38,6\% & 17,5\% & 632 065 & 632 065 & 0 \\\hline 
-update  Table X set AvailableQty & 8,3\% & 2,7\% & 6,5\% & 632 065 & 632 065 & 0 \\\hline 
-update  Table X set PhysicalQty & 7,2\% & 0,0\% & 9,9\% & 632 065 & 632 065 & 0 \\\hline 
-delete from  Table X & 1,0\% & 0,0\% & 1,9\% & \cellcolor{orange} 167 001 & \cellcolor{orange} 283 729 & 0 \\\hline 
+insert into  Table X &	0,0\% & 0,0\% & 0,0\% & \cellcolor{red} 7 & \cellcolor{red} 235 270 & 2\\\hline 
+update  Table X set PurchaseQty & 55,5\% & 93,6\% & 44,5\% & 651 830 & 651 830 & 0 \\\hline 
+update  Table X set StockQty & 17,6\% & 0,0\% & 25,3\% & 651 830 & 651 830 & 0 \\\hline 
+update  Table X set AvailableQty & 20,3\% & 6,4\% & 16,5\% & 651 830 & 651 830 & 0 \\\hline 
+delete from  Table X & 0,0\% & 0,0\% & 0,0\% &\cellcolor{red} 1 & \cellcolor{red} 151 958& 0 \\\hline 
+update  Table X set TBPercent & 6,6\% & 0,0\% & 13,6\% & 499 872 &  499 872 & 0 \\\hline 
 
 \end{tabular}
-\caption{Stored procedure 2\_6's statement blocks in execution plan}
+\caption{Stored procedure 2\_5's statement blocks in execution plan}
 \end{center}
 \end{table}
 
 \begin{figure}[H]
-\hspace*{-2.5cm}
-\includegraphics[scale=0.7]{Pictures/plan.png}
-\caption{Graphical execution plan snippet of \texttt{INSERT} statement in stored procedure 2\_6}
+\hspace*{-2cm}
+\includegraphics[scale=0.85]{Pictures/plan.png}
+\caption{Graphical execution plan of the most resource intensive\texttt{UPDATE} statement in stored procedure 2\_5}
 \end{figure}
 
 \subsection{Index fragmentation}
