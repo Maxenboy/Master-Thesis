@@ -387,17 +387,17 @@ Much of the analysis revolved around the stored procedures, since it was there t
 As mentioned in the technical description a total of 59 stored procedures are present in the system. A little more than 50\% (30) of these subroutines are directly involved with the BI-reports. In the web interface there are several more reports that can be produced, but the ones not covered by stored procedures are treated in the back-end of the system.  
 \begin{table}[H]
 \begin{center}
-\begin{tabular}{l l}
+\begin{tabular}{l p{9cm}}
 Stored procedure: & Report(s)\\
 1\_1\_1-1\_1\_9: & Sales $\rightarrow$ Standard\\
 1\_2\_2: & Sales $\rightarrow$ Key Figures $\rightarrow$ Sales per weekday and hour \\
 1\_3\_2: & Sales $\rightarrow$ Codes $\rightarrow$ Discount Codes  \\
-1\_5\_1,1\_5\_2,1\_5\_7: & Sales $\rightarrow$ Order $\rightarrow$ Items, Variants, Daily Ordervalue\\
+1\_5\_1;1\_5\_2;1\_5\_7: & Sales $\rightarrow$ Order $\rightarrow$ Items; Variants; Daily Ordervalue\\
 1\_6\_1: & Sales $\rightarrow$ Timesheets $\rightarrow$ Standard \\
-2\_1\_1, 2\_1\_2: & ? \\
-2\_5, 2\_6: & ? \\
-3\_1-3\_7: & ? \\
-4\_2-4\_5: & ? \\
+2\_1\_1; 2\_1\_2: & Purchase $\rightarrow$ Standard $\rightarrow$ Items; Variants \\
+2\_5; 2\_6: & Purchase $\rightarrow$ Purchase Planner $\rightarrow$ Rows; Advanced\\
+3\_1-3\_7: & Location \\
+4\_2-4\_5: & Accounting $\rightarrow$ Accounts, Dimension Matrix; Income Statement; Balance Sheet; Account, Day Matrix \\
 \end{tabular}
 \caption{The relation between stored procedures and BI-reports}
 \end{center}
