@@ -387,17 +387,17 @@ Much of the analysis revolved around the stored procedures, since it was there t
 As mentioned in the technical description a total of 59 stored procedures are present in the system. A little more than 50\% (30) of these subroutines are directly involved with the BI-reports. In the web interface there are several more reports that can be produced, but the ones not covered by stored procedures are treated in the back-end of the system.  
 \begin{table}[H]
 \begin{center}
-\begin{tabular}{l l}
+\begin{tabular}{l p{9cm}}
 Stored procedure: & Report(s)\\
 1\_1\_1-1\_1\_9: & Sales $\rightarrow$ Standard\\
 1\_2\_2: & Sales $\rightarrow$ Key Figures $\rightarrow$ Sales per weekday and hour \\
 1\_3\_2: & Sales $\rightarrow$ Codes $\rightarrow$ Discount Codes  \\
-1\_5\_1,1\_5\_2,1\_5\_7: & Sales $\rightarrow$ Order $\rightarrow$ Items, Variants, Daily Ordervalue\\
+1\_5\_1;1\_5\_2;1\_5\_7: & Sales $\rightarrow$ Order $\rightarrow$ Items; Variants; Daily Ordervalue\\
 1\_6\_1: & Sales $\rightarrow$ Timesheets $\rightarrow$ Standard \\
-2\_1\_1, 2\_1\_2: & ? \\
-2\_5, 2\_6: & ? \\
-3\_1-3\_7: & ? \\
-4\_2-4\_5: & ? \\
+2\_1\_1; 2\_1\_2: & Purchase $\rightarrow$ Standard $\rightarrow$ Items; Variants \\
+2\_5; 2\_6: & Purchase $\rightarrow$ Purchase Planner $\rightarrow$ Rows; Advanced\\
+3\_1-3\_7: & Location \\
+4\_2-4\_5: & Accounting $\rightarrow$ Accounts, Dimension Matrix; Income Statement; Balance Sheet; Account, Day Matrix \\
 \end{tabular}
 \caption{The relation between stored procedures and BI-reports}
 \end{center}
@@ -508,7 +508,7 @@ The \texttt{SET STATISTICS IO ON} command was, as for the \texttt{SET STATISTICS
 \noindent The above information is part of the key information to tuning the stored procedures, especially the Scan count and Logical reads. But to properly alter the key item we need to use the information in conjunction with the queries execution plans  \cite{IO}.  
 
 \subsubsection{Execution plans}
-
+\cite{plantutorial} \cite{fritchey} 
 
 \begin{table}[H]
 \begin{center}
@@ -516,22 +516,22 @@ The \texttt{SET STATISTICS IO ON} command was, as for the \texttt{SET STATISTICS
 \begin{tabular}{|l|l|l|l|l|l|l|}
 \hline
 Statement & Est. Cost & Est CPU & Est IO Cost & Est Rows & Actual Rows & Key Lookups\\\hline
-insert into  Table X &	37,6\% & 20,1\% & 46,7\% & \cellcolor{orange} 296 024 & \cellcolor{orange} 370 813	2 & 8\\\hline 
-update  Table X set PurchaseQty & 23,0\% & 38,6\% & 17,5\% & 632 065 & 632 065 & 0 \\\hline 
-update  Table X set StockValue & 22,9\% & 38,6\% & 17,5\% & 632 065 & 632 065 & 0 \\\hline 
-update  Table X set AvailableQty & 8,3\% & 2,7\% & 6,5\% & 632 065 & 632 065 & 0 \\\hline 
-update  Table X set PhysicalQty & 7,2\% & 0,0\% & 9,9\% & 632 065 & 632 065 & 0 \\\hline 
-delete from  Table X & 1,0\% & 0,0\% & 1,9\% & \cellcolor{orange} 167 001 & \cellcolor{orange} 283 729 & 0 \\\hline 
+insert into  Table X &	0,0\% & 0,0\% & 0,0\% & \cellcolor{red} 7 & \cellcolor{red} 235 270 & 2\\\hline 
+update  Table X set PurchaseQty & 55,5\% & 93,6\% & 44,5\% & 651 830 & 651 830 & 0 \\\hline 
+update  Table X set StockQty & 17,6\% & 0,0\% & 25,3\% & 651 830 & 651 830 & 0 \\\hline 
+update  Table X set AvailableQty & 20,3\% & 6,4\% & 16,5\% & 651 830 & 651 830 & 0 \\\hline 
+delete from  Table X & 0,0\% & 0,0\% & 0,0\% &\cellcolor{red} 1 & \cellcolor{red} 151 958& 0 \\\hline 
+update  Table X set TBPercent & 6,6\% & 0,0\% & 13,6\% & 499 872 &  499 872 & 0 \\\hline 
 
 \end{tabular}
-\caption{Stored procedure 2\_6's statement blocks in execution plan}
+\caption{Stored procedure 2\_5's statement blocks in execution plan}
 \end{center}
 \end{table}
 
 \begin{figure}[H]
-\hspace*{-2.5cm}
-\includegraphics[scale=0.7]{Pictures/plan.png}
-\caption{Graphical execution plan snippet of \texttt{INSERT} statement in stored procedure 2\_6}
+\hspace*{-2cm}
+\includegraphics[scale=0.85]{Pictures/plan.png}
+\caption{Graphical execution plan of the most resource intensive\texttt{UPDATE} statement in stored procedure 2\_5}
 \end{figure}
 
 \subsection{Index fragmentation}
