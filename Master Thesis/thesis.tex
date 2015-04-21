@@ -102,6 +102,8 @@ Today's users expect their applications to be fast and there are certainly a lot
 
 \section{Background}
 
+\subsection{Database Optimization}
+\todo{Skriv om det generellt}
 
 \subsection{Case Company}
 Perfect It BeX AB was founded in 2007. In the beginning they made business extensions such as B2B, e-commerce and retail for the Microsoft Navision ERP. Eventually they started development of their own ERP-system to accommodate their extensions since they felt limited by the technologies on which Navision was based. In 2010 they released three products; \bex Online, \bex Retail, and \bex B2B. \bex Online is the main product on which the other products rely. It is a completely cloud-based ERP-system specialized for the retail industry. The main functionality in \bex Online are:
@@ -117,22 +119,23 @@ Perfect It BeX AB was founded in 2007. In the beginning they made business exten
 In recent years, Perfect It has felt an increasing demand from customers for better business intelligence capabilities. In response to this they have improved the Business Report functionality in \bex Online, to be able to give a wider range of different financial key values. According to their CEO, being able to offer their customers tools enabling for good business intelligence, is key to staying competitive. Therefore, they want to develop these tools further to make them better and to include more functionality. However, they have noticed that generating some of the reports can take a relatively long time, especially for their bigger clients whose system's have a lot of data.
 
 \subsection{BI-reports}\label{sec:BI}
-Business intelligence is the art of analyzing large amounts of financial and company data and transforming it into meaningful and useful information on which a company can base their decisions. 
-\begin{itemize}
-\item What are they used for?
-\item How are they done?
-\item Where are they?
-\item Which of them are used most and/or are critical for the system?
-\item Which are the critical ones
+Business intelligence is the art of analyzing large amounts of raw financial and company data and transforming it into meaningful and useful information on which a company can base their decisions. This often involves using different software solutions specialized for these tasks. One of the most common types of business intelligence is reports that shows accumulated or compiled data. In the case company's system there are features for business reports in the following areas:
 
-\todo{Någon lista om vilka rapporter som finns; Sales, Accounting osv.}
+\begin{itemize}
+\item Sales
+\item Purchasing
+\item Warehousing
+\item Accounting
 \end{itemize}
+In each area there are several different kinds of reports depending on what key values a user are looking for. For example, Sales has 26 different kinds of reports that all mine the system for different kinds of data to present. These kinds of reports are referred to be at the top layers of the BI architectural stack together with analytics and dashboards \cite{Evelson10}. They perform the first step of mining and arranging unsorted data sets into arranged and understandable data, and it is on these kinds of reports that further BI analysis can be based.
+
+\todo{Eventuellt skriva mer om vilka rapporter som anses vara viktigast för företaget, men är det intressant för läsaren? }
 
 \section{Problem description}
 Perfect It \bex AB was motivated to collaborate with academia in order to investigate how to increase the generation speed of the business intelligence-reports and to find a possible solution that increases this speed.
 
 \section{Thesis Goals} \label{sec:goals}
-The goal of this thesis is to identify issues related to the problem, and to propose a solution for speeding up the generation of BI reports in Perfect IT \bex AB's product \bex Online. To be able to speed up the BI report generation the processes responsible needs to be analyzed and optimized or rebuilt for speed. The solution needs to be versatile to handle the current system, to handle new functionality and also future company growth. Hence, the suggested changes needs to be scalable. Taking in to account that Perfect IT \bex has one physical server, the scalability should be vertically   \cite{scalability} since the company will provide the system to more clients in the future.\\\\
+The goal of this thesis is to identify issues related to the problem, and to propose a solution for speeding up the generation of BI reports in Perfect IT \bex AB's product \bex Online. To be able to speed up the BI report generation the processes responsible needs to be analyzed and optimized or rebuilt for speed. The solution needs to be versatile to handle the current system, to handle new functionality and also future company growth. Hence, the suggested changes needs to be scalable. Taking in to account that Perfect IT \bex has one physical server, the scalability should be vertically \cite{scalability} since the company will provide the system to more clients in the future.\\\\
 In order to make the above optimization possible, the following goals have been established:
 \begin{enumerate}
 \item Identify the most common causes to db inefficiency.
@@ -172,9 +175,8 @@ There has been a lot of attempts at solving many of the problems that occur when
 \end{itemize}
 
 \subsubsection{Neo4J \& Graph Databases}
-Neo4J 1.0 was released in February 2010 \cite{Neo4J10}. It is a graph database that store its data as nodes and relationships. Neo4j was developed to counter a new scaling problem. Applications that handles entities, such as people, do not grow linearly but exponentially, since the more entities there are, the more relationships there are. Graph databases were developed with the philosophy that relationships are just as important as the data stored. So what would traditionally be stored as a table or even as a row in a table is in Neo4J stored as a data structure (node) with properties and relationships to other nodes. This is especially powerful in path operation problems like the "friend of a friend of a friend..."-search problem in social media platforms. Finding friends of friends of friends in a relational database involves emulating path operations by recursively joining data sets. This can cause query latency and memory usage to grow unpredictably, especially in large data-sets. In a graph database, relationships are stored physically on disk. This means that in a query, one can look at the relationships, which are first-class entities, right away, instead of having to find them at runtime. \\
-Different kinds of nodes and edges can be used to add many layers of meaning.
-One of the biggest argument against these types of databases is that it is bad at handling data sets. If a list of 
+Neo4J 1.0 was released in February 2010 \cite{Neo4J10}. It is a graph database that store its data as nodes and relationships. Neo4j was developed to counter a new scaling problem. Applications that handles entities, such as people, do not grow linearly but exponentially, since the more entities there are, the more relationships there are. Graph databases were developed with the philosophy that relationships are just as important as the data stored. So what would traditionally be stored as a table or even as a row in a table is in Neo4J stored as a data structure (node) with properties and relationships to other nodes. This is especially powerful in path operation problems like the "friend of a friend of a friend..."-search problem in social media platforms. Finding friends of friends of friends in a relational database involves emulating path operations by recursively joining data sets. This can cause query latency and memory usage to grow unpredictably, especially in large data-sets. In a graph database, relationships are stored physically on disk. This means that in a query, one can look at the relationships, which are first-class entities, right away, instead of having to find them at runtime. Different kinds of nodes and edges can also be used to add many layers of meaning. \\\\
+One of the biggest argument against these types of databases is that it is bad at handling  large sequential data sets. If a range of data needs to be iterated every single node needs to be visited and searched for the next node which is slower than just visiting every entry in a sequential table.
 
 \section{Contributions}
 
