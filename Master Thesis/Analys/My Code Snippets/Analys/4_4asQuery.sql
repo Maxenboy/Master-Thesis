@@ -29,7 +29,7 @@ declare @time1 datetime = SYSDATETIME();
 			A.ext_Description,
 			sum(H.ext_AmountLCYIncludingVAT) as Amount
 		from
-			EXT_HISTORY_MASTER H
+			HISTORY_MASTER_test H
 		join
 			EXT_ACCOUNT A
 		on
@@ -49,7 +49,7 @@ declare @time1 datetime = SYSDATETIME();
 			A.ext_Description,
 			sum(H.ext_AmountLCYIncludingVAT) as Amount
 		from
-			EXT_HISTORY_MASTER H
+			HISTORY_MASTER_test H
 		join
 			EXT_ACCOUNT A
 		on

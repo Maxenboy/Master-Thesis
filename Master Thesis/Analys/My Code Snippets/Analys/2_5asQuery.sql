@@ -88,7 +88,7 @@ set	@Gender = -1;
 		V.ext_Id
 
 	from
-		ITEM_2_5_test I
+		ITEM_test I
 
 	left join
 		EXT_ITEM_GROUP IG

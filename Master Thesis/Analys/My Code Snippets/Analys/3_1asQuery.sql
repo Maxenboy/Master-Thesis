@@ -152,7 +152,7 @@ BEGIN
 			select
 				sum(ext_RemainingQty)
 			from
-				ITEM_LEDGER_ENTRY_3_1_test L
+				ITEM_LEDGER_ENTRY_test L
 			where
 				L.ext_Unit = @Unit and
 				L.ext_ItemNo = ItemNo and
