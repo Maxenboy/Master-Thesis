@@ -103,7 +103,7 @@ Today's users expect their applications to be fast and there are certainly a lot
 \section{Background}
 
 \subsection{Database Optimization}
-\todo{Skriv om det generellt}
+\todo{Skriv om det generellt och olika sätt}
 
 \subsection{Case Company}
 Perfect It BeX AB was founded in 2007. In the beginning they made business extensions such as B2B, e-commerce and retail for the Microsoft Navision ERP. Eventually they started development of their own ERP-system to accommodate their extensions since they felt limited by the technologies on which Navision was based. In 2010 they released three products; \bex Online, \bex Retail, and \bex B2B. \bex Online is the main product on which the other products rely. It is a completely cloud-based ERP-system specialized for the retail industry. The main functionality in \bex Online are:
@@ -129,7 +129,7 @@ Business intelligence is the art of analyzing large amounts of raw financial and
 \end{itemize}
 In each area there are several different kinds of reports depending on what key values a user are looking for. For example, Sales has 26 different kinds of reports that all mine the system for different kinds of data to present. These kinds of reports are referred to be at the top layers of the BI architectural stack together with analytics and dashboards \cite{Evelson10}. They perform the first step of mining and arranging unsorted data sets into arranged and understandable data, and it is on these kinds of reports that further BI analysis can be based.
 
-\todo{Eventuellt skriva mer om vilka rapporter som anses vara viktigast för företaget, men är det intressant för läsaren? }
+\todo{Skriva om vilka som är kritiska för företaget!!!! vi har nämligen referarat till detta stycke i texten angående detta }
 
 \section{Problem description}
 Perfect It \bex AB was motivated to collaborate with academia in order to investigate how to increase the generation speed of the business intelligence-reports and to find a possible solution that increases this speed.
@@ -409,8 +409,8 @@ Stored procedure: & Report(s)\\
 \end{table}
 
 To execute the stored procedures, SQL batches such as Algorithm \ref{spexec} in Appendix \ref{appCode} were produced and executed. The SQL batches simply specifies the essential parameters and the optional ones as wildcards to get a wide range of data as possible.\\\\  
-The stored procedures for BI-reports are quite similar considering the block of statements. The majority of the subroutines contain \texttt{SELECT}, \texttt{INSERT}, \texttt{UPDATE} and \texttt{DELETE} SQL block statements with variety in amount and order. The \texttt{SELECT} statements vary greatly in the different stored procedure both in conditions and amount/which tables the data is fetched from. As can been seen in Table \ref{tab:tabfreq} in Appendix \ref{sec:appTabIll} a total of 84 tables are of interest for the BI-report stored procedures and the average amount of tables for a stored procedure is approximately $\approx37$.\\
-The data is fetched from the different tables by joining tables on stated conditions and then selected, at most, there is a stored procedure that joins a total of 46 different tables in its execution (see Table \ref{tab:mosttab} in Appendix \ref{sec:appTabIll}). The various stored procedures also have a similarity from which tables the \texttt{JOIN} is done on. Table \ref{tab:tabinall} in Appendix \ref{sec:appTabIll} shows that a total of 26 tables are involved in all of the stored procedures.\\
+The stored procedures for BI-reports are quite similar considering the block of statements. The majority of the subroutines contain \texttt{SELECT}, \texttt{INSERT}, \texttt{UPDATE} and \texttt{DELETE} SQL block statements with variety in amount and order. The \texttt{SELECT} statements vary greatly in the different stored procedure both in conditions and amount/which tables the data is fetched from. As can been seen in Table \ref{tab:tabfreq} in Appendix \ref{sec:appTabIll} the BI-report stored procedures  depend on a total of 84 tables and the average amount of dependencies for a stored procedure is approximately $\approx37$.\\
+The data is fetched from the different tables by joining tables on stated conditions and then selected, at most, there is a stored procedure that has a total dependency of 46 different tables in its execution (see Table \ref{tab:mosttab} in Appendix \ref{sec:appTabIll}). The various stored procedures also have a similarity from which tables the \texttt{JOIN} is done on. Table \ref{tab:tabinall} in Appendix \ref{sec:appTabIll} shows that a total of 26 tables are involved in all of the stored procedures.\\
 The fetched data is stored as an intermediate result in a table with a name corresponding to the stored procedure name. This intermediate result table is present by reasons mentioned in \ref{querybreakdown}, with the exception that the table isn't temporary. The table is permanently present in the database due to a previously refactorization of the database by the DBA. The table is therefore meant as an optimization shortcut, where the last queried report result is stored until the same query is executed with different parameters.\\
 The intermediate result table is then further altered by updates based on mathematical calculations such as item quantities, contribution margins etc. And in some cases a deletion is performed of rows where the mathematical calculations don't pass the set conditions.   
        
@@ -875,8 +875,8 @@ Tools/Programs: & SQL Server Management Studio, SQL Sentry Plan Explorer\\
 	 TIMETRACKER\_W &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & 1 \\ \hline
 	TOTAL & 36 & 36 & 36 & 36 & 36 & 36 & 36 & 36 & 36 & 36 & 37 & 37 & 37 & 37 & 38 & 36 & 36 & 46 & 46 & 39 & 39 & 36 & 36 & 36 & 36 & 40 & 36 & 36 & 36 & 36 & \  
 \end{tabular}}
-\caption{The frequency of table-use in the stored
-\label{tab:tabfreq} procedures}
+\caption{The dependency of tables in the stored  procedures}
+\label{tab:tabfreq}
 \end{table}
 \restoregeometry
 
