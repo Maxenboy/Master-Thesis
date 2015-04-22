@@ -111,7 +111,7 @@ declare @time1 datetime = SYSDATETIME();
 		CU.ext_No = H.ext_SelltoCustomerNo
 
 	join
-		EXT_ITEM I
+		ITEM_test I
 	on
 		I.ext_No = H.ext_No
 
@@ -227,6 +227,7 @@ declare @time4 datetime = SYSDATETIME();
 			ext_HeaderId = @headerId		
 	end
 
-select DATEDIFF(MILLISECOND,@time1,@time2),DATEDIFF(MILLISECOND,@time2,@time3),DATEDIFF(MILLISECOND,@time3,@time4),DATEDIFF(MILLISECOND,@time4,SYSDATETIME());
+--select DATEDIFF(MILLISECOND,@time1,@time2),DATEDIFF(MILLISECOND,@time2,@time3),DATEDIFF(MILLISECOND,@time3,@time4),DATEDIFF(MILLISECOND,@time4,SYSDATETIME());
+select DATEDIFF(MILLISECOND, @time1, SYSDATETIME());
 
 END
