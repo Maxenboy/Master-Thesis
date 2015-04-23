@@ -515,14 +515,18 @@ The \texttt{SET STATISTICS IO ON} command was, as for the \texttt{SET STATISTICS
 \subsubsection{Execution plans}
 An execution plan is an algorithm calculated by the SQL Servers Query Optimizer using minimum of  the servers resources. It shows the necessary set of steps in a specific order that is executed to obtain the data access in a database. The execution plans corresponding to the stored procedures in the system were obtained in a graphical perspective through SMSS. These execution plans contain graphical representations of operations, operation costs, operation properties and values as well as helpful warnings. The variety of operations and their properties are to cumbersome to explain in detail in writing. Therefore this sections focal point will be summarizing the execution plans corresponding to the most critical stored procedure and one in particular as an example.\\\\      
 With the help of SQL Sentry Plan Explorer the execution plans could be further analyzed. As execution plans tend to accommodate a lot of information it's problematic to quickly to identify operations or signs that are troublesome and can be improved. According to Fritchey there are a few common signs of trouble \cite{fritchey2}:
-\begin{itemize}
-\item Warnings
-\item Costly operations
-\item Fat pipes
-\item Extra operators
-\item Scans
-\end{itemize}  
-
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{p{3cm} p{10cm}}
+Warnings & Indicates such as missing indexes or conversion problems\\
+Costly operations & An indication of where to start troubleshooting.\\ & Not an actual measure, estimated value\\
+Fat pipes & Indication of a lot of data being processed, which sometimes is inevitable, but transitions between fat and thin pipes indicate of late filtering and can be of problem.\\
+Extra operations & Operations that are present for unintended reasons by the developer but are present due to e.g. the SQL Query Optimizer, are a potential problem\\
+Scans & Often an indication of bad filtering or index, not necessarily a bad thing if an index scan is intended\\
+Actual \# rows vs. estimated \# rows & Indication of cardinality issues, meaning the uniqueness of the values being scanned/obtained \\
+\end{tabular}
+\end{center}
+\end{table}
  
 Table \ref{2_5 overview} and Figure \ref{2_5 ep} below represent the execution plan for stored procedure 2\_5.
 \begin{table}[H]
@@ -530,7 +534,7 @@ Table \ref{2_5 overview} and Figure \ref{2_5 ep} below represent the execution p
 \hspace*{-2cm}
 \begin{tabular}{|l|l|l|l|l|l|l|}
 \hline
-Statement & Est. Cost & Est CPU & Est IO Cost & Est Rows & Actual Rows & Key Lookups\\\hline
+Statement & Est. Cost & Est. CPU & Est. IO Cost & Est. Rows & Actual Rows & Key Lookups\\\hline
 insert into  Table X &	0,0\% & 0,0\% & 0,0\% & \cellcolor{red} 7 & \cellcolor{red} 235 270 & 2\\\hline 
 update  Table X set PurchaseQty & 55,5\% & 93,6\% & 44,5\% & 651 830 & 651 830 & 0 \\\hline 
 update  Table X set StockQty & 17,6\% & 0,0\% & 25,3\% & 651 830 & 651 830 & 0 \\\hline 
