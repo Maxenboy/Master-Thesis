@@ -514,8 +514,17 @@ The \texttt{SET STATISTICS IO ON} command was, as for the \texttt{SET STATISTICS
 
 \subsubsection{Execution plans}
 An execution plan is an algorithm calculated by the SQL Servers Query Optimizer using minimum of  the servers resources. It shows the necessary set of steps in a specific order that is executed to obtain the data access in a database. The execution plans corresponding to the stored procedures in the system were obtained in a graphical perspective through SMSS. These execution plans contain graphical representations of operations, operation costs, operation properties and values as well as helpful warnings. The variety of operations and their properties are to cumbersome to explain in detail in writing. Therefore this sections focal point will be summarizing the execution plans corresponding to the most critical stored procedure and one in particular as an example.\\\\      
+With the help of SQL Sentry Plan Explorer the execution plans could be further analyzed. As execution plans tend to accommodate a lot of information it's problematic to quickly to identify operations or signs that are troublesome and can be improved. According to Fritchey there are a few common signs of trouble \cite{fritchey2}:
+\begin{itemize}
+\item Warnings
+\item Costly operations
+\item Fat pipes
+\item Extra operators
+\item Scans
+\end{itemize}  
 
-
+ 
+Table \ref{2_5 overview} and Figure \ref{2_5 ep} below represent the execution plan for stored procedure 2\_5.
 \begin{table}[H]
 \begin{center}
 \hspace*{-2cm}
@@ -528,28 +537,30 @@ update  Table X set StockQty & 17,6\% & 0,0\% & 25,3\% & 651 830 & 651 830 & 0 \
 update  Table X set AvailableQty & 20,3\% & 6,4\% & 16,5\% & 651 830 & 651 830 & 0 \\\hline 
 delete from  Table X & 0,0\% & 0,0\% & 0,0\% &\cellcolor{red} 1 & \cellcolor{red} 151 958& 0 \\\hline 
 update  Table X set TBPercent & 6,6\% & 0,0\% & 13,6\% & 499 872 &  499 872 & 0 \\\hline 
-
 \end{tabular}
-\caption{Stored procedure 2\_5's statement blocks in execution plan}
+\caption{Overview of stored procedure 2\_5's statement blocks in execution plan}
+\label{2_5 overview}
 \end{center}
 \end{table}
-
+\noindent As mentioned earlier almost every stored procedure contain similar statement blocks such as \texttt{INSERT,UPDATE,DELETE}. The percentages shown in an execution plan are not directly correlated with time, they show a relative calculated internal estimation of resources used by the batch and operations \cite{cost}. High percentage values doesn't necessarily mean it's bad, but is often an indication of room for improvement. In the above table the first \texttt{UPDATE} statement is the villain in stored procedure 2\_5 as can be seen on the CPU cost and the relative statement cost compared to the other statements in the sql batch.   
 \begin{figure}[H]
 \hspace*{-2cm}
 \includegraphics[scale=0.85]{Pictures/plan.png}
 \caption{Graphical execution plan of the most resource intensive \texttt{UPDATE} statement in stored procedure 2\_5}
+\label{2_5 ep}
 \end{figure}
 
-\cite{plantutorial} "An index scan often occurs, as in this case, when an index exists but the optimizer determines that so many rows need to be returned that it is quicker to simply scan all the values in the index rather than use the keys provided by that index. An obvious question to ask if you see an index scan in your execution plan is whether you are returning more rows than is necessary. If the number of rows returned is higher than you expect, that's a strong indication that you need to fine-tune the WHERE clause of your query so that only those rows that are actually needed are returned. Returning unnecessary rows wastes SQL Server resources and hurts overall performance. The next operator is an Eager Spool  (a form of a Table Spool  ). This obscure sounding operator essentially takes each of the rows to be updated and stores them in a hidden temporary object stored in the tempdb database. Later in the execution plan, if the operator is rewound (say due to the use of a Nested Loops operator in the execution plan) and no rebinding is required, the spooled data can be reused instead of having to rescan the data again (which means the non-clustered Index Scan has to be repeated, which would be an expensive option)."\cite{fritchey} 
+"An index scan often occurs, as in this case, when an index exists but the optimizer determines that so many rows need to be returned that it is quicker to simply scan all the values in the index rather than use the keys provided by that index. An obvious question to ask if you see an index scan in your execution plan is whether you are returning more rows than is necessary. If the number of rows returned is higher than you expect, that's a strong indication that you need to fine-tune the WHERE clause of your query so that only those rows that are actually needed are returned. Returning unnecessary rows wastes SQL Server resources and hurts overall performance. The next operator is an Eager Spool  (a form of a Table Spool  ). This obscure sounding operator essentially takes each of the rows to be updated and stores them in a hidden temporary object stored in the tempdb database. Later in the execution plan, if the operator is rewound (say due to the use of a Nested Loops operator in the execution plan) and no rebinding is required, the spooled data can be reused instead of having to rescan the data again (which means the non-clustered Index Scan has to be repeated, which would be an expensive option)."\cite{fritchey} 
 
 \subsection{Index fragmentation}
 By using the script from the theory the following index fragmentation values were produced. The table names and index names has been changed due to confidentiality.
-
+\todo{Ändra tabellnamn}
 \begin{table}[H]
 \begin{center}
 \begin{tabular}{|l|l|l|l|}
 \hline
 Table name & Index name & External fragmentation & Internal fragmentation \\ \hline 
+
 1  & a & 100         & 74,05485545 \\ \hline
 2  & b & 100         & 72,6278725  \\ \hline
 3  & c & 100         & 58,68544601 \\ \hline
@@ -584,6 +595,8 @@ Table name & Index name & External fragmentation & Internal fragmentation \\ \hl
 \end{center}
 \end{table}
 This shows that 29 out of 572 indexes have both internal and external fragmentation. Some of the indexes used have an external fragmentation well above the value of 10, which is the threshold according to Shubho as mentioned in section \ref{measurefrag}. The internal fragmentation value is also bad at some of the indexes (i.e less than 75). This shows that BeX Online over time gives rise to fragmented indexes which has to be taken care of. The indexes with heavy fragmentation are used in tables that are the most frequently used by the stored procedures to create business intelligence reports. This fragmentation is most likely a reason to poor performance in these queries.
+
+\subsection{Table experimentation}
 
 \subsection{Maintenance plans}
 In the current system there is no maintenance done to the database except for the occasional manual adjustments. Since the query execution time is highly affected by the quality of the indexing they should be maintained to make sure that they do not cause bottlenecks. \\\\
@@ -633,8 +646,6 @@ By looking at which tables the stored procedures for the business intelligence u
 \section{Query tuning}
 \section{Maintenance Plan}
 \section{In-memory}
-
-\chapter{Implementation and Testing}
 
 \chapter{Discussion}
 
