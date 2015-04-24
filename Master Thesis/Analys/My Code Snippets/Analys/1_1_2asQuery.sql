@@ -111,7 +111,7 @@ declare @time1 datetime = SYSDATETIME();
 		0
 
 	from
-		EXT_HISTORY_MASTER H
+		HISTORY_MASTER_test H
 
 	join
 		EXT_CUSTOMER CU
@@ -119,7 +119,7 @@ declare @time1 datetime = SYSDATETIME();
 		CU.ext_No = H.ext_SelltoCustomerNo
 
 	join
-		ITEM_test I
+		EXT_ITEM I
 	on
 		I.ext_No = H.ext_No
 
