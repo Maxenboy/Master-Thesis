@@ -88,7 +88,7 @@ set	@Gender = -1;
 		V.ext_Id
 
 	from
-		ITEM_test I
+		EXT_ITEM I
 
 	left join
 		EXT_ITEM_GROUP IG
@@ -101,7 +101,7 @@ set	@Gender = -1;
 		V.ext_ItemNo = I.ext_No
 
 	left join
-		EXT_HISTORY_MASTER H WITH(NOLOCK)
+		HISTORY_MASTER_test H WITH(NOLOCK)
 	on
 		H.ext_Unit = @unit and
 		(H.ext_DocumentType = 2 or H.ext_DocumentType = 3 or H.ext_DocumentType = 12) and
@@ -126,7 +126,7 @@ set	@Gender = -1;
 			I.ext_No in (	select 
 								ext_No 
 							from 
-								EXT_HISTORY_MASTER H WITH(NOLOCK)
+								HISTORY_MASTER_test H WITH(NOLOCK)
 							where 
 								H.ext_Unit = @unit and
 								(H.ext_DocumentType = 2 or H.ext_DocumentType = 3 or H.ext_DocumentType = 12) and
@@ -179,7 +179,7 @@ set	@Gender = -1;
 			select
 				sum(-ext_Quantity)
 			from
-				EXT_HISTORY_MASTER H WITH(NOLOCK)
+				HISTORY_MASTER_test H WITH(NOLOCK)
 			where
 				H.ext_Unit = @unit and
 				(H.ext_DocumentType = 12) and
