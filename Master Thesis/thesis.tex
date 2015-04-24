@@ -546,10 +546,10 @@ update  Table X set TBPercent & 6,6\% & 0,0\% & 13,6\% & 499 872 &  499 872 & 0 
 \label{2_5 overview}
 \end{center}
 \end{table}
-\noindent As mentioned earlier almost every stored procedure contain similar statement blocks such as \texttt{INSERT,UPDATE,DELETE}. The percentages shown in an execution plan are not directly correlated with time, they show a relative calculated internal estimation of resources used by the batch and operations \cite{cost}. High percentage values doesn't necessarily mean it's bad, but is often an indication of room for improvement. In the above table the first \texttt{UPDATE} statement is the villain in stored procedure 2\_5 as can be seen on the CPU cost and the relative statement cost compared to the other statements in the sql batch.   
+\noindent As mentioned earlier almost every stored procedure contain similar statement blocks such as \texttt{INSERT,UPDATE,DELETE}. The percentages shown in an execution plan are not directly correlated with time, they show a relative calculated internal estimation of resources used by the batch and operations \cite{cost}. High percentage values doesn't necessarily mean it's bad, but is often an indication of room for improvement. In the above table the first \texttt{UPDATE} statement is the villain in stored procedure 2\_5 as can be seen on the CPU cost and the relative statement cost compared to the other statements in the sql batch. We can also see from the overview above that cardinality issues may be in place in the \texttt{INSERT} and \texttt{DELETE} statements, due to the huge skew in the comparison between actual number of rows and estimated number of rows.    
 \begin{figure}[H]
 \hspace*{-2cm}
-\includegraphics[scale=0.85]{Pictures/plan.png}
+\includegraphics[scale=0.8]{Pictures/plan.png}
 \caption{Graphical execution plan of the most resource intensive \texttt{UPDATE} statement in stored procedure 2\_5}
 \label{2_5 ep}
 \end{figure}
@@ -557,48 +557,57 @@ update  Table X set TBPercent & 6,6\% & 0,0\% & 13,6\% & 499 872 &  499 872 & 0 
 "An index scan often occurs, as in this case, when an index exists but the optimizer determines that so many rows need to be returned that it is quicker to simply scan all the values in the index rather than use the keys provided by that index. An obvious question to ask if you see an index scan in your execution plan is whether you are returning more rows than is necessary. If the number of rows returned is higher than you expect, that's a strong indication that you need to fine-tune the WHERE clause of your query so that only those rows that are actually needed are returned. Returning unnecessary rows wastes SQL Server resources and hurts overall performance. The next operator is an Eager Spool  (a form of a Table Spool  ). This obscure sounding operator essentially takes each of the rows to be updated and stores them in a hidden temporary object stored in the tempdb database. Later in the execution plan, if the operator is rewound (say due to the use of a Nested Loops operator in the execution plan) and no rebinding is required, the spooled data can be reused instead of having to rescan the data again (which means the non-clustered Index Scan has to be repeated, which would be an expensive option)."\cite{fritchey} 
 
 \subsection{Index fragmentation}
-By using the script from the theory the following index fragmentation values were produced. The table names and index names has been changed due to confidentiality.
-\todo{Ändra tabellnamn}
-\begin{table}[H]
+By using the script from the theory the following index fragmentation values were produced. The table names and index names has been shortened and/or changed due to confidentiality.
 \begin{center}
+\begin{table}[H]
 \begin{tabular}{|l|l|l|l|}
 \hline
-Table name & Index name & External fragmentation & Internal fragmentation \\ \hline 
-
-1  & a & 100         & 74,05485545 \\ \hline
-2  & b & 100         & 72,6278725  \\ \hline
-3  & c & 100         & 58,68544601 \\ \hline
-4  & d & 100         & 70,17500618 \\ \hline
-5  & e & 100         & 67,92068199 \\ \hline
-6  & f & 100         & 58,46971831 \\ \hline
-7  & g & 100         & 50,03706449 \\ \hline
-8  & h & 99,48535234 & 57,89085743 \\ \hline
-9  & i & 96,11111111 & 73,69038794 \\ \hline
-10 & j & 94,44444444 & 70,63737336 \\ \hline
-11 & k & 90,59325223 & 52,81183593 \\ \hline
-12 & l & 89,13043478 & 65,47550037 \\ \hline
-13 & m & 86,99186992 & 65,83502595 \\ \hline
-14 & n & 85,71428571 & 47,9579318  \\ \hline
-15 & o & 78,98550725 & 57,05273042 \\ \hline
-16 & p & 77,77777778 & 56,54531752 \\ \hline
-17 & q & 75          & 48,44946874 \\ \hline
-18 & r & 73,35790885 & 62,85373116 \\ \hline
-19 & j & 71,30559541 & 64,10468248 \\ \hline
-20 & s & 69,67213115 & 69,75221151 \\ \hline
-21 & m & 68,46173667 & 65,69195701 \\ \hline
-22 & t & 67,79506955 & 65,90287868 \\ \hline
-23 & u & 66,66666667 & 49,09809736 \\ \hline
-24 & v & 50          & 74,49962936 \\ \hline
-25 & w & 50          & 53,43464295 \\ \hline
-26 & x & 50          & 54,92957746 \\ \hline
-27 & y & 50          & 41,83552014 \\ \hline
-28 & z & 36,59652333 & 72,06630838 \\ \hline
-29 & å & 33,5729147  & 73,20072894 \\ \hline
+Table Name         & Index Name                & Ext. Frag. & Int. Frag.\\ \hline
+COMPILED\_ST       & IX\_COMPILED\_ST\_2       & 100                    & 74,05485545            \\ \hline
+COMPILED\_ST       & IX\_COMPILED\_ST\_1       & 100                    & 72,6278725             \\ \hline
+CUSTOMER\_B\_L\_E  & IX\_CUSTOMER\_B\_L\_E     & 100                    & 58,68544601            \\ \hline
+CUSTOMER           & PK\_CUSTOMER\_1           & 100                    & 70,17500618            \\ \hline
+CUSTOMER           & \_POSANA\_dta\_i\_C       & 100                    & 67,92068199            \\ \hline
+SALES\_H           & \_REST\_dta\_index\_S\_H  & 100                    & 58,46971831            \\ \hline
+SALES\_H           & \_dta\_index\_S\_H\_      & 100                    & 50,03706449            \\ \hline
+CUSTOMER           & PK\_C\_1                  & 99,48535234            & 57,89085743            \\ \hline
+SALES\_I\_H        & PK\_SALES\_I\_H           & 96,11111111            & 73,69038794            \\ \hline
+SALES\_CR\_M\_H    & \_dta\_index\_S\_CR\_M\_H & 94,44444444            & 70,63737336            \\ \hline
+CUSTOMER           & \_POSANA\_dta\_i\_C       & 90,59325223            & 52,81183593            \\ \hline
+HISTORY\_M         & PK\_HISTORY\_M            & 89,13043478            & 65,47550037            \\ \hline
+SALES\_I\_H        & \_dta\_index\_S\_I\_H     & 86,99186992            & 65,83502595            \\ \hline
+SUPPLIER           & PK\_SUPPLIER\_1           & 85,71428571            & 47,9579318             \\ \hline
+CUSTOMER           & \_POSANA\_dta\_i\_C       & 78,98550725            & 57,05273042            \\ \hline
+SALES\_H           & \_dta\_index\_S\_H\_S     & 77,77777778            & 56,54531752            \\ \hline
+REPORT\_R\_1\_1\_1 & IX\_REPORT\_R             & 76,57657658            & 39,54536694            \\ \hline
+REPORT\_R\_4\_4    & PK\_REPORT\_R\_4\_4       & 75                     & 69,08512478            \\ \hline
+SALESPERSON        & PK\_SALESPERSON           & 75                     & 48,44946874            \\ \hline
+SALES\_CR\_M\_H    & PK\_SALES\_CR\_M\_H       & 73,35790885            & 62,85373116            \\ \hline
+SALES\_CR\_M\_H    & \_dta\_index\_S\_CR\_M\_H & 71,30559541            & 64,10468248            \\ \hline
+HISTORY\_M         & PK\_HISTORY\_M            & 69,67213115            & 69,75221151            \\ \hline
+SALES\_I\_H        & \_dta\_index\_S\_I\_H     & 68,46173667            & 65,69195701            \\ \hline
+SALES\_I\_H        & PK\_SALES\_I\_H           & 67,79506955            & 65,90287868            \\ \hline
+HISTORY\_M         & \_dta\_TRANS\_i\_H\_M     & 66,66666667            & 49,09809736            \\ \hline
+REPORT\_R\_1\_1\_1 & IX\_REPORT\_R\_1\_1\_1\_2 & 63,55140187            & 41,02462318            \\ \hline
+REPORT\_R\_1\_1\_2 & IX\_REPORT\_R\_1\_1\_2\_3 & 60,68376068            & 43,8769706             \\ \hline
+COUNTRY            & PK\_COUNTRY\_1            & 50                     & 53,43464295            \\ \hline
+REPORT\_R\_1\_1\_5 & PK\_REPORT\_R\_1\_5       & 50                     & 66,04274771            \\ \hline
+ITEM\_I            & PK\_ITEM\_I               & 50                     & 54,92957746            \\ \hline
+PROGRAM            & PK\_PROGRAM\_1            & 50                     & 74,49962936            \\ \hline
+CUSTOMER           & IX\_C\_1                  & 50                     & 41,83552014            \\ \hline
+REPORT\_R\_2\_1\_1 & PK\_REPORT\_R\_2\_1\_1    & 50                     & 51,23754633            \\ \hline
+REPORT\_R\_1\_1\_2 & IX\_REPORT\_R\_1\_1\_2\_2 & 47,68041237            & 52,92886088            \\ \hline
+SALES\_H           & PK\_SALES\_H              & 36,59652333            & 72,06630838            \\ \hline
+SALES\_H           & \_dta\_index\_S\_H\_M1    & 33,5729147             & 73,20072894            \\ \hline
+REPORT\_R\_3\_1    & PK\_REPORT\_R\_3\_1       & 29,51672862            & 28,8227576             \\ \hline
+REPORT\_R\_2\_6    & PK\_REPORT\_2\_6          & 18,96085152            & 44,27150976            \\ \hline
+REPORT\_R\_2\_5    & PK\_REPORT\_R\_2\_5       & 14,15848367            & 45,84052384            \\ \hline
+REPORT\_R\_3\_1    & PK\_REPORT\_R\_3\_1       & 10,71428571            & 7,690449716            \\ \hline
 \end{tabular}
-\caption{Results from index fragmentation search}
-\end{center}
+\caption{Table showing all the fragmented indexes}
 \end{table}
-This shows that 29 out of 572 indexes have both internal and external fragmentation. Some of the indexes used have an external fragmentation well above the value of 10, which is the threshold according to Shubho as mentioned in section \ref{measurefrag}. The internal fragmentation value is also bad at some of the indexes (i.e less than 75). This shows that BeX Online over time gives rise to fragmented indexes which has to be taken care of. The indexes with heavy fragmentation are used in tables that are the most frequently used by the stored procedures to create business intelligence reports. This fragmentation is most likely a reason to poor performance in these queries.
+\end{center}
+This shows that 40 out of 572 indexes have both internal and external fragmentation. Some of the indexes used have an external fragmentation well above the value of 10, which is the threshold according to Shubho as mentioned in section \ref{measurefrag}. The internal fragmentation value is also bad at some of the indexes (i.e less than 75). This shows that BeX Online over time gives rise to fragmented indexes which has to be taken care of. The indexes with heavy fragmentation are used in tables that are the most frequently used by the stored procedures to create business intelligence reports. This fragmentation is most likely a reason to poor performance in these queries.
 
 \subsection{Table experimentation}
 
