@@ -534,7 +534,7 @@ Table \ref{2_5 overview} and Figure \ref{2_5 ep} below represent the execution p
 \hspace*{-2cm}
 \begin{tabular}{|l|l|l|l|l|l|l|}
 \hline
-Statement & Est. Cost & Est. CPU & Est. IO Cost & Est. Rows & Actual Rows & Key Lookups\\\hline
+Statement & Est. Cost & Est. CPU & Est. I/O Cost & Est. Rows & Actual Rows & Key Lookups\\\hline
 insert into  Table X &	0,0\% & 0,0\% & 0,0\% & \cellcolor{red} 7 & \cellcolor{red} 235 270 & 2\\\hline 
 update  Table X set PurchaseQty & 55,5\% & 93,6\% & 44,5\% & 651 830 & 651 830 & 0 \\\hline 
 update  Table X set StockQty & 17,6\% & 0,0\% & 25,3\% & 651 830 & 651 830 & 0 \\\hline 
@@ -546,7 +546,7 @@ update  Table X set TBPercent & 6,6\% & 0,0\% & 13,6\% & 499 872 &  499 872 & 0 
 \label{2_5 overview}
 \end{center}
 \end{table}
-\noindent As mentioned earlier almost every stored procedure contain similar statement blocks such as \texttt{INSERT,UPDATE,DELETE}. The percentages shown in an execution plan are not directly correlated with time, they show a relative calculated internal estimation of resources used by the batch and operations \cite{cost}. High percentage values doesn't necessarily mean it's bad, but is often an indication of room for improvement. In the above table the first \texttt{UPDATE} statement is the villain in stored procedure 2\_5 as can be seen on the CPU cost and the relative statement cost compared to the other statements in the sql batch. We can also see from the overview above that cardinality issues may be in place in the \texttt{INSERT} and \texttt{DELETE} statements, due to the huge skew in the comparison between actual number of rows and estimated number of rows.    
+\noindent As mentioned earlier almost every stored procedure contain similar statement blocks such as \texttt{INSERT,UPDATE,DELETE}. The estimated cost and operation percentages shown in an execution plan are not directly correlated with time, they show a relative calculated internal estimation of resources used by the batch and operations \cite{cost}. High percentage values doesn't necessarily mean it's bad, but is often an indication of room for improvement. Since the estimated cost is an internal relative estimation, it's not a good measurement to compare queries with. Contrariwise the CPU cost and I/O are solid comparative signs. In the above table the first \texttt{UPDATE} statement is the villain in stored procedure 2\_5 as can be seen on the CPU cost and the relative statement cost compared to the other statements in the sql batch. We can also see from the overview above that cardinality issues may be in place in the \texttt{INSERT} and \texttt{DELETE} statements, due to the huge skew in the comparison between actual number of rows and estimated number of rows.    
 \begin{figure}[H]
 \hspace*{-2cm}
 \includegraphics[scale=0.8]{Pictures/plan.png}
