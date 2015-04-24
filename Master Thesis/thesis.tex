@@ -546,10 +546,10 @@ update  Table X set TBPercent & 6,6\% & 0,0\% & 13,6\% & 499 872 &  499 872 & 0 
 \label{2_5 overview}
 \end{center}
 \end{table}
-\noindent As mentioned earlier almost every stored procedure contain similar statement blocks such as \texttt{INSERT,UPDATE,DELETE}. The percentages shown in an execution plan are not directly correlated with time, they show a relative calculated internal estimation of resources used by the batch and operations \cite{cost}. High percentage values doesn't necessarily mean it's bad, but is often an indication of room for improvement. In the above table the first \texttt{UPDATE} statement is the villain in stored procedure 2\_5 as can be seen on the CPU cost and the relative statement cost compared to the other statements in the sql batch.   
+\noindent As mentioned earlier almost every stored procedure contain similar statement blocks such as \texttt{INSERT,UPDATE,DELETE}. The percentages shown in an execution plan are not directly correlated with time, they show a relative calculated internal estimation of resources used by the batch and operations \cite{cost}. High percentage values doesn't necessarily mean it's bad, but is often an indication of room for improvement. In the above table the first \texttt{UPDATE} statement is the villain in stored procedure 2\_5 as can be seen on the CPU cost and the relative statement cost compared to the other statements in the sql batch.    
 \begin{figure}[H]
 \hspace*{-2cm}
-\includegraphics[scale=0.85]{Pictures/plan.png}
+\includegraphics[scale=0.8]{Pictures/plan.png}
 \caption{Graphical execution plan of the most resource intensive \texttt{UPDATE} statement in stored procedure 2\_5}
 \label{2_5 ep}
 \end{figure}
