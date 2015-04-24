@@ -52,7 +52,7 @@ AS (
 		LatestSalesDate		=	(select 
 									max(S2.ext_PostingDate) 
 								from 
-									HISTORY_MASTER_2_6_test S2 
+									HISTORY_MASTER_test S2 
 								where 
 									S2.ext_Unit = @unit and
 									S2.ext_DocumentType = 2 and
@@ -64,7 +64,7 @@ AS (
 		LatestStockDate		=	(select 
 									max(S2.ext_PostingDate) 
 								from 
-									HISTORY_MASTER_2_6_test S2 
+									HISTORY_MASTER_test S2 
 								where 
 									S2.ext_Unit = @unit and
 									S2.ext_DocumentType = 12 and
@@ -89,7 +89,7 @@ AS (
 	on
 		G.ext_Code = I.ext_ItemGroupCode
 	left join
-		HISTORY_MASTER_2_6_test S with(nolock)
+		HISTORY_MASTER_test S with(nolock)
 	on
 		S.ext_Unit = @unit and
 		(S.ext_DocumentType = 2 or S.ext_DocumentType = 3 or S.ext_DocumentType = 12) and
@@ -197,7 +197,7 @@ order by
 			select
 				sum(ext_AmountLCY)
 			from
-				HISTORY_MASTER_2_6_test L WITH(NOLOCK)
+				HISTORY_MASTER_test L WITH(NOLOCK)
 			where
 				L.ext_Unit = @Unit and
 				L.ext_DocumentType = 12 and
@@ -264,7 +264,7 @@ order by
 			select
 				sum(-ext_Quantity)
 			from
-				HISTORY_MASTER_2_6_test H WITH(NOLOCK)
+				HISTORY_MASTER_test H WITH(NOLOCK)
 			where
 				H.ext_Unit = @unit and
 				(H.ext_DocumentType = 12) and

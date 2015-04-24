@@ -103,7 +103,7 @@ declare @time1 datetime = SYSDATETIME();
 		0
 
 	from
-		EXT_HISTORY_MASTER H
+		HISTORY_MASTER_test H
 
 	join
 		EXT_CUSTOMER CU
