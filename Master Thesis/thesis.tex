@@ -25,6 +25,7 @@
 \usepackage{tikz-qtree}
 \usetikzlibrary{trees}
 \usepackage{capt-of}
+\usepackage{comment}
 \newcommand{\hilight}[1]{\colorbox{yellow}{#1}}
 
 \definecolor{mygreen}{rgb}{0,0.6,0}
@@ -550,10 +551,10 @@ update  Table X set TBPercent & 6,6\% & 0,0\% & 13,6\% & 499 872 &  499 872 & 0 
 \begin{figure}[H]
 \hspace*{-2cm}
 \includegraphics[scale=0.8]{Pictures/plan.png}
-\caption{Graphical execution plan of the most resource intensive \texttt{UPDATE} statement in stored procedure 2\_5}
+\caption{Graphical execution plan of the most resource-intensive \texttt{UPDATE} statement in stored procedure 2\_5}
 \label{2_5 ep}
 \end{figure}
-
+In the above figure the graphical execution plan for the most resource-intensive \texttt{UPDATE} statement is shown. The execution plan is read from right to left and bottom to top. The operations 
 "An index scan often occurs, as in this case, when an index exists but the optimizer determines that so many rows need to be returned that it is quicker to simply scan all the values in the index rather than use the keys provided by that index. An obvious question to ask if you see an index scan in your execution plan is whether you are returning more rows than is necessary. If the number of rows returned is higher than you expect, that's a strong indication that you need to fine-tune the WHERE clause of your query so that only those rows that are actually needed are returned. Returning unnecessary rows wastes SQL Server resources and hurts overall performance. The next operator is an Eager Spool  (a form of a Table Spool  ). This obscure sounding operator essentially takes each of the rows to be updated and stores them in a hidden temporary object stored in the tempdb database. Later in the execution plan, if the operator is rewound (say due to the use of a Nested Loops operator in the execution plan) and no rebinding is required, the spooled data can be reused instead of having to rescan the data again (which means the non-clustered Index Scan has to be repeated, which would be an expensive option)."\cite{fritchey} 
 
 \subsection{Index fragmentation}
@@ -610,6 +611,51 @@ REPORT\_R\_3\_1    & PK\_REPORT\_R\_3\_1       & 10,71428571            & 7,6904
 This shows that 40 out of 572 indexes have both internal and external fragmentation. Some of the indexes used have an external fragmentation well above the value of 10, which is the threshold according to Shubho as mentioned in section \ref{measurefrag}. The internal fragmentation value is also bad at some of the indexes (i.e less than 75). This shows that BeX Online over time gives rise to fragmented indexes which has to be taken care of. The indexes with heavy fragmentation are used in tables that are the most frequently used by the stored procedures to create business intelligence reports. This fragmentation is most likely a reason to poor performance in these queries.
 
 \subsection{Table experimentation}
+With the help of the above analysis some experimentation of the BI-stakeholder tables were performed. The goal of this was to both identify the parts that were problematic in the stored procedures and see if table partitioning is a feasible solution.
+With the help of earlier statistics, in collaboration with what \bex considers as critical BI-reports, 7 stored procedures were subjects for further experimentation. In these stored procedures time differences were established between the statement blocks to identify the most resource- and time intensive part. 
+\begin{figure}[H]
+\begin{center}
+\includegraphics[scale=1]{Pictures/blocks.png}
+\caption{Most troublesome statements in the 7 most critical stored procedures}
+\label{time graph}
+\end{center}
+\end{figure}
+\noindent As can be seen in Figure \ref{time graph} the \texttt{INSERT} statements take overall the most time to execute, with two large exceptions where the \texttt{UPDATE} statement takes by far much more time to execute.\\ Identifying the tables that would be of interest to alter was done with the help of the stored procedures execution plans. The tables that were chosen were the most resource intensive tables in each execution plan. 
+\begin{comment}
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{l|l|l}
+Stored Procedures & Troublesome statement & Troublesome Table \\ \hline
+Report 2\_6       & \texttt{UPDATE}                & HISTORY\_M        \\ \hline
+Report 2\_5       & \texttt{INSERT}                & ITEM              \\ \hline
+Report 3\_1       & \texttt{UPDATE}                & ITEM\_L\_E        \\ \hline
+Report 4\_2       & \texttt{INSERT}                & HISTORY\_M        \\ \hline
+Report 4\_4       & \texttt{INSERT}                & HISTORY\_M        \\ \hline
+Report 1\_1\_2    & \texttt{INSERT}                & ITEM              \\ \hline
+Report 1\_1\_1    & \texttt{INSERT}                & ITEM              \\
+\end{tabular}
+\caption{Summary of troublesome tables in the different stored procedures}
+\end{center}
+\end{table}
+\end{comment}
+\noindent Three tables where of interest; HISTORY\_M, ITEM and ITEM\_L\_E. These three tables all had a column which could be grouped by dates and had entities with dates stretching back to year 2011. The experimentation started with making copies of the original tables both with and without original indexes and keys and modified stored procedures. The store procedures executions were then time measured and altered by deleting entities associated with a certain year. This measuring and deletions procedure was repeated until entities associated with only one year was left. This procedure was applied to table copies with and without indexes and keys.  
+\begin{figure}[H]
+\begin{center}$
+\begin{array}{cc}
+\textbf{Without index and keys} & \textbf{With index and keys}\\
+\includegraphics[scale=0.7]{Pictures/Report25.png} &
+\includegraphics[scale=0.7]{Pictures/Report25Index.png} \\ 
+\includegraphics[scale=0.7]{Pictures/Report44.png} &
+\includegraphics[scale=0.7]{Pictures/Report44Index.png}\\
+\includegraphics[scale=0.7]{Pictures/Report112.png} &
+\includegraphics[scale=0.7]{Pictures/Report112Index.png}
+\end{array}$
+\caption{Execution time differences for entity partitioning in troublesome tables}
+\label{plots}
+\end{center}
+\end{figure}
+The graphs in Figure \ref{plots} are examples of differences this experimentation led to when deleting entities in HISTORY\_M . For almost every procedure the execution time was faster with the original indexes and keys but for report 4\_4 it was the opposite. The stored procedure 4\_4 executed approximately 7 times faster without indexes and keys, \hilight{indicating that the original indexing and keys are bad performance-wise for report 4\_4}. To evaluate future entity growth in the system the experiment also included insertion of entities by copying the original data once more (doubling the number of entities). In most of the cases the execution time increased linearly but for some cases it increased exponentially, as can be seen in Figure \ref{plots}.\\
+During the experimentation it was recognized that the tables ITEM and ITEM\_L\_E were by design not partitioned since the back-end of the system depended on all of the entries due to sum calculations being made.        
 
 \subsection{Maintenance plans}
 In the current system there is no maintenance done to the database except for the occasional manual adjustments. Since the query execution time is highly affected by the quality of the indexing they should be maintained to make sure that they do not cause bottlenecks. \\\\
