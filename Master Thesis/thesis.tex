@@ -655,7 +655,20 @@ Report 1\_1\_1    & \texttt{INSERT}                & ITEM              \\
 \end{center}
 \end{figure}
 The graphs in Figure \ref{plots} are examples of differences this experimentation led to when deleting entities in HISTORY\_M . For almost every procedure the execution time was faster with the original indexes and keys but for report 4\_4 it was the opposite. The stored procedure 4\_4 executed approximately 7 times faster without indexes and keys, \hilight{indicating that the original indexing and keys are bad performance-wise for report 4\_4}. To evaluate future entity growth in the system the experiment also included insertion of entities by copying the original data once more (doubling the number of entities). In most of the cases the execution time increased linearly but for some cases it increased exponentially, as can be seen in Figure \ref{plots}.\\
-During the experimentation it was recognized that the tables ITEM and ITEM\_L\_E were by design not partitioned since the back-end of the system depended on all of the entries due to sum calculations being made.        
+During the experimentation it was recognized that the tables ITEM and ITEM\_L\_E could not simply be partitioned since the back-end of the system depended on all of the entries due to sum calculations being made. Therefore further experimentation on those stored procedures who had ITEM and ITEM\_L\_E as problematic tables became also based on alteration of the HISTORY\_M table. Sadly those alterations did not effect the execution  time significantly as seen in Figure \ref{alteration}.         
+
+\begin{figure}[H]
+\begin{center}$
+\begin{array}{cc}
+\textbf{Alteration on HISTORY\_M} & \textbf{Alteration on ITEM}\\
+\includegraphics[scale=0.7]{Pictures/Report25IndexHistory.png} &
+\includegraphics[scale=0.7]{Pictures/Report25Index.png} \\ 
+\end{array}$
+\caption{Execution time differences for entity partitioning in stored procedure 2\_5}
+\label{alteration}
+\end{center}
+\end{figure}
+
 
 \subsection{Maintenance plans}
 In the current system there is no maintenance done to the database except for the occasional manual adjustments. Since the query execution time is highly affected by the quality of the indexing they should be maintained to make sure that they do not cause bottlenecks. \\\\
