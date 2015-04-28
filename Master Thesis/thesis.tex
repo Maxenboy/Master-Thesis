@@ -90,7 +90,7 @@ ERP-system’s database}
 \makefrontmatter
 
 \chapter[Introduction]{Introduction}
-
+\todo{About database optimization in history, general}
 2014 was the year of the cloud. Software companies strived to make their services cloud based in order to meet the increasing demands from the market of availability, accessibility and reliability. Users have got used to having their mail, their music, their documents, their pictures and so on in the cloud. Now the market pull is on tools for businesses that exist in the cloud. Most tools have been available for a couple of years already, notably Microsoft Sharepoint that has been available since 2001. There is however one market that has been lagging behind, the ERP-market \cite{wilson}. According to a Gartner study made in 2013 \cite{Rayner13}, only 2\% of survey respondents used a cloud based ERP-system. However, over half of the respondents said that they have planned to make the move within the next five years. One of the big attractions of Cloud ERP is, besides convenience, cost. Large ERP implementations can last for years and require massive investments. "Cloud ERP reduces the time and cost of maintaining infrastructure," said Christine Hansen, product marketing manager, Epicor. "Less money spent on IT means a lower cost of product delivery, enabling businesses to get a competitive pricing edge and/or higher margins. This also frees up dollars to devote to hiring, R\&D and other growth initiatives." \cite{Robb14} \\\\
 In 2014 Oracle announced it's Oracle Customer 2 Cloud program, stating that they had 29 million cloud users. Microsoft has also been slow at adopting the cloud for its ERP solutions, but are now pushing their partner community for hosting it's cloud-based SaaS solution Microsoft Dynamics.
 The biggest player on the market seems to be SAP, who claims to have over 35 million users. The large investments made by these companies shows that there is indeed a strong belief that ERP needs to be in the cloud.\\\\
@@ -134,7 +134,7 @@ In each area there are several different kinds of reports depending on what key 
 
 \section{Problem description}
 Perfect It \bex AB was motivated to collaborate with academia in order to investigate how to increase the generation speed of the business intelligence-reports and to find a possible solution that increases this speed.
-
+\todo{Moore}
 \section{Thesis Goals} \label{sec:goals}
 The goal of this thesis is to identify issues related to the problem, and to propose a solution for speeding up the generation of BI reports in Perfect IT \bex AB's product \bex Online. To be able to speed up the BI report generation the processes responsible needs to be analyzed and optimized or rebuilt for speed. The solution needs to be versatile to handle the current system, to handle new functionality and also future company growth. Hence, the suggested changes needs to be scalable. Taking in to account that Perfect IT \bex has one physical server, the scalability should be vertically \cite{scalability} since the company will provide the system to more clients in the future.\\\\
 In order to make the above optimization possible, the following goals have been established:
@@ -612,7 +612,7 @@ This shows that 40 out of 572 indexes have both internal and external fragmentat
 
 \subsection{Table experimentation}
 With the help of the above analysis some experimentation of the BI-stakeholder tables were performed. The goal of this was to both identify the parts that were problematic in the stored procedures and see if table partitioning is a feasible solution.
-With the help of earlier statistics, in collaboration with what \bex considers as critical BI-reports, 7 stored procedures were subjects for further experimentation. In these stored procedures time differences were established between the statement blocks to identify the most resource- and time intensive part. 
+With the help of earlier statistics, in collaboration with what \bex considers as critical BI-reports, 7 stored procedures were subjects for further experimentation (top seven rows in Table \ref{tab:duration}). In these stored procedures time differences were established between the statement blocks to identify the most resource- and time intensive part. 
 \begin{figure}[H]
 \begin{center}
 \includegraphics[scale=1]{Pictures/blocks.png}
@@ -638,7 +638,7 @@ Report 1\_1\_1    & \texttt{INSERT}                & ITEM              \\
 \end{center}
 \end{table}
 \end{comment}
-\noindent Three tables where of interest; HISTORY\_M, ITEM and ITEM\_L\_E. These three tables all had a column which could be grouped by dates and had entities with dates stretching back to year 2011. The experimentation started with making copies of the original tables both with and without original indexes and keys and modified stored procedures. The store procedures executions were then time measured and altered by deleting entities associated with a certain year. This measuring and deletions procedure was repeated until entities associated with only one year was left. This procedure was applied to table copies with and without indexes and keys.  
+\noindent Three tables where of interest; HISTORY\_M, ITEM and ITEM\_L\_E. These three tables all had a column which could be grouped by dates and had entities with dates stretching back to year 2011. The experimentation started with making copies of the original tables both with and without original indexes and keys and modified stored procedures. The store procedures executions were then time measured and altered by deleting entities associated with a certain year. This measuring and deletion procedure was repeated until entities associated with only one year was left. This procedure was applied to table copies with and without indexes and keys.  
 \begin{figure}[H]
 \begin{center}$
 \begin{array}{cc}
@@ -669,6 +669,7 @@ During the experimentation it was recognized that the tables ITEM and ITEM\_L\_E
 \end{center}
 \end{figure}
 
+\noindent The above experimentation shows that in some cases table partitioning can reduce the execution time for the BI stored procedures. Unfortunately this can not be applied on the all the heavy resource intensive tables and do not effect significantly in some cases.\\ To complement the experimentation the indexes of the tables were taken under examination. 
 
 \subsection{Maintenance plans}
 In the current system there is no maintenance done to the database except for the occasional manual adjustments. Since the query execution time is highly affected by the quality of the indexing they should be maintained to make sure that they do not cause bottlenecks. \\\\
