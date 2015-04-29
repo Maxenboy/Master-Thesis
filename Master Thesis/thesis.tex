@@ -555,10 +555,10 @@ update  Table X set TBPercent & 6,6\% & 0,0\% & 13,6\% & 499 872 &  499 872 & 0 
 \label{2_5 ep}
 \end{figure}
 \noindent In the above figure the graphical execution plan for the most resource-intensive \texttt{UPDATE} statement in stored procedure 2\_5 is shown. The execution plan is read from right to left and bottom to top. The operation costs all add up to 100\% since the costs are a relative sum of the CPU and I/0 costs. The execution plan starts with an Index scan on the HISTORY\_M table and returns all of the entries in the table belonging to a specific user ID. The \texttt{UPDATE} statement makes a calculation on every entity to be able to update the quantity of the sold articles. Since the entities in HISTORY\_M are not in any specific order the scan needs to be of the entire table to group and calculate a sum of all unique entries (the Compute scalar operation represents a negative application on the articles quantity). This is of course not optimal in any way, but for this query sadly inevitable. According to Fritchey an Index scan is quite common and occurs if the query optimizer determines that it's quicker to scan all the values in the entire index than use the key provided by the index, since so many rows need to be returned \cite{fritchey}. To reduce the returned rows a fine-tuning in the \texttt{WHERE}-clause has to be done. \\\\ 
-The next operator is an Index Spool. This operator stores each of the rows to be updated and stored them in a temporary hidden object in the tempdb database. Without this operations every article update would initiate the earlier mentioned Index scan. Instead the spooled data can be reused later if the operator is rewound. In the stored procedure this operation actually is rewound 651 830 times due to number of entities in the result table. This is better than redoing the Index scan 651 830 times, but still very suboptimal. 
+The next operator is an Index Spool. This operator stores each of the rows to be updated and stored them in a temporary hidden object in the tempdb database. Without this operations every article update would initiate the earlier mentioned Index scan. Instead the spooled data can be reused later if the operator is rewound. In the stored procedure this operation is actually rewound 651 830 times due to number of entities in the result table. This is better than redoing the Index scan 651 830 times, but still very suboptimal. 
 
 \subsection{Index fragmentation}
-By using the script from the theory the following index fragmentation values were produced. The table names and index names has been shortened and/or changed due to confidentiality.
+By using the script from the theory the following index fragmentation values in Table \ref{indexfrag} were produced. The table names and index names has been shortened and/or changed due to confidentiality.
 \begin{center}
 \begin{table}[H]
 \begin{tabular}{|l|l|l|l|}
@@ -606,6 +606,7 @@ REPORT\_R\_2\_5    & PK\_REPORT\_R\_2\_5       & 14,15848367            & 45,840
 REPORT\_R\_3\_1    & PK\_REPORT\_R\_3\_1       & 10,71428571            & 7,690449716            \\ \hline
 \end{tabular}
 \caption{Table showing all the fragmented indexes}
+\label{indexfrag}
 \end{table}
 \end{center}
 This shows that 40 out of 572 indexes have both internal and external fragmentation. Some of the indexes used have an external fragmentation well above the value of 10, which is the threshold according to Shubho as mentioned in section \ref{measurefrag}. The internal fragmentation value is also bad at some of the indexes (i.e less than 75). This shows that BeX Online over time gives rise to fragmented indexes which has to be taken care of. The indexes with heavy fragmentation are used in tables that are the most frequently used by the stored procedures to create business intelligence reports. This fragmentation is most likely a reason to poor performance in these queries.
