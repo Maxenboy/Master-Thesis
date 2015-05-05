@@ -722,7 +722,7 @@ The default setting in SQL Server is to have auto-update statistics to on. This 
 \subsection{In-memory OLTP}
 As described earlier the database system consists of around 250 tables and the particular database that was provided for this thesis is approximately 75GB. Since \bex Online is a cloud bases SaaS solution all of their clients share servers. The database is also increasing in size regarding data content every day. This makes it difficult to put every table in memory since all of the clients databases combined would require hundreds of gigabytes of RAM, which would be very expensive. However, storing only the tables with the most transactions in memory would not take require massive amounts of RAM and could still be notably performance enhancing.
 \\\\
-By looking at which tables the stored procedures for the business intelligence use in their queries, a pattern could be found. 26 tables are used in all of the stored procedures and another 9 tables are used in more than 80\%. Then there's 46 more tables that are used in less than 20\% of the stored procedures. The 26 tables that are used in all stored procedures contain information that is relatively static, i.e. the information stored in the tables isn't growing at a particularly fast rate. This is preferable when using Hekaton tables since they don't have to be rebuild as often. 
+By looking at which tables the stored procedures for the business intelligence use in their queries, a pattern could be found. 26 tables are used in all of the stored procedures and another 9 tables are used in more than 80\%. Then there's 46 more tables that are used in less than 20\% of the stored procedures. The 26 tables that are used in all stored procedures contain information that is relatively static, i.e. the information stored in the tables isn't growing at a particularly fast rate. This is preferable when using Hekaton tables since they don't have to be rebuild as often.
 
 \chapter{Proposed Solution}\label{sec:proposedsoluton}
 
@@ -732,6 +732,7 @@ By looking at which tables the stored procedures for the business intelligence u
 \section{Query tuning}
 \section{Maintenance Plan}
 \section{In-memory}
+Hekaton tables are only available in SQL Server Enterprise edition. The test environment uses SQL Server Standard Edition which meant that experimenting with Hekaton tables wasn't possible. The case company use SQL Server Web Edition which doesn't support Hekaton either. Upgrading to Enterprise Edition is expensive and might not result in any improvements. However, If the case company decides to purchase it is highly recommended that they experiment with putting some of their tables with high transaction frequency in memory for overall performance improvements to \bex Online.
 
 \chapter{Discussion}
 
