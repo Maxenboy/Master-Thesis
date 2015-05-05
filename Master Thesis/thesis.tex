@@ -562,11 +562,14 @@ The next operator is an Index Spool. This operator stores each of the rows to be
 The other operations are self-explanatory and it's not until the penultimate operation the rows identification is done and the actual update is done. The leftmost operator is a T-SQL Language Element Catchall operator, that tells us, in this case, that an \texttt{UPDATE} operation has been completed. This operator also indicates that a minor problem existed, a warning label in the form of a yellow triangle. This warning tells us that there is a missing index on the result table and by creating one the performance could be improved.\\\\
 This warning, among others, is the most common in the current system. According to estimates by SQL Sentry Plan Explorer some \texttt{UPDATE} statements in the stored procedures can be performance improved up to 70,5 \% by implementing these missing indexes. But it also gives the warning that this estimate is based solely upon analysis of that specific query and has not taken the external factors in to account.\\\\ 
 Other common warnings that were encountered were "spill to temp database" and "convert issues". The "spill to temp database" issue is due to bad cardinality. The SQL Server allocates memory before execution and is therefore dependent on the estimated number of rows. If a sort operation receives more rows than it estimated (more actual rows than estimated rows) more memory is needed and therefore data is spilled/read to/from disk \cite{sortissues}. The "convert issues" is caused when data is implicitly or explicitly converted to another data type. This is performed on the data in the table columns, resulting in  altering the conceivable present index on that column. Causing the SQL server to ignore that index and perform a table scan since the index implementation doesn't coincide with the data \cite{convertissues}.\\\\
-    
+Through the analysis of the execution plans a lot of trouble signs were notified. Except from the warnings in several execution plans cardinality seems to be a big issue where estimated rows substantially differ from actual rows. As for operations Clustered Index Scan and Clustered Index Update are most definitely the most common operation throughout the stored procedures. Indicating that the indexes present on the database tables in the system are not optimal and should be revised.    
+
+\newpage
 \subsection{Index fragmentation}
 By using the script from the theory the following index fragmentation values in Table \ref{indexfrag} were produced. The table names and index names has been shortened and/or changed due to confidentiality.
 \begin{center}
 \begin{table}[H]
+\scalebox{0.92}{
 \begin{tabular}{|l|l|l|l|}
 \hline
 Table Name         & Index Name                & Ext. Frag. & Int. Frag.\\ \hline
@@ -610,7 +613,7 @@ REPORT\_R\_3\_1    & PK\_REPORT\_R\_3\_1       & 29,51672862            & 28,822
 REPORT\_R\_2\_6    & PK\_REPORT\_2\_6          & 18,96085152            & 44,27150976            \\ \hline
 REPORT\_R\_2\_5    & PK\_REPORT\_R\_2\_5       & 14,15848367            & 45,84052384            \\ \hline
 REPORT\_R\_3\_1    & PK\_REPORT\_R\_3\_1       & 10,71428571            & 7,690449716            \\ \hline
-\end{tabular}
+\end{tabular}}
 \caption{Table showing all the fragmented indexes}
 \label{indexfrag}
 \end{table}
