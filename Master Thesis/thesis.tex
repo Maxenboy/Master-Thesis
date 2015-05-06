@@ -213,7 +213,12 @@ After implementing the proposed solution the next phase is the evaluation. The e
 First of all an acquaintance of Perfect IT \bex AB's system needed to be established. In conjunction with the examination of the current system and its parts a literature research was performed. The area this research treats is extensively and the research done is almost indefinite. Therefore the literature research scope needed to be narrowed with its base in the currents systems examination.\\\\    
 To find the literature and related work Engineering Village   \cite{Enginvillage} and Google Scholar   \cite{Googlescholar} together with DBLP   \cite{DBLP} was used. A lot of time was dedicated to find relevant literature and information for this thesis and at the same time examine if the ideas established during the system examination phase were possible and solid solutions.\\\\
 Using the paper written by Gruian and Lekebjer on formatting a master’s thesis   \cite{Reportmall} and guidelines from the book by Höst et. al.    \cite{regnell} the initial work on the master thesis report was conducted.\\\\ 
-To support the thesis's scope, seen in section \ref{sec:scope}, and to explain to the reader how and why the proposed solution is of interest, an approach was established (chapter \ref{sec:approach}). The approach begun with examining the current system and its components to unravel the complications and the areas that needed further investigation. Once that was done the thesis needed theoretical background to support and target the found problems.     
+To support the thesis's scope, seen in section \ref{sec:scope}, and to explain to the reader how and why the proposed solution is of interest, an approach was established (chapter \ref{sec:approach}). The approach begun with examining the current system and its components to unravel the complications and the areas that needed further investigation. Once that was done the thesis needed theoretical background to support and target the found problems.\\
+The next step was to analyze the system and see if the initial ideas and theoretical solutions had a possibility of reaching an improvement.
+From the analysis several solutions were found to be applicable and a proposed solution, see chapter \ref{sec:proposedsoluton}, was created were solutions are further explained, how they may be implemented and further recommendations are stated.\\
+Last but not least a discussion about the thesis's results and discoveries was created. The discussion in chapter \ref{sec:discussion} also treats extrapolations, expected impact and negative/positive experiences during related work carried out.
+The whole thesis is then concluded, see chapter \ref{sec:conclusions}, to summarize the findings, possible improvements and future recommendations\\\\
+The work done in the theoretical part, the analysis and in the proposed solution were done in iterations. Alongside these iterations further literature research and results added progress to this master thesis.         
 
 
 \chapter{Approach}\label{sec:approach}
@@ -752,9 +757,9 @@ By looking at which tables the stored procedures for the business intelligence u
 \section{In-memory}
 Hekaton tables are only available in SQL Server Enterprise edition. The test environment uses SQL Server Standard Edition which meant that experimenting with Hekaton tables wasn't possible. The case company use SQL Server Web Edition which doesn't support Hekaton either. Upgrading to Enterprise Edition is expensive and might not result in any improvements. However, If the case company decides to purchase it is highly recommended that they experiment with putting some of their tables with high transaction frequency in memory for overall performance improvements to \bex Online.
 
-\chapter{Discussion}
+\chapter{Discussion}\label{sec:discussion}
 
-\chapter{Conclusions}
+\chapter{Conclusions}\label{sec:conclusions}
 \addcontentsline{toc}{chapter}{Bibliography}
 \bibliographystyle{ieeetr}
 
