@@ -143,6 +143,7 @@ Perfect It delivers it's services to mostly retail and e-commerce clients. The B
 \section{Problem description}
 Perfect It \bex AB was motivated to collaborate with academia in order to investigate how to increase the generation speed of the business intelligence-reports and to find a possible solution that increases this speed.
 \todo{Moore}
+
 \section{Thesis Goals} \label{sec:goals}
 The goal of this thesis is to identify issues related to the problem, and to propose a solution for speeding up the generation of BI reports in Perfect IT \bex AB's product \bex Online. To be able to speed up the BI report generation the processes responsible needs to be analyzed and optimized or rebuilt for speed. The solution needs to be versatile to handle the current system, to handle new functionality and also future company growth. Hence, the suggested changes needs to be scalable. Taking in to account that Perfect IT \bex has one physical server, the scalability should be vertically \cite{scalability} since the company will provide the system to more clients in the future.\\\\
 In order to make the above optimization possible, the following goals have been established:
@@ -176,29 +177,24 @@ The objective is primarily to increase the speed of the ERP-system's business in
 \end{itemize}
 
 \section{Related Work}
-There has been a lot of attempts at solving many of the problems that occur when building a database system of this size. Some of these attempts have completely redefined the classical definition of a database.
-\begin{itemize}
-\item Neo4J
-\item generellt om RDBMS
-\item Andra liknande system (hur andra retail-butiker/kedjor gör)
-\end{itemize}
+There has been a lot of attempts at solving many of the problems that occur when building a database system of greater size. Some of these attempts have completely redefined the classical definition of a database. The following subsections introduces areas and techniques that have been established to counter the problems mentioned in this thesis and several other issues.
 
-\subsubsection{Neo4J \& Graph Databases}
+\subsection{DDBMS}
+\cite{DDBMS}
+
+\subsection{Neo4J \& Graph Databases}
 Neo4J 1.0 was released in February 2010 \cite{Neo4J10}. It is a graph database that store its data as nodes and relationships. Neo4j was developed to counter a new scaling problem. Applications that handles entities, such as people, do not grow linearly but exponentially, since the more entities there are, the more relationships there are. Graph databases were developed with the philosophy that relationships are just as important as the data stored. So what would traditionally be stored as a table or even as a row in a table is in Neo4J stored as a data structure (node) with properties and relationships to other nodes. This is especially powerful in path operation problems like the "friend of a friend of a friend..."-search problem in social media platforms. Finding friends of friends of friends in a relational database involves emulating path operations by recursively joining data sets. This can cause query latency and memory usage to grow unpredictably, especially in large data-sets. In a graph database, relationships are stored physically on disk. This means that in a query, one can look at the relationships, which are first-class entities, right away, instead of having to find them at runtime. Different kinds of nodes and edges can also be used to add many layers of meaning. \\\\
 One of the biggest argument against these types of databases is that it is bad at handling  large sequential data sets. If a range of data needs to be iterated every single node needs to be visited and searched for the next node which is slower than just visiting every entry in a sequential table.
 
 \section{Contributions}
 This section presents an overall picture on which areas Max respectively Alexander were responsible for as well as which parts of the written thesis they relate to.\\
 Both were equally responsible for the structure of the report as well as the use of \LaTeX and git as VCS, seeing that the two had equal experience in the editor and the revision control system. The literature research was also done equally and was mostly made in the beginning but modified together with updates during the reports lifetime.\\\\
-Alexander had previously encounterings with the company and had therefore a much better overview of its background, naturally the related chapter in this report became his responsibility. The written part of the background chapter was consequently mostly written by Alexander, except with some collaboration from Max to establish the thesis goals and scope. The methodology and work development description in chapter \ref{chap:3} was Max responsible for and was developed during the reports whole lifespan.\\
-In the approach chapter Max wrote the company's technical system description while Alexanders responsibility was focused on research of index and in-memory solutions for databases. The theory section of the approach chapter was collaborated together were Max write about query optimization and Alexander of above mentioned areas.\\
-In the analysis section both thesis students wrote on the parts they had worked on in the previous section. Hence Max was responsible for analyzing and dissecting the stored procedures in the system as well as experimenting with the different parts of the company's database. Alexanders engagement was concentrated on investigating the databases indexes along with memory possibilities and future maintenance of the possible solution.\\           
-  
-
-In the chapter on the proposed solution we both wrote on the parts we had worked the most with during development, hence Daniel wrote about the billing core and david
-about the integration of the prototype. David then wrote the main part of the software development and testing chapter while Daniel worked on writing the discussion chapter.
-The final chapter was then written together since the conclusions was drawn as a group.
-
+Alexander had former knowledge and encounterings with the company, thus initial contact and correspondence
+with the company stakeholders ended naturally up in his responsibility. Alexander had therefore a much better overview of the company's background and naturally the related chapter in this report became his responsibility. The written part of the background chapter was consequently mostly written by Alexander, except with some collaboration from Max to establish the thesis goals and scope. The methodology and work development description in chapter \ref{chap:3} was Max responsible for and was developed during the reports whole lifespan.\\
+In the approach chapter Max wrote the company's technical system description while Alexanders responsibility was focused on research of index and in-memory solutions for databases. The theory section of the approach chapter was collaborated together were Max wrote about query optimization and Alexander of above mentioned areas.\\
+In the analysis section both thesis students wrote on the parts they had worked on in the previous section. Hence Max was responsible for analyzing and dissecting the stored procedures in the system as well as experimenting with the different parts of the company's database. Alexanders engagement was concentrated on investigating the databases indexes along with memory possibilities and future maintenance of the possible solutions.\\           
+The solution recommendations in chapter \ref{sec:proposedsoluton} were established by compiling the formerly individual parts and writing the chapter as a team. The same goes for both the discussion and the conclusion. 
+      
 \chapter{Research Questions \& Methodology}\label{chap:3}
 
 \section{Research Questions}
@@ -219,8 +215,8 @@ After implementing the proposed solution the next phase is the evaluation. The e
 First of all an acquaintance of Perfect IT \bex AB's system needed to be established. In conjunction with the examination of the current system and its parts a literature research was performed. The area this research treats is extensively and the research done is almost indefinite. Therefore the literature research scope needed to be narrowed with its base in the currents systems examination.\\\\    
 To find the literature and related work Engineering Village   \cite{Enginvillage} and Google Scholar   \cite{Googlescholar} together with DBLP   \cite{DBLP} was used. A lot of time was dedicated to find relevant literature and information for this thesis and at the same time examine if the ideas established during the system examination phase were possible and solid solutions.\\\\
 Using the paper written by Gruian and Lekebjer on formatting a master’s thesis   \cite{Reportmall} and guidelines from the book by Höst et. al.    \cite{regnell} the initial work on the master thesis report was conducted.\\\\ 
-To arrive at a solution an analysis of the current system took place. The analysis was performed in conjunction with the scope, seen in section \ref{sec:scope}, hence ensuring that the thesis's focus doesn't become ambiguous. To explain to the reader how and why the proposed solution and analysis is of interest in this thesis , an approach, chapter \ref{sec:approach}, was established.
-\todo{to be continued..}   
+To support the thesis's scope, seen in section \ref{sec:scope}, and to explain to the reader how and why the proposed solution is of interest, an approach was established (chapter \ref{sec:approach}). The approach begun with examining the current system and its components to unravel the complications and the areas that needed further investigation. Once that was done the thesis needed theoretical background to support and target the found problems.     
+
 
 \chapter{Approach}\label{sec:approach}
 
