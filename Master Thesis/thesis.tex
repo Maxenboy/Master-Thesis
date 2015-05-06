@@ -107,7 +107,8 @@ Today's users expect their applications to be fast and there are certainly a lot
 
 \subsection{Database Optimization}
 Database optimization is most often the job of a database administrator. It aims to increase the performance of a database system. Mostly by altering how the database is structured and configured, and how questions are asked to it, but also by working with the environment that the database system is in, i.e. operating system or buying better hardware. In 1984, Matthias Jarke and Jürgen Koch \cite{jarke1984query} wrote an article about how to improve the performance of relational database systems, which at this time had started to resemble the ones we use today. Back in 1984 the thing that they could focus on to improve performance was query optimization but they had the problem that no comprehensive survey on database optimization had been done to that date. They chose to tackle this problem by reviewing the query optimization techniques in a common framework of relational calculus.\\\\
-For a long time database optimization was equivalent to query optimization, but today database optimization involves
+For a long time database optimization was equivalent to query optimization, but today database optimization involves other fields as well. The most common areas to work with when optimizing a database are Indexing, Query planning and statistics, data redundancy, changing database types, adding in-memory solutions and distributed database systems.\\\\
+Poor indexing is one of the most common problems when a database has performance issues. Indexes is what the database system uses to find the right row in a table
 \todo{Skriv om det generellt och olika sätt}
 
 
@@ -133,9 +134,9 @@ Business intelligence is the art of analyzing large amounts of raw financial and
 \item Warehousing
 \item Accounting
 \end{itemize}
-In each area there are several different kinds of reports depending on what key values a user are looking for. For example, Sales has 26 different kinds of reports that all mine the system for different kinds of data to present. These kinds of reports are referred to be at the top layers of the BI architectural stack together with analytics and dashboards \cite{Evelson10}. They perform the first step of mining and arranging unsorted data sets into arranged and understandable data, and it is on these kinds of reports that further BI analysis can be based.\\\\
-Perfect It delivers it's services to mostly retail and e-commerce clients. The BI reports that are available and used by these clients are a total of 48 different BI reports that all have a meaningful role, some more than others. The BI areas that have the most importance are the ones that generate statistics for sales and warehouse (Sales and Purchase in Figure \ref{fig:BI}), where the latter-mentioned is used for purchase decisions. These areas consist of several BI reports where some of these cause inconvenience in the form of performance stalling. 
+In each area there are several different kinds of reports depending on what key values a user are looking for. For example, Sales has 26 different kinds of reports that all mine the system for different kinds of data to present. These kinds of reports are referred to be at the top layers of the BI architectural stack together with analytics and dashboards \cite{Evelson10}. They perform the first step of mining and arranging unsorted data sets into arranged and understandable data, and it is on these kinds of reports that further BI analysis can be based.
 
+\todo{Skriva om vilka som är kritiska för företaget!!!! vi har nämligen referarat till detta stycke i texten angående detta }
 
 \section{Problem description}
 Perfect It \bex AB was motivated to collaborate with academia in order to investigate how to increase the generation speed of the business intelligence-reports and to find a possible solution that increases this speed.
@@ -411,7 +412,6 @@ Stored procedure: & Report(s)\\
 4\_2-4\_5: & Accounting $\rightarrow$ Accounts, Dimension Matrix; Income Statement; Balance Sheet; Account, Day Matrix \\
 \end{tabular}
 \caption{The relation between stored procedures and BI-reports}
-\label{tab:SPBIrelation}
 \end{center}
 \end{table}
 
