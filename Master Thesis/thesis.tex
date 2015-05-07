@@ -181,11 +181,19 @@ There has been a lot of attempts at solving many of the problems that occur when
 
 \subsection{DDBMS}
 1988 Stonebraker predicted that distributed database technology would impact the data processing the same way that centralized systems did 4 decades ago, making the centralized systems an "antique curiosity"  \cite{DDBMSvsCDBMS}. Which of course is not entirely true, but with the progress of the modern technology more an more large companies need to expand their centralized system to take care of huge user- and performance-loads.\\  
-Distributed databases differ from centralized databases in the way that the logical database is spread physically across a communications network to multiple locations/computer systems \cite{DDBMS}. A distributed database system obviously has several requirements to function as intended and provide the core functionality; share data. To start the network network must allow users to share data, to be able to do so there must be a database management system at each remote node/site that coordinates the access to data, called DDBMS (Distributed Database Management System).     
+Distributed databases differ from centralized databases in the way that the logical database is spread physically across a communications network to multiple locations/computer systems \cite{DDBMS}. A distributed database system obviously has several requirements to function as intended and provide the core functionality; share data. To start the network network must allow users to share data, to be able to do so there must be a database management system at each remote node/site that coordinates the access to data, called DDBMS (Distributed Database Management System). The DDBMS provides a lot of functions that cover the requirements to share data \cite{functionsDDBMS}
+\cite{datareplication}, such as: \begin{enumerate}
+\item Keeping track of where the data is located
+\item Retrieve data from determined locatio without special actions by user
+\item Query translation between different local DBMSs
+\item Concurrency control, recovery and other management functions
+\item Replication of data across the nnodes/sites
+\item Scalability as to growth in nodes/sites additions
+
+\end{enumerate}      
 
 \cite{autonomy}
-\cite{functionsDDBMS}
-\cite{datareplication}
+
 \begin{center}
 \noindent\begin{minipage}[t]{0.25\linewidth}
     Advantages:
