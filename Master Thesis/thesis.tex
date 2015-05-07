@@ -181,36 +181,41 @@ There has been a lot of attempts at solving many of the problems that occur when
 
 \subsection{DDBMS}
 1988 Stonebraker predicted that distributed database technology would impact the data processing the same way that centralized systems did 4 decades ago, making the centralized systems an "antique curiosity"  \cite{DDBMSvsCDBMS}. Which of course is not entirely true, but with the progress of the modern technology more an more large companies need to expand their centralized system to take care of huge user- and performance-loads.\\  
-Distributed databases differ from centralized databases in the way that the logical database is spread physically across a communications network to multiple locations/computer systems \cite{DDBMS}. A distributed database system obviously has several requirements to function as intended and provide the core functionality; share data. To start the network network must allow users to share data, to be able to do so there must be a database management system at each remote node/site that coordinates the access to data, called DDBMS (Distributed Database Management System). The DDBMS provides a lot of functions that cover the requirements to share data \cite{functionsDDBMS}
-\cite{datareplication}, such as: \begin{enumerate}
+Distributed databases differ from centralized databases in the way that the logical database is spread physically across a communications network to multiple locations/computer systems \cite{DDBMS}. A distributed database system obviously has several requirements to function as intended and provide the core functionality; share data. To start the network network must allow users to share data, to be able to do so there must be a database management system at each remote node/site that coordinates the access to data, called DDBMS (Distributed Database Management System). The DDBMS provides a lot of functions that cover the requirements to share data, such as: \begin{enumerate}
 \item Keeping track of where the data is located
-\item Retrieve data from determined locatio without special actions by user
+\item Retrieve data from determined location without special actions by user
 \item Query translation between different local DBMSs
 \item Concurrency control, recovery and other management functions
-\item Replication of data across the nnodes/sites
-\item Scalability as to growth in nodes/sites additions
-
+\item Replication of data across the nodes/sites
+\item Scalability as to growth in nodes/sites additions \begin{flushright}  \cite{functionsDDBMS}
+\cite{datareplication}   \end{flushright}
 \end{enumerate}      
-
-\cite{autonomy}
+along with many other. The functionalities provided by a DDBMS should cover four important transparencies; \textbf{Location transparency, replication transparency, concurrency transparency and failure transparency}. Meaning that the database provides a user with data from unknown physical location (user is unaware of data distribution), data that is replicated on several locations, simultaneous transaction execution without effecting performance and guarantee that all actions of each transaction is committed or else none is committed.\\\\
+So why should databases be distributed? Well as earlier mentioned it improves performance as data and users grow in size. Businesses conditions such as; distribution and autonomy of business units, data communication costs and reliability, multiple application vendor environments, database recovery and the satisfying of both transaction and analytical processing, all encourage the use of distributed databases \cite{DDBMS}.\\ Compared to centralized databases, most forms of distributed databases have numerous advantages, but also faces disadvantages:     
 
 \begin{center}
-\noindent\begin{minipage}[t]{0.25\linewidth}
-    Advantages:
+\noindent\begin{minipage}[t]{0.5\linewidth}
     \begin{itemize}
-    \item{aaa}
-    \item{bbb}
+    \item[] Advantages:
+    \item{Increased reliability and availability}
+    \item{Local control}
+    \item{Modularity}
+    \item{Lower communication costs}
+    \item{Faster response, for properly distributed data}
     \end{itemize}
     \end{minipage}%
-    \begin{minipage}[t]{0.25\linewidth}
-    Disadvantages:
+    \begin{minipage}[t]{0.4\linewidth}
     \begin{itemize}
-    \item{ccc}
-    \item{ddd}
-    \item{eee}
+    \item[] Disadvantages: 
+    \item{Complexity}
+    \item{Additional software costs}
+    \item{Zealous security}
     \end{itemize}
 \end{minipage}
 \end{center}
+\begin{flushright}
+\cite{advdisDDBMS}
+\end{flushright}
 
 \subsection{OODBMS}
 
