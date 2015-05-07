@@ -178,7 +178,7 @@ The objective is primarily to increase the speed of the ERP-system's business in
 \section{Related Work}
 There has been a lot of attempts at solving many of the problems that occur when building a database system of greater size. Some of these attempts have completely redefined the classical definition of a database. The following subsections introduces areas and RDBMS-techniques (Relational Database Management System) with different angles to solve the problems mentioned in this thesis and several other issues.
 
-\subsection{DDBMS}
+\subsection{DDB}
 1988 Stonebraker predicted that distributed database technology would impact the data processing the same way that centralized systems did 4 decades ago, making the centralized systems an "antique curiosity"  \cite{DDBMSvsCDBMS}. Which of course is not entirely true, but with the progress of the modern technology more an more large companies need to expand their centralized system to take care of huge user- and performance-loads.\\  
 Distributed databases differ from centralized databases in the way that the logical database is spread physically across a communications network to multiple locations/computer systems \cite{DDBMS}. A distributed database system obviously has several requirements to function as intended and provide the core functionality; share data. To start the network network must allow users to share data, to be able to do so there must be a database management system at each remote node/site that coordinates the access to data, called DDBMS (Distributed Database Management System). The DDBMS provides a lot of functions that cover the requirements to share data, such as: \begin{enumerate}
 \item Keeping track of where the data is located
@@ -217,7 +217,8 @@ So why should databases be distributed? Well as earlier mentioned it improves pe
 \end{flushright}
 To be able to reach the advantages with DDBMS the system needs to be properly implemented. Depending on the usage the data distribution among the different nodes could be designed in several ways. Additionally the DBMS may need to process data responses from several different sites, making it crucial for the DBMS to interpret queries optimally, leading to a big responsibility at the intelligence of the DBMS and the user formulating a query. 
 
-\subsection{OODBMS}
+\subsection{OODB}
+\cite{OODBMS}
 
 \subsection{Neo4J \& Graph Databases}
 Neo4J 1.0 was released in February 2010 \cite{Neo4J10}. It is a graph database that store its data as nodes and relationships. Neo4j was developed to counter a new scaling problem. Applications that handles entities, such as people, do not grow linearly but exponentially, since the more entities there are, the more relationships there are. Graph databases were developed with the philosophy that relationships are just as important as the data stored. So what would traditionally be stored as a table or even as a row in a table is in Neo4J stored as a data structure (node) with properties and relationships to other nodes. This is especially powerful in path operation problems like the "friend of a friend of a friend..."-search problem in social media platforms. Finding friends of friends of friends in a relational database involves emulating path operations by recursively joining data sets. This can cause query latency and memory usage to grow unpredictably, especially in large data-sets. In a graph database, relationships are stored physically on disk. This means that in a query, one can look at the relationships, which are first-class entities, right away, instead of having to find them at runtime. Different kinds of nodes and edges can also be used to add many layers of meaning. \\\\
