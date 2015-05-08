@@ -156,7 +156,7 @@ In order to make the above optimization possible, the following goals have been 
 \item The current processes behind generation of the BI-reports must be identified and mapped in order to identify bottle-necks and inefficiencies.
 \item The academic approach should be done as a "Problem Solving Research"-process and will propose \& test a possible solution.
 \item Analyze possible solutions to decide which of them are a best fit for the case company.
-\item Implement the solutions in \bex Online and perform a final analysis to determine if the case company's goal was met.
+\item Propose solutions to the performance problems in \bex Online and perform a final analysis to determine if the case company's goal was met.
 \end{enumerate}
   
 \section{Scope} \label{sec:scope}
@@ -250,8 +250,7 @@ The advantages and disadvantages of OODB are numerous, therefore only a few will
 \begin{flushright}
 \cite{OODBMS}
 \end{flushright}
-\textbf{1.} The user of an OODB is allowed to create and define new data abstractions. Meaning the user can create new classes with methods and attributes, inherit from superclasses, create instances with unique identifiers, load and run methods etc. \cite{userdefinedabstractions}.\\ \textbf{2.} With the help of the OID object uniqueness is guaranteed. Resulting in eliminating the needs of user defined keys. Therefore its not possible to modify the OID by applications and two object are different even if they have the same value for all their properties and structure \cite{identity}.\\\textbf{3.} The OODB enables navigation through object structures and path expressions in object attributes. These path expressions can reduce the need for joins of classes \cite{userdefinedabstractions}.\\\textbf{4.}\textbf{a)} If the domain of a value of an attribute in an object is another object, the value references the latter object (OID). Thus if the first object is retrieved the latter object can be instantly retrieved by the first objects attribute value.\\
-\textbf{b)} When OODB objects are loaded into memory the objects OID is converted into memory pointers. Making repeated navigation through linked objects loaded in memory dramatically faster\cite{userdefinedabstractions}.\\\\\textbf{1.} \\\textbf{2.} \\\textbf{3.} \\\textbf{4.}
+\textbf{1.} The user of an OODB is allowed to create and define new data abstractions. Meaning the user can create new classes with methods and attributes, inherit from superclasses, create instances with unique identifiers, load and run methods etc. \cite{userdefinedabstractions}.\\ \textbf{2.} With the help of the OID object uniqueness is guaranteed. Resulting in eliminating the needs of user defined keys. Therefore its not possible to modify the OID by applications and two object are different even if they have the same value for all their properties and structure.\\\textbf{3.} 
 
 \subsection{Neo4J \& Graph Databases}
 Neo4J 1.0 was released in February 2010 \cite{Neo4J10}. It is a graph database that store its data as nodes and relationships. Neo4j was developed to counter a new scaling problem. Applications that handles entities, such as people, do not grow linearly but exponentially, since the more entities there are, the more relationships there are. Graph databases were developed with the philosophy that relationships are just as important as the data stored. So what would traditionally be stored as a table or even as a row in a table is in Neo4J stored as a data structure (node) with properties and relationships to other nodes. This is especially powerful in path operation problems like the "friend of a friend of a friend..."-search problem in social media platforms. Finding friends of friends of friends in a relational database involves emulating path operations by recursively joining data sets. This can cause query latency and memory usage to grow unpredictably, especially in large data-sets. In a graph database, relationships are stored physically on disk. This means that in a query, one can look at the relationships, which are first-class entities, right away, instead of having to find them at runtime. Different kinds of nodes and edges can also be used to add many layers of meaning. \\\\
@@ -825,9 +824,12 @@ By looking at which tables the stored procedures for the business intelligence u
 \section{Introduction}
 Based on the theory research and the findings made in the analysis a number of solutions to the experienced performance issues can be proposed to the case company.
 \section{Indexing}
-The finding that most of the heavily fragmented indexes are used in the stored procedures that generate the business intelligence reports might be one of the core performance issues. This might especially be true in the x§
+The finding that most of the heavily fragmented indexes are used in the stored procedures that generate the business intelligence reports might be one of the core performance issues. This might especially be true in the stored procedures that need to accumulate data from rows based on a specific search value.
+
+
 \section{Query tuning}
 \section{Maintenance Plan}
+Ola Hallengren's \cite{Hallengren15} scripts allow for analysis of the database on a scheduled basis. The scripts then take decisions, based on how they are set up, on what to do with lowly, medium and heavily fragmented indexes separately. For instance, one might want to simply reorganize indexes that have medium fragmentation but rebuild from scratch indexes that are heavily fragmented. Low fragmentation might not be worth the processing resources required to fix them. 
 \section{In-memory}
 Hekaton tables are only available in SQL Server Enterprise edition. The test environment uses SQL Server Standard Edition which meant that experimenting with Hekaton tables wasn't possible. The case company use SQL Server Web Edition which doesn't support Hekaton either. Upgrading to Enterprise Edition is expensive and might not result in any improvements. However, If the case company decides to purchase it, it is highly recommended that they experiment with putting some of their tables with high transaction frequency in memory for overall performance improvements to \bex Online.
 
