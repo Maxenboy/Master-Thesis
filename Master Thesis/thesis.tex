@@ -768,7 +768,7 @@ During the experimentation it was recognized that the tables ITEM and ITEM\_L\_E
 \end{center}
 \end{figure}
 
-\noindent The above experimentation shows that in some cases table partitioning can reduce the execution time for the BI stored procedures. Unfortunately this can not be applied on the all the heavy resource intensive tables and do not effect significantly in some cases.\\ To complement the experimentation the indexes of the tables were taken under examination.\\ In Figure \ref{indexalteration} three stored procedures are shown with different indexes applied to the table HISTORY\_M, the names of the indexes correspond to the column names in HISTROY\_M. Even here there's evidence of suboptimal indexing. For example in Report 1\_1\_1 and Report 1\_1\_2 the execution time is less when the indexes are removed and maintaining the keys on table HISTORY\_M than having the original indexes and keys on table HISTORY\_M. Even though the new customized indexes didn't result in more efficient execution time, there is room for improvement in index alteration.     
+\noindent The above experimentation shows that in some cases table partitioning can reduce the execution time for the BI stored procedures. Unfortunately this can not be applied on the all the heavy resource intensive tables and do not effect significantly in some cases.\\ To complement the experimentation the indexes of the tables were taken under examination.\\ In Figure \ref{indexalteration} three stored procedures are shown with different indexes applied to the table HISTORY\_M, the names of the indexes correspond to the column names in HISTROY\_M. Even here there's evidence of suboptimal indexing. For example in Report 1\_1\_1 and Report 1\_1\_2 the execution time is less when the indexes are removed and maintaining the keys on table HISTORY\_M than having the original indexes and keys on table HISTORY\_M. Even though the new customized indexes didn't result in more efficient execution time, there is room for improvement in index alteration.   
 
 \begin{figure}[H]
 \begin{center}$
@@ -823,14 +823,14 @@ As described earlier the database system consists of around 250 tables and the p
 By looking at which tables the stored procedures for the business intelligence use in their queries, a pattern could be found. 26 tables are used in all of the stored procedures and another 9 tables are used in more than 80\%. Then there's 46 more tables that are used in less than 20\% of the stored procedures. The 26 tables that are used in all stored procedures contain information that is relatively static, i.e. the information stored in the tables isn't growing at a particularly fast rate. This is preferable when using Hekaton tables since they don't have to be rebuild as often.
 
 \chapter{Proposed Solution}\label{sec:proposedsoluton}
-
 \section{Introduction}
-
+Based on the theory research and the findings made in the analysis a number of solutions to the experienced performance issues can be proposed to the case company.
 \section{Indexing}
+The finding that most of the heavily fragmented indexes are used in the stored procedures that generate the business intelligence reports might be one of the core performance issues. This might especially be true in the x§
 \section{Query tuning}
 \section{Maintenance Plan}
 \section{In-memory}
-Hekaton tables are only available in SQL Server Enterprise edition. The test environment uses SQL Server Standard Edition which meant that experimenting with Hekaton tables wasn't possible. The case company use SQL Server Web Edition which doesn't support Hekaton either. Upgrading to Enterprise Edition is expensive and might not result in any improvements. However, If the case company decides to purchase it is highly recommended that they experiment with putting some of their tables with high transaction frequency in memory for overall performance improvements to \bex Online.
+Hekaton tables are only available in SQL Server Enterprise edition. The test environment uses SQL Server Standard Edition which meant that experimenting with Hekaton tables wasn't possible. The case company use SQL Server Web Edition which doesn't support Hekaton either. Upgrading to Enterprise Edition is expensive and might not result in any improvements. However, If the case company decides to purchase it, it is highly recommended that they experiment with putting some of their tables with high transaction frequency in memory for overall performance improvements to \bex Online.
 
 \chapter{Discussion}\label{sec:discussion}
 
