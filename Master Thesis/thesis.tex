@@ -26,6 +26,7 @@
 \usetikzlibrary{trees}
 \usepackage{capt-of}
 \usepackage{comment}
+\usepackage{rotating}
 \newcommand{\hilight}[1]{\colorbox{yellow}{#1}}
 
 \definecolor{mygreen}{rgb}{0,0.6,0}
@@ -155,7 +156,7 @@ In order to make the above optimization possible, the following goals have been 
 \item The current processes behind generation of the BI-reports must be identified and mapped in order to identify bottle-necks and inefficiencies.
 \item The academic approach should be done as a "Problem Solving Research"-process and will propose \& test a possible solution.
 \item Analyze possible solutions to decide which of them are a best fit for the case company.
-\item Implement the solutions in \bex Online and perform a final analysis to determine if the case company's goal was met.
+\item Propose solutions to the performance problems in \bex Online and perform a final analysis to determine if the case company's goal was met.
 \end{enumerate}
   
 \section{Scope} \label{sec:scope}
@@ -180,7 +181,7 @@ The objective is primarily to increase the speed of the ERP-system's business in
 \end{itemize}
 
 \section{Related Work}
-There has been a lot of attempts at solving many of the problems that occur when building a database system of greater size. Some of these attempts have completely redefined the classical definition of a database. The following subsections introduces areas and RDBMS-techniques (Relational Database Management System) with different angles to solve the problems mentioned in this thesis and several other issues.
+There has been a lot of attempts at solving many of the problems that occur when building a database system of greater size. Some of these attempts have completely redefined the classical definition of a database. The following subsections introduces areas and DBMS-techniques (Database Management System) with different angles to solve the problems mentioned in this thesis and several other issues.
 
 \subsection{DDB}
 1988 Stonebraker predicted that distributed database technology would impact the data processing the same way that centralized systems did in the 70's, making the centralized systems an "antique curiosity"  \cite{DDBMSvsCDBMS}. Which of course is not entirely true, but with the progress of the modern technology more an more large companies need to expand their centralized system to take care of huge user- and performance-loads.\\  
@@ -222,28 +223,36 @@ So why should databases be distributed? Well as earlier mentioned it improves pe
 To be able to reach the advantages with DDBMS the system needs to be properly implemented. Depending on the usage the data distribution among the different nodes could be designed in several ways. Additionally the DBMS may need to process data responses from several different sites, making it crucial for the DBMS to interpret queries optimally, leading to a big responsibility at the intelligence of the DBMS and the user formulating a query. 
 
 \subsection{OODB}
-During the same time as the DDB had it's goals to overpower the centralized systems, the need to perform complex data manipulations and a new generation of database application generated a necessity to meet the requirements beyond the characterized relation database systems \cite{OODBMS}. Using the already conventional relation database systems for these advanced applications, such as computer aided designs (CAD), quickly exposed the drawbacks of RDB \cite{OODBMSshortcomings}. Thus object-oriented database (OODB) systems derived to satisfy the demands to represent real world entities.\\The OODB paradigm follows the paradigm for object-oriented programming languages such as Java. It's based on a number of concepts; Object, Identity, Class, Overriding etc \cite{OODBMSparadigms}. The entities in an object-oriented data model are represented by objects. These object have a state and a behavior, which are defined by the values of its properties/attributes and the methods that operate on the state of the object respectively. Properties can have a primitive value, such as strings and integers, and nonprimitive objects that in turn is composed of a set of properties. Which enables objects to be recursively defined in respect of other objects.  
+During the same time as the DDB had it's goals to overpower the centralized systems, the need to perform complex data manipulations and a new generation of database application generated a necessity to meet the requirements beyond the characterized relation database systems \cite{OODBMS}. Using the already conventional relation database systems for these advanced applications, such as computer aided designs (CAD), quickly exposed the drawbacks of RDBs \cite{OODBMSshortcomings}. Thus object-oriented database (OODB) systems derived to satisfy the demands to represent real world entities.\\\\
+The OODB paradigm follows the paradigm for object-oriented programming languages such as Java. It's based on a number of concepts; Object, Identity, Class, Overriding etc \cite{OODBMSparadigms}. The entities in an object-oriented data model are represented by objects. These object have a state and a behavior, which are defined by the values of its properties/attributes and the methods that operate on the state of the object respectively. Properties can have a primitive value, such as strings and integers, and nonprimitive objects that in turn is composed of a set of properties. Which enables objects to be recursively defined in respect of other objects. The objects are uniquely identified by a system-defined identifier called OID. Objects with the same behavior and state are organized in to classes and can be  an instance of one or several classes \cite{OODBMSclasses}. Classes are in turn organized in class hierarchies where subclasses inherit methods and properties from the superclass. Sublclasses can have specific properties and implemented methods as well as have the possibility to override the inherited properties and methods from the superclass.\\\\
+The object-oriented technology was expected, as DDB, to revolutionize the database technology. But OODBs lack certain basic features that users have become accustomed to. 
+The advantages and disadvantages of OODB are numerous, therefore only a few will be featured in this section. The advantages and disadvantages are compared to the conventional relationship database.
 \begin{center}
 \noindent\begin{minipage}[t]{0.5\linewidth}
-    \begin{itemize}
+    \begin{enumerate}
     \item[] Advantages:
-    \item{Increased reliability and availability}
-    \item{Local control}
-    \item{Modularity}
-    \item{Lower communication costs}
-    \item{Faster response, for properly distributed data}
-    \end{itemize}
+    \item{Allow user defined abstractions}
+    \item{Eliminate the need of user defined keys}
+    \item{Reduced need for \texttt{JOIN}}
+    \item{Performance gain compared to RDB}
+    \end{enumerate}
     \end{minipage}%
-    \begin{minipage}[t]{0.4\linewidth}
-    \begin{itemize}
+    \begin{minipage}[t]{0.6\linewidth}
+    \begin{enumerate}
     \item[] Disadvantages: 
-    \item{Complexity}
-    \item{Additional software costs}
-    \item{Zealous security}
-    \end{itemize}
+    \item{Interoperability between RDB and OODB }
+    \item{Minimal query optimization an performance tuning}
+    \item{Lack of standard query algebra}
+    \item{Authorization concerns}
+    \end{enumerate}
 \end{minipage}
 \end{center}
-
+\begin{flushright}
+\cite{OODBMS}
+\end{flushright}
+\textbf{1.} The user of an OODB is allowed to create and define new data abstractions. Meaning the user can create new classes with methods and attributes, inherit from superclasses, create instances with unique identifiers, load and run methods etc. \cite{userdefinedabstractions}.\\ \textbf{2.} With the help of the OID object uniqueness is guaranteed. Resulting in eliminating the needs of user defined keys. Therefore its not possible to modify the OID by applications and two object are different even if they have the same value for all their properties and structure \cite{identity}.\\\textbf{3.} The OODB enables navigation through object structures and path expressions in object attributes. These path expressions can reduce the need for joins of classes \cite{userdefinedabstractions}.\\\textbf{4.}\textbf{a)} If the domain of a value of an attribute in an object is another object, the value references the latter object (OID). Thus if the first object is retrieved the latter object can be instantly retrieved by the first objects attribute value.\\
+\textbf{b)} When OODB objects are loaded into memory the objects OID is converted into memory pointers. Making repeated navigation through linked objects loaded in memory dramatically faster \cite{userdefinedabstractions}.\\\\\textbf{1.} OODBs are not compatible with RDBs-there's a need for a migration path. The architecture and data models between OODBs and RDBs are not yet unified, making it difficult for theses systems to coexist \cite{userdefinedabstractions}. \\\textbf{2.} Since OODBs often contain a lot of user defined classes and new types the optimizer can have a hard time to predict the "relation" between classes and might assume that a class is a subclass to a faulty superclass. In addition complex methods, objects and encapsulations add complexity through complex path expressions in the query processing. Due to these problems object-oriented query optimization is still in research stage \cite{OODBqopt}. \\\textbf{3.} Several different query languages of algebra have been proposed for OODBs, such as association algebra \cite{associationalg}, but they differ in expressibility and optimizing rewrite rules. \\\textbf{4.} Unlike RDBs, most OODBs don't support authorization, making privileges on data nonexistent \cite{userdefinedabstractions}.\\\\
+Unfortunately the phrase OODB has become a faulty term. The weaknesses has brought the OODB technology to being more of a constant storage of object-oriented programming language than database system. The OODB technology has not met its expectations to provide important features to the complex applications it was meant to help currently the disadvantages outweigh the advantages \cite{OODBMS}.
 
 \subsection{Neo4J \& Graph Databases}
 Neo4J 1.0 was released in February 2010 \cite{Neo4J10}. It is a graph database that store its data as nodes and relationships. Neo4j was developed to counter a new scaling problem. Applications that handles entities, such as people, do not grow linearly but exponentially, since the more entities there are, the more relationships there are. Graph databases were developed with the philosophy that relationships are just as important as the data stored. So what would traditionally be stored as a table or even as a row in a table is in Neo4J stored as a data structure (node) with properties and relationships to other nodes. This is especially powerful in path operation problems like the "friend of a friend of a friend..."-search problem in social media platforms. Finding friends of friends of friends in a relational database involves emulating path operations by recursively joining data sets. This can cause query latency and memory usage to grow unpredictably, especially in large data-sets. In a graph database, relationships are stored physically on disk. This means that in a query, one can look at the relationships, which are first-class entities, right away, instead of having to find them at runtime. Different kinds of nodes and edges can also be used to add many layers of meaning. \\\\
@@ -318,7 +327,8 @@ The database system used is Microsoft SQL Server 2014 Web edition. It has a maxi
 
 \paragraph*{Tables}\mbox{}\\\\
 For this thesis Perfect It BeX AB has made available a copy of one of their biggest clients database. To ensure the clients privacy, and the privacy of the clients customers, all sensitive data has been removed. \\ 
-The default schema is called \textit{dbo} and consists of a total of 254 tables, including some views for big data queries. Many tables are large, considering the amount of rows, where the largest consists of approximately 10.5$\times 10^6$ rows and 80 columns. This table stores the data associated with every business transaction made by the system from the start of using this system. The tables form a complex relation to each other and the references are many (as seen in this \href{https://drive.google.com/file/d/0B1IYTmE2hnD-eGQ0N2tvYXZNNVE/view?usp=sharing}{\textcolor{blue}{link}}\footnote{https://drive.google.com/file/d/0B1IYTmE2hnD-eGQ0N2tvYXZNNVE/view?usp=sharing}). In the visualized database reference schema there are tables not referencing any tables at all, \hilight{why?}.\\\\ There are also tables needed by third party applications and API's that also are stored in the database and can be seen in the bottom part of the visualized database reference schema mentioned above (\hilight{maybe the answer to the no reference question above?}). Some \hilight{why not all?} of the BI reports have their own tables in the database, due to an early attempt to optimize the BI-generation by storing the result of the latest query. Meaning that if the same query queries the result is already stored and doesn't need to be looked for.
+The default schema is called \textit{dbo} and consists of a total of 254 tables, including some views for big data queries. Many tables are large, considering the amount of rows, where the largest consists of approximately 10.5$\times 10^6$ rows and 80 columns. This table stores the data associated with every business transaction made by the system from the start of using this system. The tables form a complex relation to each other and the references are many (as seen in appendix, figure \ref{fig:ER}). In the visualized database reference schema there are tables not referencing any tables at all.\\\\
+There are also tables needed by third party applications and API's that also are stored in the database and can be seen in the bottom part of the visualized database reference schema mentioned above. Some of the BI reports have their own tables in the database, due to an early attempt to optimize the BI-generation by storing the result of the latest query. Meaning that if the same query queries the result is already stored and doesn't need to be looked for. This is saved by user so there can be multiple search results from different users in these tables.
 
 \paragraph*{Stored procedures}\mbox{}\\\\ 
 stored procedures are subroutines that are available to applications that access relational database systems. Stored procedures are used as centralized logic and can therefore be used by all applications that share the system. These subroutines can include both SQL statements and host language statements, meaning that it can exist external procedures that has nothing to do with SQL. Often extensive and complex SQL queries, that require a lot of processing and are often being used, are moved to stored procedures for reuse   \cite{StoredProcedures}. It's important to know that stored procedures both bring advantages, e.g. stored procedures are cached, and drawbacks, e.g. stored procedure code is not as robust as app code. Subroutines such as stored procedures should therefore only be used when and if the implementer possess a deep knowledge of the system that is to be affected. It's for example bad practice to store all procedures as stored procedures for the benefit of the cache-utilization.\\\\
@@ -758,7 +768,7 @@ During the experimentation it was recognized that the tables ITEM and ITEM\_L\_E
 \end{center}
 \end{figure}
 
-\noindent The above experimentation shows that in some cases table partitioning can reduce the execution time for the BI stored procedures. Unfortunately this can not be applied on the all the heavy resource intensive tables and do not effect significantly in some cases.\\ To complement the experimentation the indexes of the tables were taken under examination.\\ In Figure \ref{indexalteration} three stored procedures are shown with different indexes applied to the table HISTORY\_M, the names of the indexes correspond to the column names in HISTROY\_M. Even here there's evidence of suboptimal indexing. For example in Report 1\_1\_1 and Report 1\_1\_2 the execution time is less when the indexes are removed and maintaining the keys on table HISTORY\_M than having the original indexes and keys on table HISTORY\_M. Even though the new customized indexes didn't result in more efficient execution time, there is room for improvement in index alteration.     
+\noindent The above experimentation shows that in some cases table partitioning can reduce the execution time for the BI stored procedures. Unfortunately this can not be applied on the all the heavy resource intensive tables and do not effect significantly in some cases.\\ To complement the experimentation the indexes of the tables were taken under examination.\\ In Figure \ref{indexalteration} three stored procedures are shown with different indexes applied to the table HISTORY\_M, the names of the indexes correspond to the column names in HISTROY\_M. Even here there's evidence of suboptimal indexing. For example in Report 1\_1\_1 and Report 1\_1\_2 the execution time is less when the indexes are removed and maintaining the keys on table HISTORY\_M than having the original indexes and keys on table HISTORY\_M. Even though the new customized indexes didn't result in more efficient execution time, there is room for improvement in index alteration.   
 
 \begin{figure}[H]
 \begin{center}$
@@ -813,14 +823,17 @@ As described earlier the database system consists of around 250 tables and the p
 By looking at which tables the stored procedures for the business intelligence use in their queries, a pattern could be found. 26 tables are used in all of the stored procedures and another 9 tables are used in more than 80\%. Then there's 46 more tables that are used in less than 20\% of the stored procedures. The 26 tables that are used in all stored procedures contain information that is relatively static, i.e. the information stored in the tables isn't growing at a particularly fast rate. This is preferable when using Hekaton tables since they don't have to be rebuild as often.
 
 \chapter{Proposed Solution}\label{sec:proposedsoluton}
-
 \section{Introduction}
-
+Based on the theory research and the findings made in the analysis a number of solutions to the experienced performance issues can be proposed to the case company.
 \section{Indexing}
+The finding that most of the heavily fragmented indexes are used in the stored procedures that generate the business intelligence reports might be one of the core performance issues. This might especially be true in the stored procedures that need to accumulate data from rows based on a specific search value.
+
+
 \section{Query tuning}
 \section{Maintenance Plan}
+Ola Hallengren's \cite{Hallengren15} scripts allow for analysis of the database on a scheduled basis. The scripts then take decisions, based on how they are set up, on what to do with lowly, medium and heavily fragmented indexes separately. For instance, one might want to simply reorganize indexes that have medium fragmentation but rebuild from scratch indexes that are heavily fragmented. Low fragmentation might not be worth the processing resources required to fix them. 
 \section{In-memory}
-Hekaton tables are only available in SQL Server Enterprise edition. The test environment uses SQL Server Standard Edition which meant that experimenting with Hekaton tables wasn't possible. The case company use SQL Server Web Edition which doesn't support Hekaton either. Upgrading to Enterprise Edition is expensive and might not result in any improvements. However, If the case company decides to purchase it is highly recommended that they experiment with putting some of their tables with high transaction frequency in memory for overall performance improvements to \bex Online.
+Hekaton tables are only available in SQL Server Enterprise edition. The test environment uses SQL Server Standard Edition which meant that experimenting with Hekaton tables wasn't possible. The case company use SQL Server Web Edition which doesn't support Hekaton either. Upgrading to Enterprise Edition is expensive and might not result in any improvements. However, If the case company decides to purchase it, it is highly recommended that they experiment with putting some of their tables with high transaction frequency in memory for overall performance improvements to \bex Online.
 
 \chapter{Discussion}\label{sec:discussion}
 
@@ -1253,5 +1266,12 @@ Tools/Programs: & SQL Server Management Studio, SQL Sentry Plan Explorer\\
 \caption{The different BI-reports available in \bex Online}
 \label{fig:BI}
 \end{figure}
+
+\begin{figure}
+\includegraphics[angle = 270, width = \textwidth]{Pictures/ER.png}
+\caption{ER-diagram of all the tables in the database}
+\label{fig:ER}
+\end{figure}
+
 \end{appendices}
 \end{document}
