@@ -817,6 +817,26 @@ Some of the indexes were heavily fragmented. When looking at the tables that use
 \subsubsection{Statistics}
 The default setting in SQL Server is to have auto-update statistics to on. This is also the case in the case company's database. This is good, since statistics need to be accurate and up to date in order for the query planner to to it's job properly. There are however advantages to updating statistics manually in a maintenance plan to make sure that they are correct. Updating statistics manually should be done with care. During the index rebuild process the statistics for that index are also updated. If there is a plan to manually update the statistics for that index in the maintenance plan the statistics will be updated twice, which is bad for performance. A manual statistics update is also not as thorough as the update that happens during the rebuild so the statistics might even become worse. If updating statistics should be part of the maintenance plan it should only be done to the indexes that hasn't been rebuilt.
 
+\subsubsection{Testing Ola Hallengren's scripts}
+Ola Hallengren's maintenance scripts were downloaded and set up in the testing environment. The maintenance script require only five simple settings before it could be executed, i.e. which database(s) it should create the script for. When executed the script created four stored procedures that could be used for maintenance and investigation. The main maintenance stored procedure is called schemaname.IndexOptimize. It can be run with a number of settings depending on the requested actions. Some of the key settings is to define what counts as low, medium and high index fragmentation, and what operations that should be performed depending on this level. By default the fragmentation levels are set to Microsoft's recommendation, which are:
+\begin{itemize}
+\item Low fragmentation < 5\%
+\item Medium fragmentation < 30\%
+\item High fragmentation > 30\%
+\end{itemize}
+Notice how there is only a single fragmentation value in these scripts, compared to the two kinds of fragmentation in the theory. The scripts uses the avg\_fragmentation\_in\_percent in sys.dm\_db\_index\_physical\_stats, which is a Microsoft Sql Server feature, to determine the fragmentation.\\\\
+The operations that can be performed on an index on each fragmentation level are:
+\begin{itemize}
+\item Rebuild index online.
+\item Rebuild index offline.
+\item Reorganize index.
+\item Rebuild index online. Rebuild index offline if online rebuilding is not supported on an index. This is the default for a high-fragmented index.
+\item Rebuild index online. Reorganize index if online rebuilding is not supported on an index.
+\item  Reorganize index. Rebuild index online if reorganizing is not supported on an index. Rebuild index offline if reorganizing and online rebuilding are not supported on an index. 
+\item Do not perform index maintenance.
+\end{itemize}
+Since rebuilding an index can be an expensive operation, reorganizing is preferred on the lower fragmentation levels if the scripts is run often. 
+
 \subsection{In-memory OLTP}
 As described earlier the database system consists of around 250 tables and the particular database that was provided for this thesis is approximately 75GB. Since \bex Online is a cloud bases SaaS solution all of their clients share servers. The database is also increasing in size regarding data content every day. This makes it difficult to put every table in memory since all of the clients databases combined would require hundreds of gigabytes of RAM, which would be very expensive. However, storing only the tables with the most transactions in memory would not take require massive amounts of RAM and could still be notably performance enhancing.
 \\\\
