@@ -26,6 +26,7 @@
 \usetikzlibrary{trees}
 \usepackage{capt-of}
 \usepackage{comment}
+\usepackage{rotating}
 \newcommand{\hilight}[1]{\colorbox{yellow}{#1}}
 
 \definecolor{mygreen}{rgb}{0,0.6,0}
@@ -318,7 +319,8 @@ The database system used is Microsoft SQL Server 2014 Web edition. It has a maxi
 
 \paragraph*{Tables}\mbox{}\\\\
 For this thesis Perfect It BeX AB has made available a copy of one of their biggest clients database. To ensure the clients privacy, and the privacy of the clients customers, all sensitive data has been removed. \\ 
-The default schema is called \textit{dbo} and consists of a total of 254 tables, including some views for big data queries. Many tables are large, considering the amount of rows, where the largest consists of approximately 10.5$\times 10^6$ rows and 80 columns. This table stores the data associated with every business transaction made by the system from the start of using this system. The tables form a complex relation to each other and the references are many (as seen in this \href{https://drive.google.com/file/d/0B1IYTmE2hnD-eGQ0N2tvYXZNNVE/view?usp=sharing}{\textcolor{blue}{link}}\footnote{https://drive.google.com/file/d/0B1IYTmE2hnD-eGQ0N2tvYXZNNVE/view?usp=sharing}). In the visualized database reference schema there are tables not referencing any tables at all, \hilight{why?}.\\\\ There are also tables needed by third party applications and API's that also are stored in the database and can be seen in the bottom part of the visualized database reference schema mentioned above (\hilight{maybe the answer to the no reference question above?}). Some \hilight{why not all?} of the BI reports have their own tables in the database, due to an early attempt to optimize the BI-generation by storing the result of the latest query. Meaning that if the same query queries the result is already stored and doesn't need to be looked for.
+The default schema is called \textit{dbo} and consists of a total of 254 tables, including some views for big data queries. Many tables are large, considering the amount of rows, where the largest consists of approximately 10.5$\times 10^6$ rows and 80 columns. This table stores the data associated with every business transaction made by the system from the start of using this system. The tables form a complex relation to each other and the references are many (as seen in appendix, figure \ref{fig:ER}). In the visualized database reference schema there are tables not referencing any tables at all.\\\\
+There are also tables needed by third party applications and API's that also are stored in the database and can be seen in the bottom part of the visualized database reference schema mentioned above. Some of the BI reports have their own tables in the database, due to an early attempt to optimize the BI-generation by storing the result of the latest query. Meaning that if the same query queries the result is already stored and doesn't need to be looked for. This is saved by user so there can be multiple search results from different users in these tables.
 
 \paragraph*{Stored procedures}\mbox{}\\\\ 
 stored procedures are subroutines that are available to applications that access relational database systems. Stored procedures are used as centralized logic and can therefore be used by all applications that share the system. These subroutines can include both SQL statements and host language statements, meaning that it can exist external procedures that has nothing to do with SQL. Often extensive and complex SQL queries, that require a lot of processing and are often being used, are moved to stored procedures for reuse   \cite{StoredProcedures}. It's important to know that stored procedures both bring advantages, e.g. stored procedures are cached, and drawbacks, e.g. stored procedure code is not as robust as app code. Subroutines such as stored procedures should therefore only be used when and if the implementer possess a deep knowledge of the system that is to be affected. It's for example bad practice to store all procedures as stored procedures for the benefit of the cache-utilization.\\\\
@@ -1253,5 +1255,12 @@ Tools/Programs: & SQL Server Management Studio, SQL Sentry Plan Explorer\\
 \caption{The different BI-reports available in \bex Online}
 \label{fig:BI}
 \end{figure}
+
+\begin{figure}
+\includegraphics[angle = 270, width = \textwidth]{Pictures/ER.png}
+\caption{ER-diagram of all the tables in the database}
+\label{fig:ER}
+\end{figure}
+
 \end{appendices}
 \end{document}
