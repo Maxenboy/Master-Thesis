@@ -654,7 +654,7 @@ Other common warnings that were encountered were "spill to temp database" and "c
 Through the analysis of the execution plans a lot of trouble signs were notified. Except from the warnings in several execution plans cardinality seems to be a big issue where estimated rows substantially differ from actual rows. As for operations Clustered Index Scan and Clustered Index Update are most definitely the most common operation throughout the stored procedures. Indicating that the indexes present on the database tables in the system are not optimal and should be revised.    
 
 \newpage
-\subsection{Index fragmentation}
+\subsection{Index fragmentation}\label{indexfragmentation}
 By using the script from the theory the following index fragmentation values in Table \ref{indexfrag} were produced. The table names and index names has been shortened and/or changed due to confidentiality.
 \begin{center}
 \begin{table}[H]
@@ -835,7 +835,18 @@ The operations that can be performed on an index on each fragmentation level are
 \item  Reorganize index. Rebuild index online if reorganizing is not supported on an index. Rebuild index offline if reorganizing and online rebuilding are not supported on an index. 
 \item Do not perform index maintenance.
 \end{itemize}
-Since rebuilding an index can be an expensive operation, reorganizing is preferred on the lower fragmentation levels if the scripts is run often. 
+Since rebuilding an index can be an expensive operation, reorganizing is preferred on the lower fragmentation levels if the scripts is run often. There are also many more options like setting fill level of the pages and what the least number of pages an index needs to have before it is even considered for maintenance. It's also possible to decide if and when statistics on an index should be updated. Most of these settings have default values based on recommendations from Microsoft.\\\\
+When running the script in the test environment a full rebuild of all fragmented indexes was chosen with the rest of the options set to default. After the script had finished the script from section \ref{indexfragmentation} was used again to see the results. This showed that all but 14 of the indexes had been rebuild. This is because of the page count setting. The 14 unaffected indexes were too small to be corrected by the script. To test the result of doing the maintenance the seven slowest performing stored procedures in table \ref{tab:duration} were executed again and the execution times were compared to before the maintenance. The results can be seen in figure \ref{fig:beforeafter}.
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[scale=1]{Pictures/beforeAndAfterMaintenance.png}
+\caption{Execution time results from before and after maintenance}
+\label{fig:beforeafter}
+\end{center}
+\end{figure} 
+
+This drastically shows the effect of having unfragmented indexes and good statistics. Report\_4\_4 for instance, performed 6.5 times faster after the maintenance. Report\_1\_1\_1 however showed only a small improvement. Performing this maintenance plan doesn't benefit only the BI-reports however, it benefits the whole system. But due to the scope and limitations of this thesis the other areas of the system couldn't be benchmarked.
 
 \subsection{In-memory OLTP}
 As described earlier the database system consists of around 250 tables and the particular database that was provided for this thesis is approximately 75GB. Since \bex Online is a cloud bases SaaS solution all of their clients share servers. The database is also increasing in size regarding data content every day. This makes it difficult to put every table in memory since all of the clients databases combined would require hundreds of gigabytes of RAM, which would be very expensive. However, storing only the tables with the most transactions in memory would not take require massive amounts of RAM and could still be notably performance enhancing.
@@ -845,13 +856,14 @@ By looking at which tables the stored procedures for the business intelligence u
 \chapter{Proposed Solution}\label{sec:proposedsoluton}
 \section{Introduction}
 Based on the theory research and the findings made in the analysis a number of solutions to the experienced performance issues can be proposed to the case company.
+
 \section{Indexing}
-The finding that most of the heavily fragmented indexes are used in the stored procedures that generate the business intelligence reports might be one of the core performance issues. This might especially be true in the stored procedures that need to accumulate data from rows based on a specific search value.
 
 
 \section{Query tuning}
 \section{Maintenance Plan}
-Ola Hallengren's \cite{Hallengren15} scripts allow for analysis of the database on a scheduled basis. The scripts then take decisions, based on how they are set up, on what to do with lowly, medium and heavily fragmented indexes separately. For instance, one might want to simply reorganize indexes that have medium fragmentation but rebuild from scratch indexes that are heavily fragmented. Low fragmentation might not be worth the processing resources required to fix them. 
+Ola Hallengren's \cite{Hallengren15} scripts allow for analysis of the database on a scheduled basis. The scripts then take decisions, based on how they are set up, on what to do with lowly, medium and heavily fragmented indexes separately. For instance, one might want to simply reorganize indexes that have medium fragmentation but rebuild from scratch indexes that are heavily fragmented. Low fragmentation might not be worth the processing resources required to fix them. Since the case company's production environment couldn't be investigated in this thesis, it is hard to give a recommendation on what settings to use in the scripts. But because of the large improvements to the BI-reports performance that was obtained by using the scripts it is highly recommended that these be used. The case company is suggested to use these scripts daily to catch performance issues early. Since these scripts require  processing resources which could otherwise be used for the actual application, the daily runs should only do light checks only rebuild the very worst fragmentation. Reorganize, which is a lighter operation is therefore recommended on these. A weekly run with more strict fragmentation and rebuilding options should be performed weekly to make sure that the database is in good condition. Since \bex Online is a system that is used around the clock the rebuilds in the scripts should always be run with the Online option set to On.
+
 \section{In-memory}
 Hekaton tables are only available in SQL Server Enterprise edition. The test environment uses SQL Server Standard Edition which meant that experimenting with Hekaton tables wasn't possible. The case company use SQL Server Web Edition which doesn't support Hekaton either. Upgrading to Enterprise Edition is expensive and might not result in any improvements. However, If the case company decides to purchase it, it is highly recommended that they experiment with putting some of their tables with high transaction frequency in memory for overall performance improvements to \bex Online.
 
