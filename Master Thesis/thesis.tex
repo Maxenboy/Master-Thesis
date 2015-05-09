@@ -857,8 +857,9 @@ By looking at which tables the stored procedures for the business intelligence u
 \section{Introduction}
 Based on the theory research and the findings made in the analysis a number of solutions to the experienced performance issues can be proposed to the case company.
 
-\section{Query tuning}
 \section{Table partitioning}
+
+
 \section{Maintenance Plan}
 Ola Hallengren's \cite{Hallengren15} scripts allow for analysis of the database on a scheduled basis. The scripts then take decisions, based on how they are set up, on what to do with lowly, medium and heavily fragmented indexes separately. For instance, one might want to simply reorganize indexes that have medium fragmentation but rebuild from scratch indexes that are heavily fragmented. Low fragmentation might not be worth the processing resources required to fix them. Since the case company's production environment couldn't be investigated in this thesis, it is hard to give a recommendation on what settings to use in the scripts. But because of the large improvements to the BI-reports performance that was obtained by using the scripts it is highly recommended that these be used. The case company is suggested to use these scripts daily to catch performance issues early. Since these scripts require  processing resources which could otherwise be used for the actual application, the daily runs should only do light checks only rebuild the very worst fragmentation. Reorganize, which is a lighter operation is therefore recommended on these. A weekly run with more strict fragmentation and rebuilding options should be performed weekly to make sure that the database is in good condition. Since \bex Online is a system that is used around the clock the rebuilds in the scripts should always be run with the Online option set to On.
 
@@ -866,8 +867,50 @@ Ola Hallengren's \cite{Hallengren15} scripts allow for analysis of the database 
 Hekaton tables are only available in SQL Server Enterprise edition. The test environment uses SQL Server Standard Edition which meant that experimenting with Hekaton tables wasn't possible. The case company use SQL Server Web Edition which doesn't support Hekaton either. Upgrading to Enterprise Edition is expensive and might not result in any improvements. However, If the case company decides to purchase it, it is highly recommended that they experiment with putting some of their tables with high transaction frequency in memory for overall performance improvements to \bex Online.
 
 \chapter{Discussion}\label{sec:discussion}
+\begin{itemize}
+\item Things learned
+	\begin{itemize}
+	\item DBA's are gods
+	\item The database research done til today is massive
+	\item Not easy to optimize 
+	\item Crucial to do a good design from start
+	\item Scalability is and will always be a problem
+	\item A massive amount of diversity in techniques and developments are created to assist
+	\end{itemize}
+\item No accessibility to live database
+	\begin{itemize}
+	\item Why?
+	\item Could have been good to maybe find other 		   		bottlenecks
+	\item See real world statistics and hence maybe prioritize differently 
+	\end{itemize}
+\item No accessibility to back end
+	\begin{itemize}
+	\item Why?
+	\item Could have been good to maybe find other 		   		bottlenecks
+	\item See how the database is used other than stored procedures
+	\end{itemize}
+\item Work environment not particularly a fair simulation
+\item Query tuning
+	\begin{itemize}
+	\item Didn't have the time 
+	\item Fear of messing up other areas, couldn't verify changes for eg. the back-end
+	\item Where clause
+	\item Join ordering
+	\end{itemize}
+\item Faulty stored procedures
+	\begin{itemize}
+	\item Why?
+	\end{itemize}
+\item Future
+\item Work almost only done remotely	
+	\begin{itemize}
+	\item Why?
+	\item Communication not optimal?
+	\end{itemize}  
+\end{itemize}
 
 \chapter{Conclusions}\label{sec:conclusions}
+
 \addcontentsline{toc}{chapter}{Bibliography}
 \bibliographystyle{ieeetr}
 
