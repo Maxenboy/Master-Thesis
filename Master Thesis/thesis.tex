@@ -866,7 +866,7 @@ By looking at which tables the stored procedures for the business intelligence u
 Based on the theory research and the findings made in the analysis a number of solutions to the experienced performance issues can be proposed to the case company.
 
 \section{Table partitioning}
-
+\cite{tablepartitioning}
 
 \section{Maintenance Plan}
 Ola Hallengren's \cite{Hallengren15} scripts allow for analysis of the database on a scheduled basis. The scripts then take decisions, based on how they are set up, on what to do with lowly, medium and heavily fragmented indexes separately. For instance, one might want to simply reorganize indexes that have medium fragmentation but rebuild from scratch indexes that are heavily fragmented. Low fragmentation might not be worth the processing resources required to fix them. Since the case company's production environment couldn't be investigated in this thesis, it is hard to give a recommendation on what settings to use in the scripts. But because of the large improvements to the BI-reports performance that was obtained by using the scripts it is highly recommended that these be used. The case company is suggested to use these scripts daily to catch performance issues early. Since these scripts require  processing resources which could otherwise be used for the actual application, the daily runs should only do light checks only rebuild the very worst fragmentation. Reorganize, which is a lighter operation is therefore recommended on these. A weekly run with more strict fragmentation and rebuilding options should be performed weekly to make sure that the database is in good condition. Since \bex Online is a system that is used around the clock the rebuilds in the scripts should always be run with the Online option set to On.
@@ -1167,92 +1167,92 @@ Tools/Programs: & SQL Server Management Studio, SQL Sentry Plan Explorer\\
 \centering
 \scalebox{0.5}{
 
-\begin{tabular}{ l | p{5em} | p{5em}| p{5em}| p{5em}| l  }
+\begin{tabular}{ l | p{5em} | p{5em}| p{5em}| p{5em}| l l|  }
 \LARGE{Table}&\multicolumn{4}{c}{\LARGE{Stored procedure for BI-report}}& \\\hline
-	 & 2\_5 & 2\_6 & 3\_7 & 3\_1 & 3\_2 \\ \hline
-	 BO\_U & X & X & X & X & X \\ \hline
-	 COLLECTION & X & X & X & X & X \\ \hline
-	 COLOUR\_G & X & X & X & X & X \\ \hline
-	 COUNTRY & X & X & X & X & X \\ \hline
-	 CUSTOMER & X & X & X & X & X \\ \hline
-	 CUSTOMER\_G & X & X & X & X & X \\ \hline
-	 CUSTOMER\_I\_D & X & X & X & X & X \\ \hline
-	 CUSTOMER\_P\_G & X & X & X & X & X \\ \hline
-	 DIMENSION2 & X & X & X & X & X \\ \hline
-	 ITEM & X & X & X & X & X \\ \hline
-	 ITEM\_CA & X & X & X & X & X \\ \hline
-	 ITEM\_CO & X & X & X & X & X \\ \hline
-	 ITEM\_F & X & X & X & X & X \\ \hline
-	 ITEM\_GE & X & X & X & X & X \\ \hline
-	 ITEM\_GR & X & X & X & X & X \\ \hline
-	 ITEM\_I & X & X & X & X & X \\ \hline
-	 ITEM\_V & X & X & X & X & X \\ \hline
-	 LENGTH\_G & X & X & X & X & X \\ \hline
-	 LOCATIONS & X & X & X & X & X \\ \hline
-	 PRODUCT\_G & X & X & X & X & X \\ \hline
-	 PROGRAM & X & X & X & X & X \\ \hline
-	 REPORT\_H & X & X & X & X & X \\ \hline
-	 SALESPERSON & X & X & X & X & X \\ \hline
-	 SHOP & X & X & X & X & X \\ \hline
-	 SIZE\_G & X & X & X & X & X \\ \hline
-	 SUPPLIER & X & X & X & X & X \\ \hline
-	 ITEM\_L\_E& X & X & X & X & X \\ \hline
-	 RETURN\_R & X & X & X & X & X \\ \hline
-	 ACCOUNT & X & X &  &  & X \\ \hline
-	 CUSTOMER\_L\_E & X & X &  &  & X \\ \hline
-	 DIMENSION1 & X & X &  &  & X \\ \hline
-	 HISTORY\_M & X & X &  &  & X \\ \hline
-	 POSTING\_G\_I& X & X &  &  & X \\ \hline
-	 SUPPLIER\_G & X & X &  &  & X \\ \hline
-	 SUPPLIER\_L\_E & X & X &  &  & X \\ \hline
-	 COMPANY\_I & X & X & X & X &  \\ \hline
-	 DELIVERYCHANGE\_R & X & X & X & X &  \\ \hline
-	 ORDER\_T & X & X & X & X &  \\ \hline
-	 PURCHASE\_H & X & X & X & X &  \\ \hline
-	 PURCHASE\_L & X & X & X & X &  \\ \hline
-	 REATAIL\_C & X & X & X & X &  \\ \hline
-	 SALES\_H & X & X & X & X &  \\ \hline
-	 SALES\_L & X & X & X & X &  \\ \hline
-	 SHIPPING\_A & X & X & X & X &  \\ \hline
-	 SHIPPING\_A\_S & X & X & X & X &  \\ \hline
-	 CUSTOMER\_P\_G &  &  &  &  & X \\ \hline
-	 DISC\_C &  &  &  &  &  \\ \hline
-	 POSTING\_S &  &  &  &  & X \\ \hline
-	 REPORT\_RESULT\_1\_1\_1 &  &  &  &  &  \\ \hline
-	 REPORT\_RESULT\_1\_1\_2 &  &  &  &  &  \\ \hline
-	 REPORT\_RESULT\_1\_1\_3 &  &  &  &  &  \\ \hline
-	 REPORT\_RESULT\_1\_1\_4 &  &  &  &  &  \\ \hline
-	 REPORT\_RESULT\_1\_1\_5 &  &  &  &  &  \\ \hline
-	 REPORT\_RESULT\_1\_1\_6 &  &  &  &  &  \\ \hline
-	 REPORT\_RESULT\_1\_1\_7 &  &  &  &  &  \\ \hline
-	 REPORT\_RESULT\_1\_1\_8 &  &  &  &  &  \\ \hline
-	 REPORT\_RESULT\_1\_1\_9 &  &  &  &  &  \\ \hline
-	 REPORT\_RESULT\_1\_2\_2 &  &  &  &  &  \\ \hline
-	 REPORT\_RESULT\_1\_3\_2 &  &  &  &  &  \\ \hline
-	 REPORT\_RESULT\_1\_5\_1 &  &  &  &  &  \\ \hline
-	 REPORT\_RESULT\_1\_5\_2 &  &  &  &  &  \\ \hline
-	 REPORT\_RESULT\_1\_5\_7 &  &  &  &  &  \\ \hline
-	 REPORT\_RESULT\_1\_6\_1 &  &  &  &  &  \\ \hline
-	 REPORT\_RESULT\_2\_1\_1 &  &  &  &  &  \\ \hline
-	 REPORT\_RESULT\_2\_1\_2 &  &  &  &  &  \\ \hline
-	 REPORT\_RESULT\_2\_5 & X &  &  &  &  \\ \hline
-	 REPORT\_RESULT\_2\_6 &  & X &  &  &  \\ \hline
-	 REPORT\_RESULT\_3\_1 &  &  &  & X &  \\ \hline
-	 REPORT\_RESULT\_3\_2 &  &  &  &  & X \\ \hline
-	 REPORT\_RESULT\_3\_3 &  &  &  &  &  \\ \hline
-	 REPORT\_RESULT\_3\_4 &  &  &  &  &  \\ \hline
-	 REPORT\_RESULT\_3\_5 &  &  &  &  &  \\ \hline
-	 REPORT\_RESULT\_3\_6 &  &  &  &  &  \\ \hline
-	 REPORT\_RESULT\_3\_7 &  &  & X &  &  \\ \hline
-	 REPORT\_RESULT\_3\_7\_SUB1 &  &  & X &  &  \\ \hline
-	 REPORT\_RESULT\_4\_2 &  &  &  &  &  \\ \hline
-	 REPORT\_RESULT\_4\_3 &  &  &  &  &  \\ \hline
-	 REPORT\_RESULT\_4\_4 &  &  &  &  &  \\ \hline
-	 REPORT\_RESULT\_4\_5 &  &  &  &  &  \\ \hline
-	 SALES\_P &  &  &  &  & X \\ \hline
-	 TIMETRACKER &  &  &  &  &  \\ \hline
-	 TIMETRACKER\_W &  &  &  &  &  \\ \hline
-	TOTAL & 46 & 46 & 40 & 39 & 39 \\ \hline
+	 & 2\_5 & 2\_6 & 3\_7 & 3\_1 & 3\_2 & \dots \\ \hline
+	 BO\_U & X & X & X & X & X & \dots \\ \hline
+	 COLLECTION & X & X & X & X & X & \dots \\ \hline
+	 COLOUR\_G & X & X & X & X & X & \dots \\ \hline
+	 COUNTRY & X & X & X & X & X & \dots \\ \hline
+	 CUSTOMER & X & X & X & X & X & \dots \\ \hline
+	 CUSTOMER\_G & X & X & X & X & X & \dots \\ \hline
+	 CUSTOMER\_I\_D & X & X & X & X & X & \dots \\ \hline
+	 CUSTOMER\_P\_G & X & X & X & X & X & \dots \\ \hline
+	 DIMENSION2 & X & X & X & X & X & \dots \\ \hline
+	 ITEM & X & X & X & X & X & \dots \\ \hline
+	 ITEM\_CA & X & X & X & X & X & \dots \\ \hline
+	 ITEM\_CO & X & X & X & X & X & \dots \\ \hline
+	 ITEM\_F & X & X & X & X & X & \dots \\ \hline
+	 ITEM\_GE & X & X & X & X & X & \dots \\ \hline
+	 ITEM\_GR & X & X & X & X & X & \dots \\ \hline
+	 ITEM\_I & X & X & X & X & X & \dots \\ \hline
+	 ITEM\_V & X & X & X & X & X & \dots \\ \hline
+	 LENGTH\_G & X & X & X & X & X & \dots \\ \hline
+	 LOCATIONS & X & X & X & X & X & \dots \\ \hline
+	 PRODUCT\_G & X & X & X & X & X & \dots \\ \hline
+	 PROGRAM & X & X & X & X & X & \dots \\ \hline
+	 REPORT\_H & X & X & X & X & X & \dots \\ \hline
+	 SALESPERSON & X & X & X & X & X & \dots \\ \hline
+	 SHOP & X & X & X & X & X & \dots \\ \hline
+	 SIZE\_G & X & X & X & X & X & \dots \\ \hline
+	 SUPPLIER & X & X & X & X & X & \dots \\ \hline
+	 ITEM\_L\_E& X & X & X & X & X & \dots \\ \hline
+	 RETURN\_R & X & X & X & X & X & \dots \\ \hline
+	 ACCOUNT & X & X &  &  & X & \dots \\ \hline
+	 CUSTOMER\_L\_E & X & X &  &  & X & \dots \\ \hline
+	 DIMENSION1 & X & X &  &  & X & \dots \\ \hline
+	 HISTORY\_M & X & X &  &  & X & \dots \\ \hline
+	 POSTING\_G\_I& X & X &  &  & X & \dots \\ \hline
+	 SUPPLIER\_G & X & X &  &  & X & \dots \\ \hline
+	 SUPPLIER\_L\_E & X & X &  &  & X & \dots \\ \hline
+	 COMPANY\_I & X & X & X & X &  & \dots \\ \hline
+	 DELIVERYCHANGE\_R & X & X & X & X &  & \dots \\ \hline
+	 ORDER\_T & X & X & X & X &  & \dots \\ \hline
+	 PURCHASE\_H & X & X & X & X &  & \dots \\ \hline
+	 PURCHASE\_L & X & X & X & X &  & \dots \\ \hline
+	 REATAIL\_C & X & X & X & X &  & \dots \\ \hline
+	 SALES\_H & X & X & X & X &  & \dots \\ \hline
+	 SALES\_L & X & X & X & X &  & \dots \\ \hline
+	 SHIPPING\_A & X & X & X & X &  & \dots \\ \hline
+	 SHIPPING\_A\_S & X & X & X & X &  & \dots \\ \hline
+	 CUSTOMER\_P\_G &  &  &  &  & X & \dots \\ \hline
+	 DISC\_C &  &  &  &  &  & \dots \\ \hline
+	 POSTING\_S &  &  &  &  & X & \dots \\ \hline
+	 REPORT\_RESULT\_1\_1\_1 &  &  &  &  &  & \dots \\ \hline
+	 REPORT\_RESULT\_1\_1\_2 &  &  &  &  &  & \dots \\ \hline
+	 REPORT\_RESULT\_1\_1\_3 &  &  &  &  &  & \dots \\ \hline
+	 REPORT\_RESULT\_1\_1\_4 &  &  &  &  &  & \dots \\ \hline
+	 REPORT\_RESULT\_1\_1\_5 &  &  &  &  &  & \dots \\ \hline
+	 REPORT\_RESULT\_1\_1\_6 &  &  &  &  &  & \dots \\ \hline
+	 REPORT\_RESULT\_1\_1\_7 &  &  &  &  &  & \dots \\ \hline
+	 REPORT\_RESULT\_1\_1\_8 &  &  &  &  &  & \dots \\ \hline
+	 REPORT\_RESULT\_1\_1\_9 &  &  &  &  &  & \dots \\ \hline
+	 REPORT\_RESULT\_1\_2\_2 &  &  &  &  &  & \dots \\ \hline
+	 REPORT\_RESULT\_1\_3\_2 &  &  &  &  &  & \dots \\ \hline
+	 REPORT\_RESULT\_1\_5\_1 &  &  &  &  &  & \dots \\ \hline
+	 REPORT\_RESULT\_1\_5\_2 &  &  &  &  &  & \dots \\ \hline
+	 REPORT\_RESULT\_1\_5\_7 &  &  &  &  &  & \dots \\ \hline
+	 REPORT\_RESULT\_1\_6\_1 &  &  &  &  &  & \dots \\ \hline
+	 REPORT\_RESULT\_2\_1\_1 &  &  &  &  &  & \dots \\ \hline
+	 REPORT\_RESULT\_2\_1\_2 &  &  &  &  &  & \dots \\ \hline
+	 REPORT\_RESULT\_2\_5 & X &  &  &  &  & \dots \\ \hline
+	 REPORT\_RESULT\_2\_6 &  & X &  &  &  & \dots \\ \hline
+	 REPORT\_RESULT\_3\_1 &  &  &  & X &  & \dots \\ \hline
+	 REPORT\_RESULT\_3\_2 &  &  &  &  & X & \dots \\ \hline
+	 REPORT\_RESULT\_3\_3 &  &  &  &  &  & \dots \\ \hline
+	 REPORT\_RESULT\_3\_4 &  &  &  &  &  & \dots \\ \hline
+	 REPORT\_RESULT\_3\_5 &  &  &  &  &  & \dots \\ \hline
+	 REPORT\_RESULT\_3\_6 &  &  &  &  &  & \dots \\ \hline
+	 REPORT\_RESULT\_3\_7 &  &  & X &  &  & \dots \\ \hline
+	 REPORT\_RESULT\_3\_7\_SUB1 &  &  & X &  &  & \dots \\ \hline
+	 REPORT\_RESULT\_4\_2 &  &  &  &  &  & \dots \\ \hline
+	 REPORT\_RESULT\_4\_3 &  &  &  &  &  & \dots \\ \hline
+	 REPORT\_RESULT\_4\_4 &  &  &  &  &  & \dots \\ \hline
+	 REPORT\_RESULT\_4\_5 &  &  &  &  &  & \dots \\ \hline
+	 SALES\_P &  &  &  &  & X & \dots \\ \hline
+	 TIMETRACKER &  &  &  &  &  & \dots \\ \hline
+	 TIMETRACKER\_W &  &  &  &  &  & \dots \\ \hline
+	TOTAL & 46 & 46 & 40 & 39 & 39 & \dots \\ \hline
 
 \end{tabular}}
 \caption{Most tables used among stored procedures for BI-reports}
