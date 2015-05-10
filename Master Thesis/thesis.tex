@@ -836,7 +836,7 @@ The operations that can be performed on an index on each fragmentation level are
 \item Do not perform index maintenance.
 \end{itemize}
 Since rebuilding an index can be an expensive operation, reorganizing is preferred on the lower fragmentation levels if the scripts is run often. There are also many more options like setting fill level of the pages and what the least number of pages an index needs to have before it is even considered for maintenance. It's also possible to decide if and when statistics on an index should be updated. Most of these settings have default values based on recommendations from Microsoft.\\\\
-When running the script in the test environment a full rebuild of all fragmented indexes was chosen with the rest of the options set to default. After the script had finished, the script used in section \ref{indexfragmentation} was used again to see the results. This showed that all but 14 of the indexes had been rebuild. This is because of the page count setting and the unaffected indexes were too small to be corrected by the script. To test the result of doing the maintenance the seven slowest performing stored procedures in table \ref{tab:duration} were executed again and the execution times were compared to before the maintenance. The results can be seen in figure \ref{fig:beforeafter}.
+When running the script in the test environment a full rebuild of all fragmented indexes was chosen with the rest of the options set to default. After the script had finished, the script used in section \ref{indexfragmentation} was used again to see the results. This showed that all but 14 of the indexes had been rebuild. This is because of the page count lower limit setting, which default value is 1000, and the unaffected indexes were too small to be corrected by the script. To test the result of doing the maintenance the seven slowest performing stored procedures in table \ref{tab:duration} were executed again and the execution times were compared to before the maintenance. Then the maintenance script was run again with a page count lower setting of 100 instead of 1000 to try to catch all indexes. This resulted in all indexes being defragmented. Then the seven slowest performing stored procedures were executed again and the results noted. The results can be seen in figure \ref{fig:beforeafter}.
 
 \begin{figure}[H]
 \begin{center}
@@ -846,7 +846,15 @@ When running the script in the test environment a full rebuild of all fragmented
 \end{center}
 \end{figure} 
 
-This drastically shows the effect of having unfragmented indexes and good statistics. Report\_4\_4 for instance, performed 6.5 times faster after the maintenance. Report\_1\_1\_1 however showed only a small improvement. Performing this maintenance plan doesn't benefit only the BI-reports however, it benefits the whole system. But due to the scope and limitations of this thesis the other areas of the system couldn't be benchmarked.
+This drastically shows the effect of having unfragmented indexes and good statistics. Report\_4\_4 for instance, performed 6.5 times faster after the maintenance as seen in figure \ref{fig:beforeaftertimes}. Report\_1\_1\_1 however showed only a small improvement. The second maintenance run with the lower page limit setting gave a significant performance increase to Report\_2\_5 and Report\_2\_6 but not to the others. This is because of the simple fact that the remaining fragmented indexes were only used in those stored procedures. Performing this maintenance plan doesn't benefit only the BI-reports however, it benefits the whole system. But due to the scope and limitations of this thesis the other areas of the system couldn't be benchmarked.
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[scale=1]{Pictures/beforeAndAfterMaintenancetimes.png}
+\caption{Execution time improvement from the first and second maintenance executions}
+\label{fig:beforeaftertimes}
+\end{center}
+\end{figure}
 
 \subsection{In-memory OLTP}
 As described earlier the database system consists of around 250 tables and the particular database that was provided for this thesis is approximately 75GB. Since \bex Online is a cloud bases SaaS solution all of their clients share servers. The database is also increasing in size regarding data content every day. This makes it difficult to put every table in memory since all of the clients databases combined would require hundreds of gigabytes of RAM, which would be very expensive. However, storing only the tables with the most transactions in memory would not take require massive amounts of RAM and could still be notably performance enhancing.

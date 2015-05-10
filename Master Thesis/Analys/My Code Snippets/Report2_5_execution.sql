@@ -1,6 +1,7 @@
 USE [bex_bob]
 GO
-set statistics IO on
+--set statistics IO on
+delete from EXT_REPORT_RESULT_2_5
 set statistics time on
 DECLARE	@return_value int
 
@@ -25,5 +26,5 @@ EXEC	@return_value = [dbo].[report_2_5]
 SELECT	'Return Value' = @return_value
 
 GO
-set statistics IO off
+--set statistics IO off
 set statistics time off
