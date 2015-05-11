@@ -180,7 +180,7 @@ The objective is primarily to increase the speed of the ERP-system's business in
 \item The solution must work with the current implementation of \bex Online Back-end.
 \end{itemize}
 
-\section{Related Work}
+\section{Related Work}\label{sec:related}
 There has been a lot of attempts at solving many of the problems that occur when building a database system of greater size. Some of these attempts have completely redefined the classical definition of a database. The following subsections introduces areas and DBMS-techniques (Database Management System) with different angles to solve the problems mentioned in this thesis and several other issues.
 
 \subsection{DDB}
@@ -335,7 +335,7 @@ stored procedures are subroutines that are available to applications that access
 The database in this thesis had a total of 59 stored procedures treating repetitive procedures by the database mainly for the sales part of the system and the BI-reports (there's also a subroutine for locking crucial information, with respect to concurrent execution). These subroutines do not contain any host language statements and/or external procedures, but only consists of complex SQL statements. They are present in the system, as mentioned above, to make the execution and processing less demanding, as they are often used in \bex Online.
 
  
-\section{Theory}
+\section{Theory}\label{sec:theory}
 In order to understand why a database might not perform optimally, the following theory was used.
 
 \subsection{Index Fragmentation}
@@ -878,21 +878,18 @@ Hekaton tables are only available in SQL Server Enterprise edition. The test env
 
 \section{Satisfying the thesis goals}
 
-
 \subsection{Identifying common database inefficiencies}
-
+The most important areas to consider when identifying database inefficiencies were found mainly in Benjamin Nevarez book "Microsoft SQL Server 2014 - Query Tuning \& Optimization" \cite{Nevarez}, and can be seen in section \ref{sec:scope}. The Scope of the thesis declared that query tuning, index tuning and "In-Memory OLTP"-solutions were to be investigated. However while performing the research in section \ref{sec:theory}, additional areas of interest were found, i.e. table partitioning and maintenance plans. \\\\
+The related work section \ref{sec:related} discusses inefficiencies regarding the actual architecture of relational database system. This was of great interest because it introduced how to get better performance by changing the whole database system instead of just optimizing the current system. \\\\
+Since the 
 
 \subsection{BI-process and identifying inefficiencies}
 
-
 \subsection{"Problem Solving Research"}
-
 
 \subsection{Analysis}
 
-
 \subsection{Solutions}
-
 
 \section{The proposed solution}
 
