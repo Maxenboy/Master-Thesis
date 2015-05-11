@@ -271,12 +271,12 @@ The solution recommendations in chapter \ref{sec:proposedsoluton} were establish
 
 \section{Research Questions}
 The research questions of this thesis were formulated in relation to the thesis goals in section \ref{sec:goals} and the scope in section \ref{sec:scope}. The thesis is formed to explain and answer the following research questions:
-\begin{itemize}
+\begin{enumerate}
 \item	How does the current system function and what are the bottle-necks?
 \item 	What are the most common approaches for improving database performance, with regard to index fragmentation, query tuning and In-memory-solutions?
 \item	What optimization solutions are best-fit for the case company with regards to the goals, scope and limitations?	
 \item	How can the proposed solution be implemented in Perfect IT \bex AB's current system?
-\end{itemize}
+\end{enumerate}
 
 \section{Methodology}
 This thesis is of a problem solving nature and should continuously adapt to changing conditions. The methodology used should therefore preferably be flexible. A methodology that provides valuable support and is intended to improve something while studying it is action research    \cite{robson}. Action research begins with an observation phase that identifies and clarifies the problems that are present, for this thesis that is presented in chapter \ref{sec:background}. In chapter \ref{sec:proposedsoluton} the next step in action research is stated, a proposed solution to the problem(s).\\
@@ -897,9 +897,11 @@ Hekaton tables are only available in SQL Server Enterprise edition. The test env
 \section{The proposed solution}
 
 \section{During analysis}
-
+The analysis of this thesis, found in section \ref{sec:analysis}, is in fact the base for the proposed solution. The analysis was done in an environment as similar as possible to the production system. 
+\\\\\\\\ 
 
 \begin{itemize}
+
 \item Things learned
 	\begin{itemize}
 	\item DBA's are gods
@@ -909,35 +911,16 @@ Hekaton tables are only available in SQL Server Enterprise edition. The test env
 	\item Scalability is and will always be a problem
 	\item A massive amount of diversity in techniques and developments are created to assist
 	\end{itemize}
-\item No accessibility to live database
-	\begin{itemize}
-	\item Why?
-	\item Could have been good to maybe find other 		   		bottlenecks
-	\item See real world statistics and hence maybe prioritize differently 
-	\end{itemize}
-\item No accessibility to back end
-	\begin{itemize}
-	\item Why?
-	\item Could have been good to maybe find other 		   		bottlenecks
-	\item See how the database is used other than stored procedures
-	\end{itemize}
-\item Work environment not particularly a fair simulation
+
+
 \item Query tuning
 	\begin{itemize}
 	\item Might mess up other areas, couldn't verify changes for eg. the back-end
 	\item Where clause
 	\item Join ordering
 	\end{itemize}
-\item Faulty stored procedures
-	\begin{itemize}
-	\item Why?
-	\end{itemize}
+
 \item Future
-\item Work almost only done remotely	
-	\begin{itemize}
-	\item Why?
-	\item Communication not optimal?
-	\end{itemize}  
 \end{itemize}
 
 \chapter{Conclusions}\label{sec:conclusions}
