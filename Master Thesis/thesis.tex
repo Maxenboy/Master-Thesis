@@ -913,11 +913,14 @@ The solutions to the different performance issues that resulted in a performance
 \section{The proposed solution}
 The proposed solution of this thesis is a set of measures recommended to the case company in order to improve the performance of BI-report generation in their product \bex Online. Due to the limitations (section \ref{sec:limi}) and scope of this thesis (section \ref{sec:scope}) the solutions that were recommended need to be further verified together with \bex Online.\\\\
 The recommendations are not a final solution to the case company's problem, however the analysis set up in a test environment is a proof of concept that indicates the proposed solutions would improve performance for BI-generation. Until the proposed solutions are fully integrated and used in a production environment there's no guarantee that the possible improvements will function as intended.\\\\
+
+\subsection{Table partitioning}
 The necessity of table partitioning was examined through a simulation of actual table partitioning, which as of the SQL Server 2005 is a built in function. However, this built in function only applies to the Enterprise edition of Microsoft SQL Server. This, according to King, is due to that Microsoft and others argue that if a company has the need of doing table partitioning they have a large amount of data, which in turn equals a large company, which in turn equals financial wealth and that upgrading to an Enterprise edition isn't a great obstacle \cite{partitionwoEnterprise}. \\ In the same article as mentioned above, King states that table partitioning is possible for every current SQL Server edition by using partitioned views.\\ This method offers nearly all the benefits from "true partitioning". Sadly it includes schema architecture alteration, which with this thesis's limitations doesn't coincide. Consequently a simulation where entities were deleted from tables, instead of using the built in partitioning function or partitioned views, was done.\\
-The anomalies stated in section \ref{Experiments} occurred due to poorly          
+The anomalies stated in section \ref{Experiments} occurred due to 
 
+\subsection{Maintenance plan}
 
-
+\subsection{In-memory}
 
 \section{During analysis}
 The analysis of this thesis, found in section \ref{sec:analysis}, is in fact the base for the proposed solution. The analysis was done in an environment as similar as possible to the production system. 
