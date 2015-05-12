@@ -428,6 +428,7 @@ If the to tables are joined using the same selective predicates as in Algorithm 
 Most large queries join intermediate results from several query blocks involving grouping and aggregation. Earlier aggregation meant grouping of a relation and then apply an aggregate function (e.g. average) on each group. This still applies, but companies and users are not interested in only e.g. the average salary of each department. They want to do further grouping and sorting such as group the above mentioned employees based on their marital status and/or sex   \cite{partioned}. Consequently wanting to perform complex processing within each group and grouping among different sets of attributes.\\ A good cardinality estimation can be provided by statistics for operations performed on a table. However, queries using operator such as \textit{GROUP} or \textit{DISTINCT} create result with different number of rows than that are in the stored table. Joining these results on other data sets, statistics on these intermediate results do not exist. If an intermediate result must be materialized before used in a subsequent step statistics are not available. The query optimizer tries to estimate the cardinality based upon the original data set, but since the earlier mentioned operators intermediate result differ from the original data set, the estimation can degrade in accuracy.\\\\ By analyzing the execution plan for theses complex queries, one can partition the query where the estimated number of rows differ a lot from actual number of rows. To ensure statistics, one can store the intermediate results in temporary tables as mentioned in the beginning of this section.     
 
 \subsection{Table partitioning}
+\cite{tablepartitioningbenefit}
 \cite{tablepartitioning}
  
 \subsection{In-Memory Database Technology}
@@ -755,19 +756,35 @@ Report 1\_1\_1    & \texttt{INSERT}                & ITEM              \\
 \label{plots}
 \end{center}
 \end{figure}\newpage
-The graphs in Figure \ref{plots} are examples of differences this experimentation led to when deleting entities in HISTORY\_M . For almost every procedure the execution time was faster with the original indexes and keys but for report 4\_4 it was the opposite. The stored procedure 4\_4 executed approximately 7 times faster without indexes and keys, \hilight{indicating that the original indexing and keys are bad performance-wise for report 4\_4}. To evaluate future entity growth in the system the experiment also included insertion of entities by copying the original data once more (doubling the number of entities). In most of the cases the execution time increased linearly but for some cases it increased exponentially, as can be seen in Figure \ref{plots}.\\
+The graphs in Figure \ref{plots} are examples of differences this experimentation led to when deleting entities in HISTORY\_M . For almost every procedure the execution time was faster with the original indexes and keys but for report 4\_4 it was the opposite. The stored procedure 4\_4 executed approximately 7 times faster without indexes and keys, \hilight{indicating that the original indexing and keys are bad performance-wise for report 4\_4}. To evaluate future entity growth in the system the experiment also included insertion of entities by copying the original data once more (doubling the number of entities). In most of the cases the execution time increased linearly but for some cases it increased exponentially, as can be seen in Figure \ref{plots}.\\\\
+During the experimental entity removals, some anomalies occurred. When deleting rows associated with certain years the execution time seemed to increase compared to prior entity removals. In Figure \ref{anomalie} the stored procedures execution time increased upon deleting entities associated with the years 2011 and 2012 (entities related with year 2013, 2014 and 2015 are still present in the HISTORY\_M table). Additionally deleting entities associated with the year 2013 resulted in a likely manner. This behavior was consistent on both table copies, with and without indexes and keys. 
+
+\begin{figure}[H]
+\begin{center}$
+\begin{array}{cc}
+\textbf{Without index and keys} & \textbf{With index and keys}\\
+\includegraphics[scale=0.7]{Pictures/anomlie2.png} &
+\includegraphics[scale=0.7]{Pictures/anomlie1.png} \\ 
+\end{array}$
+\caption{Execution time differences for entity partitioning in stored procedure 4\_2}
+\label{anomalie}
+\end{center}
+\vspace{-1cm}
+\end{figure}
+
 During the experimentation it was recognized that the tables ITEM and ITEM\_L\_E could not simply be partitioned since the back-end of the system depended on all of the entries due to sum calculations being made. Therefore further experimentation on those stored procedures who had ITEM and ITEM\_L\_E as problematic tables became also based on alteration of the HISTORY\_M table. Sadly those alterations did not effect the execution  time significantly as seen in Figure \ref{alteration}.         
 
 \begin{figure}[H]
 \begin{center}$
 \begin{array}{cc}
-\textbf{Alteration on HISTORY\_M} & \textbf{Alteration on ITEM}\\
-\includegraphics[scale=0.7]{Pictures/Report25IndexHistory.png} &
-\includegraphics[scale=0.7]{Pictures/Report25Index.png} \\ 
+\textbf{Alteration on ITEM} & \textbf{Alteration on HISTORY\_M}\\
+\includegraphics[scale=0.7]{Pictures/Report25Index.png} &
+\includegraphics[scale=0.7]{Pictures/Report25IndexHistory.png} \\ 
 \end{array}$
 \caption{Execution time differences for entity partitioning in stored procedure 2\_5}
 \label{alteration}
 \end{center}
+\vspace{-1cm}
 \end{figure}
 
 \noindent The above experimentation shows that in some cases table partitioning can reduce the execution time for the BI stored procedures. Unfortunately this can not be applied on the all the heavy resource intensive tables and do not effect significantly in some cases.\\ To complement the experimentation the indexes of the tables were taken under examination.\\ In Figure \ref{indexalteration} three stored procedures are shown with different indexes applied to the table HISTORY\_M, the names of the indexes correspond to the column names in HISTROY\_M. Even here there's evidence of suboptimal indexing. For example in Report 1\_1\_1 and Report 1\_1\_2 the execution time is less when the indexes are removed and maintaining the keys on table HISTORY\_M than having the original indexes and keys on table HISTORY\_M. Even though the new customized indexes didn't result in more efficient execution time, there is room for improvement in index alteration.   
@@ -793,7 +810,7 @@ Generally a maintenance plan aims to correct or validate three things.
 \item Statistics
 \end{enumerate}
 
-Ola Hallengren \cite{Hallengren15} is an award winning database administrator that has released a maintenance script bundle called "SQL Sever Maintenance Solution". For these maintenance scripts he has received several community's choice awards and been declared "MVP: Most Valuable Professional" by Microsoft. His scripts are free to use and easy to install. Because of this, the case company's database will be analyzed so that the best implementation of Hallengren's scripts can be used.
+\noindent Ola Hallengren \cite{Hallengren15} is an award winning database administrator that has released a maintenance script bundle called "SQL Sever Maintenance Solution". For these maintenance scripts he has received several community's choice awards and been declared "MVP: Most Valuable Professional" by Microsoft. His scripts are free to use and easy to install. Because of this, the case company's database will be analyzed so that the best implementation of Hallengren's scripts can be used.
 
 \subsubsection{Data and Log File Management}
 This topic doesn't necessarily need to be in a regular maintenance plan \cite{Randal08}, with the exception of log-file growth. Data and log file management is mostly handled through settings, which should be reviewed so that they follow best practices for performance and security. The following checklist should be considered when looking at these settings.
@@ -805,12 +822,9 @@ This topic doesn't necessarily need to be in a regular maintenance plan \cite{Ra
 \item Auto-shrink is not enabled and shrink is not part of any maintenance plan.
 \end{enumerate}
 
-Looking at the database system's settings, the data and log files are indeed separate files, but not on different discs. This can cause corruption to the log-file caused by writes by other systems to the disk. This can be a small factor to poorly performing queries, especially the queries that handles large amount of data. It should be considered to move this file to a separate disk. \\\\
-
+\noindent Looking at the database system's settings, the data and log files are indeed separate files, but not on different discs. This can cause corruption to the log-file caused by writes by other systems to the disk. This can be a small factor to poorly performing queries, especially the queries that handles large amount of data. It should be considered to move this file to a separate disk. \\\\
 The auto-growth is on and it is set to grow by 10\%. The fact that the auto-grow is set to a percentage can cause an escalation problem with the file size which in turn can cause performance issues. For example, with the auto-grow set to a percentage of file size, the file could first grow with say 10 GB, then 11 GB, then 12 GB and so on even though the rate at which the file grows is constant. Although there is an auto-grow setting, the file sizes should be monitored regularly and proactively grown as part of the maintenance plan, since auto-grow of small amounts can cause file fragmentation and is a time-consuming process which could stall the application workload. The auto-grow setting should still be on though, as a safety net. \\\\
-
 The initial size of the files should be set to an appropriate value based on the file size and the rate at which they grow. These settings has been properly set during the creation of the database system and is not something that is covered in a maintenance plan.\\\\
-
 Shrinking can be used to reduce the size of the data and log files but is a resource-heavy process that causes large amounts of logical read fragmentation in a file. Both auto-shrink and shrinking made by maintenance plans should be avoided. The problems that shrinking tries to solve are better prevented by growing the files at a steady rate. The setting for auto-shrinking is already set to off in the system.
 
 \subsubsection{Index}
@@ -882,7 +896,7 @@ Hekaton tables are only available in SQL Server Enterprise edition. The test env
 \section{Satisfying the thesis goals}
 
 \subsection{Identifying common database inefficiencies}
-The most important areas to consider when identifying database inefficiencies were found mainly in Benjamin Nevarez book "Microsoft SQL Server 2014 - Query Tuning \& Optimization" \cite{Nevarez}, and can be seen in section \ref{sec:scope}. The Scope of the thesis declared that query tuning, index tuning and "In-Memory OLTP"-solutions were to be investigated. However while performing the research in section \ref{sec:theory}, additional areas of interest were found, i.e. table partitioning and maintenance plans. \\\\
+The most important areas to consider when identifying database inefficiencies were found mainly in Benjamin Nevarez book "Microsoft SQL Server 2014 - Query Tuning \& Optimization" \cite{Nevarez}, and can be seen in section \ref{sec:scope}. The scope of the thesis declared that query tuning, index tuning and "In-Memory OLTP"-solutions were to be investigated. However while performing the research in section \ref{sec:theory}, additional areas of interest were found, i.e. table partitioning and maintenance plans. \\\\
 The related work section \ref{sec:related} discusses inefficiencies regarding the actual architecture of relational database system. This was of great interest because it introduced how to get better performance by changing the whole database system instead of just optimizing the current system. The research areas investigated corresponds with what industry experts and researchers recommend and the goal can be considered to be met.
 
 \subsection{BI-process and identifying inefficiencies}
@@ -900,7 +914,9 @@ The solutions to the different performance issues that resulted in a performance
 \section{The proposed solution}
 The proposed solution of this thesis is a recommendation for the case company. Due to the limitations (section \ref{sec:limi}) and scope of this thesis (section \ref{sec:scope}) the solutions that were best fit for the analyzed system need intense verification. Verification that need to be done in collaboration with all system's components.\\
 The recommendations are not a final solution to the case company's problem, however the analysis set up in a test environment is a proof of concept that indicates the proposed solutions would improve performance for BI-generation. Until the proposed solutions are fully integrated and used in a production environment there's no guarantee that the possible improvements will function as intended.\\\\
-The necessity of table partitioning was examined through a simulation of actual table partitioning, which as of the SQL Server 2005 is a built in function. However, this built in function only applies to the Enterprise edition of Microsoft SQL Server. This, accordingly to King, is due to that Microsoft and others argue that if a company has the need of doing table partitioning equals large amount of data, which in turn equals a large company, which in turn equals financial wealth and that upgrading to an Enterprise edition isn't a great obstacle \cite{partitionwoEnterprise}. \\ In the same article as mentioned above, King states that table partitioning is possible for every current SQL Server edition by using partitioned views.\\ This method offers nearly all the benefits from "true partitioning". Sadly it includes schema architecture alteration, which with this thesis limitations doesn't coincide. Consequently a simulation where entities were deleted from tables, instead of using the built in partitioning function or partitioned views, were done.       
+The necessity of table partitioning was examined through a simulation of actual table partitioning, which as of the SQL Server 2005 is a built in function. However, this built in function only applies to the Enterprise edition of Microsoft SQL Server. This, accordingly to King, is due to that Microsoft and others argue that if a company has the need of doing table partitioning equals large amount of data, which in turn equals a large company, which in turn equals financial wealth and that upgrading to an Enterprise edition isn't a great obstacle \cite{partitionwoEnterprise}. \\ In the same article as mentioned above, King states that table partitioning is possible for every current SQL Server edition by using partitioned views.\\ This method offers nearly all the benefits from "true partitioning". Sadly it includes schema architecture alteration, which with this thesis's limitations doesn't coincide. Consequently a simulation where entities were deleted from tables, instead of using the built in partitioning function or partitioned views, was done.\\
+During the simulated table partitioning some anomalies did occur.          
+
 
 
 
