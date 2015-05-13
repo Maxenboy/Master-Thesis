@@ -445,7 +445,8 @@ Most large queries join intermediate results from several query blocks involving
 
 \subsection{Table partitioning}
 When the data in a database table grows massive in size it can become impractical to make \texttt{INSERT} and \texttt{DELETE} operations as well as maintaining proper indexes. The sheer size of the table can cause these operations to take much longer than practical standards.\\
-For SQL Servers there is mainly two different ways to partition tables; manually divide a large tables data into several physical tables or use the SQL Server's built in feature to partition a single table. The partition data in itself can be partitioned either horizontally or vertically, dividing the data based on columns or rows respectively.    
+Partitioning tables enables large tables and it indexes to become smaller portions of itself, the operations applied on the partitioned table can be applied on a partition-by-partition basis and the SQL Server optimizer can direct properly filtered queries on the intended partition instead of the entire table.\\
+For SQL Servers there is mainly two different ways to partition tables; manually divide a large tables data into several physical tables or use the SQL Server's built in feature to partition a single table. The partition data in itself can be partitioned either horizontally or vertically, dividing the data based on columns or rows respectively.\\       
 \tikzstyle{every node}=[draw=black,thick,anchor=west, fill=blue!10,style={draw,-latex}]
 \begin{figure}[H]
 \begin{center}
