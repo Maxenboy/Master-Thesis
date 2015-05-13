@@ -473,9 +473,8 @@ The built in feature was introduced in SQL Server 2005 and since then every tabl
 \caption {Partitioned table dependencies}
 \label{partdep}
 \end{figure}
-The table intended for partitioning must be created on a partition scheme that defines where the data is supposed to be stored, i.e. filegroup locations. The schema depends in turn on a partition function that determines the number of partitions and the data boundaries for the column that's intended as partition column in the table.  
-\cite{tablepartitioningbenefit}
-\cite{tablepartitioning}
+The table intended for partitioning must be created on a partition scheme that defines where the data is supposed to be stored, i.e. filegroup locations. The schema depends in turn on a partition function that determines the number of partitions and the data boundaries for the column that's intended as partition column in the table.
+In Appendix \ref{appCode} in Algorithm \ref{partitionex} \cite{partitonexample} an example of making an already existing database table partitioned is shown by creating a partition scheme, a partition function and altering the tables constraints. Naturally if the partitioning is intended to be done on a non existing table, the constraints do not need to be dropped before creation. 
  
 \subsection{In-Memory Database Technology}
 Relational database management systems were originally designed in the late 70's   \cite{Nevarez}. Because of this, they are designed with the assumption that memory is limited, expensive and that the size of the database is many times larger than the main memory. Today, memory is relatively cheap and it is possible to have hundreds of gigabytes of memory in a single server. This makes it possible to put even large databases, completely in memory. In Vizard's article   \cite{Vizard12} it is said that having a database completely in-memory can make it a thousand times faster.
@@ -1071,6 +1070,32 @@ set statistics IO off
 set statistics time off
 SELECT * FROM EXT_REPORT_RESULT_2_5
 \end{lstlisting}
+
+\newpage
+\begin{lstlisting}[caption={SQL batch to create a partitioned table out of an already existing table},label=partitionex]
+CREATE PARTITION FUNCTION partitionFunction (datetime)
+AS RANGE RIGHT FOR VALUES ('20120101','20130101','20140101','20150101')
+GO
+CREATE PARTITION SCHEME partitionScheme 
+AS PARTITION partitionfunction ALL TO ([PRIMARY]) 
+GO
+ALTER TABLE dbo.HISTORY_M DROP CONSTRAINT PK_HISTORY_M
+GO
+ALTER TABLE dbo.HISTORY_M ADD CONSTRAINT
+ PK_HISTORY_M PRIMARY KEY NONCLUSTERED  (pkcol)
+   WITH (STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, 
+         ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+GO
+CREATE CLUSTERED INDEX IX_HISTORY_M_partitioncol ON
+ dbo.HISTORY_M(partitioncol)
+  WITH (STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, 
+        ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) 
+  ON partitionScheme(partitioncol)
+
+\end{lstlisting}
+
+
+
 \chapter{Environments}
 \section{General environment}\label{sec:Genviron}
 \begin{table}[H]
@@ -1334,10 +1359,11 @@ Tools/Programs: & SQL Server Management Studio, SQL Sentry Plan Explorer\\
 \label{tab:mosttab}
 \end{table}
 
-
+\tikzstyle{every node}=[fill=white]
 \begin{figure}[H]
 \centering
 \begin{tikzpicture}[level distance=1.25in,sibling distance=.6pt,scale=.555]
+
 \tikzset{edge from parent/.style= 
             {thick, draw,
                 edge from parent fork right},every tree node/.style={draw,minimum width=1in,text width=1in, align=center},grow'=right}
