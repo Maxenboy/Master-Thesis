@@ -446,7 +446,10 @@ Most large queries join intermediate results from several query blocks involving
 \subsection{Table partitioning}
 When the data in a database table grows massive in size it can become impractical to make \texttt{INSERT} and \texttt{DELETE} operations as well as maintaining proper indexes. The sheer size of the table can cause these operations to take much longer than practical standards.\\
 Partitioning tables enables large tables and it indexes to become smaller portions of itself, the operations applied on the partitioned table can be applied on a partition-by-partition basis and the SQL Server optimizer can direct properly filtered queries on the intended partition instead of the entire table.\\
-For SQL Servers there is mainly two different ways to partition tables; manually divide a large tables data into several physical tables or use the SQL Server's built in feature to partition a single table. The partitioning of data can be partitioned either horizontally or vertically, dividing the data and placed in different tables based on columns or rows respectively.\\For the manual way of table partitioning a view is often created that has bindings to the intended tables. This view acts as a superclass and the queries are directed to the view instead of the manually divided tables, creating what is called a \textit{partitioned view}. A big drawback of this manual partitioning is that the required constraints, indexing and operations need to be applied manually, consequently making maintenance possibly time-consuming and complex \cite{tablepartitioning}.          
+For SQL Servers there is mainly two different ways to partition tables; manually divide a large tables data into several physical tables or use the SQL Server's built in feature to partition a single table. The partitioning of data can be partitioned either horizontally or vertically, dividing the data and placed in different tables based on columns or rows respectively.\\For the manual way of table partitioning a view is often created that has bindings to the intended tables. This view acts as a superclass and the queries are directed to the view instead of the manually divided tables, creating what is called a \textit{partitioned view}. A big drawback of this manual partitioning is that the required constraints, indexing and operations need to be applied manually, consequently making maintenance possibly time-consuming and complex \cite{tablepartitioning}. \\
+Unlike the manual partitioning the built in feature does not include multiple physical tables. SQL Server automatically places the rows in the correct partition and maintains the partitions under the hood. Maintenance          can be performed one individual partitions and properly filtered queries only access the correct partitions, the whole table does not need to be searched since partition elimination is performed.\\
+The built in feature was introduced in SQL Server 2005 and since then every table in the database can be defined as partitioned. The tables are in fact a default partition consisting of one partition, itself, but is not truly a partitioned table without a partition scheme and a partition function as dependencies,as seen in Figure \ref{partdep}.
+ 
 \tikzstyle{every node}=[draw=black,thick,anchor=west, fill=blue!10,style={draw,-latex}]
 \begin{figure}[H]
 \begin{center}
@@ -465,6 +468,7 @@ For SQL Servers there is mainly two different ways to partition tables; manually
 \caption {Partitioned table dependencies}
 \label{partdep}
 \end{figure}
+The table intended for partitioning must be created on a partition scheme that defines where the data is supposed to be stored, i.e. filegroup locations. The schema depends in turn on a partition function that determines the number of partitions and the data boundaries for the column that's intended as partition column in the table.  
 \cite{tablepartitioningbenefit}
 \cite{tablepartitioning}
  
