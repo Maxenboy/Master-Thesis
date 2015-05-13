@@ -290,26 +290,31 @@ The next step was to analyze the system and see if the initial ideas and theoret
 From the analysis several solutions were found to be applicable and a proposed solution, see chapter \ref{sec:proposedsoluton}, was created were solutions are further explained, how they may be implemented and further recommendations are stated.\\
 Last but not least a discussion about the thesis's results and discoveries was created. The discussion in chapter \ref{sec:discussion} also treats extrapolations, expected impact and negative/positive experiences during related work carried out.
 The whole thesis is then concluded, see chapter \ref{sec:conclusions}, to summarize the findings, possible improvements and future recommendations\\\\
-The work done in the theoretical part, the analysis and in the proposed solution were done in iterations. Alongside these iterations further literature research and results added progress to this master thesis.         
 
-\tikzstyle{every node}=[draw=black,thick,anchor=west, fill=blue!10,style={draw,-latex}]
+\tikzstyle{every node}=[rectangle, draw, fill=blue!20, 
+    text width=10em, text centered, rounded corners, minimum height=4em]
+%[draw=black,thick,anchor=west, fill=blue!10,style={draw,-latex}]
 \begin{figure}[H]
 \begin{center}
 \begin{tikzpicture}[%
-  grow via three points={one child at (0.5,-0.7) and
+  grow via three points={one child at (2.7,-2.0) and
   two children at (0.5,-0.7) and (0.5,-1.4)},
-  edge from parent path={(\tikzparentnode.south) |- (\tikzchildnode.west)},
-  edge from parent/.style={draw,-latex}  
+  edge from parent path={(\tikzparentnode.east) -| (\tikzchildnode.north)},
+  edge from parent/.style={draw,-latex}
   ]
-  \node {Partitioned Table}
-    child { node {Partition Scheme}
-		child {node {Partition Function}}    
+  \node {Analyze the problem}
+    child { node {Perform research to understand the core issues}
+		child {node {Use research to analyze the case system}
+			child {node {Experiment with solutions to the issues}
+				child{node {Propose recommended solutions}}}}    
     };
 \end{tikzpicture}
 \end{center}
 \caption {Work flow graph}
 \label{workflowgrapgh}
 \end{figure}
+
+The work done in the theoretical part, the analysis and in the proposed solution were done in iterations. Alongside these iterations further literature research and results added progress to this master thesis.         
 
 \chapter{Approach}\label{sec:approach}
 
