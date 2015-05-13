@@ -982,17 +982,21 @@ There is a concept called "Database Partitioning" that has shown promising perfo
 Another recommendation to the company is to consider investing in a SQL Server Enterprise edition. This would allow them to investigate the built-in In-memory solution, table partitioning and it would allow them to use more RAM since the other versions have a limit of 64GB. This investment is expensive however and the benefits has to be weighed against the cost.
 
 \chapter{Conclusions}\label{sec:conclusions}
+\section{Research}
+Due to the limitations and directions from the case company, \bex Online's database system was chosen as the area to investigate. The thesis started with doing a lot of research on database optimization. The subject is widely researched and there is constant work in the field, which allowed the authors to choose between many different directions when solving the problem. The areas that were chosen to further investigate were:
 \begin{itemize}
-\item Things learned
-	\begin{itemize}
-	\item DBA's are gods
-	\item The database research done til today is massive
-	\item Not easy to optimize 
-	\item Crucial to do a good design from start
-	\item Scalability is and will always be a problem
-	\item A massive amount of diversity in techniques and developments are created to assist
-	\end{itemize}
+\item Query tuning
+\item Execution statistics
+\item Indexing
+\item Index fragmentation
+\item Maintenance planning
+\item Table partitioning
+\item In-Memory OLTP
 \end{itemize}
+
+\subsection{Analysis and testing}
+The analysis and testing was performed in a copy of the production database system in an environment that was different from the production environment. This means that there is a risk that constant updates to the production system could cause integration issues with the proposed solution.
+Since the analysis and testing was made in a test environment with poorer system specifications and thus the benchmark times are larger than they would be in the production system. The performance improvements that were discovered however should have the corresponding effect in production.\\\\ The analysis found that the best improvements to the database system were could be made in table partitioning and setting up a proper maintenance plan. This improved the performance of some queries by up to $6\frac{1}{2}$ times. The analysis also found that performance most likely can be further improved by utilizing In-Memory database solutions. Unfortunately the SQL Server version used in the testing environment didn't include Microsoft's own In-Memory solution, Hekaton. The case company is however recommended to experiment with this if the decide to upgrade to the Enterprise edition. 
 
 \addcontentsline{toc}{chapter}{Bibliography}
 \bibliographystyle{ieeetr}
@@ -1098,7 +1102,7 @@ CREATE CLUSTERED INDEX IX_HISTORY_M_partitioncol ON
 
 
 \chapter{Environments}
-\section{General environment}\label{sec:Genviron}
+\section{General Environment}\label{sec:Genviron}
 \begin{table}[H]
 \begin{center}
 \caption*{\textbf{Server}}
@@ -1111,7 +1115,7 @@ HD: & 500 GB Disk drive
 \end{center}
 \end{table}
 
-\section{Analysis environment}\label{Aenviron}
+\section{Analysis \& Test Environment}\label{Aenviron}
 \begin{table}[H]
 \begin{center}
 \caption*{\textbf{Local System}}
@@ -1119,14 +1123,11 @@ HD: & 500 GB Disk drive
 OS: & Windows 8.1 64-bit\\
 CPU: & Intel Quad-Core I7 4GHz\\
 RAM: & 16Gb, 1566Hz\\
-HD: & ? \\
+HD: & 3 TB 7200 RPM Disk drive \\
 Tools/Programs: & SQL Server Management Studio, SQL Sentry Plan Explorer\\
 \end{tabular}
 \end{center}
 \end{table}
-\section{Test environment}
-
-\section{Implementation environment}
 
 \chapter{Large Illustrations and Tables}\label{sec:appTabIll}
 \begin{table}[H]
