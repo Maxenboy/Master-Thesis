@@ -336,7 +336,7 @@ The database for \bex Online is a Microsoft Server 2014 Web Edition.
 
 
 \subsubsection{Server}
-Currently all the clients instances of /bex Online are placed on a single server hosted by a third party hosting company. This server also hosts the database system.
+Currently all the clients instances of \bex Online are placed on a single server hosted by a third party hosting company. This server also hosts the database system.
 The technical specification of the server is specified in Appendix \ref{sec:Genviron}
 
 \subsubsection{\bex Online}
@@ -439,14 +439,14 @@ Howard   \cite{break-down} describes several problematic query patterns that the
 \item Joins on aggregated data sets
 \end{itemize}
 
-\subparagraph{\textit{OR} logic in \textit{WHERE} clause}\mbox{}\\\\
-When the OR operator is evaluated on one and the same table, e.g. \textit{WHERE a.col1=@val OR a.col2=@val2}, the query optimizer is able to create efficient execution plans by using index seek on two indexes and an index union. However if the \textit{OR} operator is evaluated on different tables, e.g. \textit{WHERE a.col1=@val OR b.col2=@val2}, poor plans may be created. Running the two following queries in Algorithm \ref{firstbreak-down} in Appendix \ref{appCode} will create two efficient plans.\\
+\subparagraph{\texttt{OR} logic in \texttt{WHERE} clause}\mbox{}\\\\
+When the OR operator is evaluated on one and the same table, e.g. \texttt{WHERE a.col1=@val OR a.col2=@val2}, the query optimizer is able to create efficient execution plans by using index seek on two indexes and an index union. However if the \texttt{OR} operator is evaluated on different tables, e.g. \texttt{WHERE a.col1=@val OR b.col2=@val2}, poor plans may be created. Running the two following queries in Algorithm \ref{firstbreak-down} in Appendix \ref{appCode} will create two efficient plans.\\
 
-If the two tables are joined using the same selective predicates as in Algorithm \ref{firstbreak-down} the SQL Server will return a very expensive plan. This can be fixed by using the \textit{UNION} operator instead of the \textit{OR} operator and allows for seeks on all indexes which results in a more efficient plan, even though the query looks more redundant and complex as seen in Algorithm \ref{second-down} in Appendix \ref{appCode}.
+If the two tables are joined using the same selective predicates as in Algorithm \ref{firstbreak-down} the SQL Server will return a very expensive plan. This can be fixed by using the \texttt{UNION} operator instead of the \texttt{OR} operator and allows for seeks on all indexes which results in a more efficient plan, even though the query looks more redundant and complex as seen in Algorithm \ref{second-down} in Appendix \ref{appCode}.
 
 
 \subparagraph{Joins on aggregated data sets}\mbox{}\\\\
-Most large queries join intermediate results from several query blocks involving grouping and aggregation. Earlier aggregation meant grouping of a relation and then apply an aggregate function (e.g. average) on each group. This still applies, but companies and users are not interested in only e.g. the average salary of each department. They want to do further grouping and sorting such as group the above mentioned employees based on their marital status and/or sex   \cite{partioned}. Consequently wanting to perform complex processing within each group and grouping among different sets of attributes.\\ A good cardinality estimation can be provided by statistics for operations performed on a table. However, queries using operator such as \textit{GROUP} or \textit{DISTINCT} create result with different number of rows than that are in the stored table. Joining these results on other data sets, statistics on these intermediate results do not exist. If an intermediate result must be materialized before used in a subsequent step statistics are not available. The query optimizer tries to estimate the cardinality based upon the original data set, but since the earlier mentioned operators intermediate result differ from the original data set, the estimation can degrade in accuracy.\\\\ By analyzing the execution plan for these complex queries, one can partition the query where the estimated number of rows differ a lot from actual number of rows. To ensure statistics, one can store the intermediate results in temporary tables as mentioned in the beginning of this section.     
+Most large queries join intermediate results from several query blocks involving grouping and aggregation. Earlier aggregation meant grouping of a relation and then apply an aggregate function (e.g. average) on each group. This still applies, but companies and users are not interested in only e.g. the average salary of each department. They want to do further grouping and sorting such as group the above mentioned employees based on their marital status and/or sex   \cite{partioned}. Consequently wanting to perform complex processing within each group and grouping among different sets of attributes.\\ A good cardinality estimation can be provided by statistics for operations performed on a table. However, queries using operator such as \texttt{GROUP} or \texttt{DISTINCT} create result with different number of rows than that are in the stored table. Joining these results on other data sets, statistics on these intermediate results do not exist. If an intermediate result must be materialized before used in a subsequent step statistics are not available. The query optimizer tries to estimate the cardinality based upon the original data set, but since the earlier mentioned operators intermediate result differ from the original data set, the estimation can degrade in accuracy.\\\\ By analyzing the execution plan for these complex queries, one can partition the query where the estimated number of rows differ a lot from actual number of rows. To ensure statistics, one can store the intermediate results in temporary tables as mentioned in the beginning of this section.     
 
 \subsection{Table partitioning} \label{sec:tablepart}
 When the data in a database table grows massive in size it can become impractical to make \texttt{INSERT} and \texttt{DELETE} operations as well as maintaining proper indexes. The sheer size of the table can cause these operations to take much longer than practical standards.\\
@@ -937,6 +937,10 @@ Ola Hallengren's \cite{Hallengren15} scripts allow for analysis of the database 
 Hekaton tables are only available in SQL Server Enterprise edition. The test environment uses SQL Server Standard Edition which meant that experimenting with Hekaton tables wasn't possible. The case company use SQL Server Web Edition which doesn't support Hekaton either. Upgrading to Enterprise Edition is expensive and might not result in any improvements. However, if the case company decides to purchase it, it is highly recommended that they experiment with putting some of their tables with high transaction frequency in memory for overall performance improvements to \bex Online.
 
 \section{Miscellaneous improvements}
+\begin{itemize}
+\item convert issues
+\item cardinality issues
+\end{itemize}
 
 \chapter{Discussion}\label{sec:discussion}
 
