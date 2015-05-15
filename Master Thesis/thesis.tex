@@ -671,9 +671,9 @@ Actual \# rows vs. estimated \# rows & Indication of cardinality issues, meaning
  
 Table \ref{2_5 overview} and Figure \ref{2_5 ep} below represent the execution plan for stored procedure 2\_5.
 \begin{table}[H]
-\begin{center}
-\hspace*{-2cm}
-\begin{tabular}{|l|l|l|l|l|l|l|}
+\centering
+\resizebox{\linewidth}{!}{
+\begin{tabular}{|p{3,3cm}|l|l|l|l|l|l|}
 \hline
 Statement & Est. Cost & Est. CPU & Est. I/O Cost & Est. Rows & Actual Rows & Key Lookups\\\hline
 insert into  Table X &	0,0\% & 0,0\% & 0,0\% & \cellcolor{red} 7 & \cellcolor{red} 235 270 & 2\\\hline 
@@ -682,19 +682,22 @@ update  Table X set StockQty & 17,6\% & 0,0\% & 25,3\% & 651 830 & 651 830 & 0 \
 update  Table X set AvailableQty & 20,3\% & 6,4\% & 16,5\% & 651 830 & 651 830 & 0 \\\hline 
 delete from  Table X & 0,0\% & 0,0\% & 0,0\% &\cellcolor{red} 1 & \cellcolor{red} 151 958& 0 \\\hline 
 update  Table X set TBPercent & 6,6\% & 0,0\% & 13,6\% & 499 872 &  499 872 & 0 \\\hline 
-\end{tabular}
+\end{tabular}}
 \caption{Overview of stored procedure 2\_5's statement blocks in execution plan}
 \label{2_5 overview}
-\end{center}
 \end{table}
-\noindent As mentioned earlier almost every stored procedure contain similar statement blocks such as \texttt{INSERT, UPDATE, DELETE}. The estimated cost and operation percentages shown in an execution plan are not directly correlated with time, they show a relative calculated internal estimation of resources used by the batch and operations \cite{cost}. High percentage values doesn't necessarily mean it's bad, but is often an indication of room for improvement. Since the estimated cost is an internal relative estimation, it's not a good measurement to compare queries with. Contrariwise the CPU cost and I/O are solid comparative signs. In the above table the first \texttt{UPDATE} statement is the villain in stored procedure 2\_5 as can be seen on the CPU cost and the relative statement cost compared to the other statements in the SQL batch. We can also see from the overview above that cardinality issues may be in place in the \texttt{INSERT} and \texttt{DELETE} statements, due to the huge skew in the comparison between actual number of rows and estimated number of rows.    
-\begin{figure}[H]
-\hspace*{-2cm}
-\includegraphics[scale=0.8]{Pictures/plan.png}
-\caption{Graphical execution plan of the most resource-intensive \texttt{UPDATE} statement in stored procedure 2\_5}
-\label{2_5 ep}
-\end{figure}
-\noindent In the above figure the graphical execution plan for the most resource-intensive \texttt{UPDATE} statement in stored procedure 2\_5 is shown. The execution plan is read from right to left and bottom to top. The operation costs all add up to 100\% since the costs are a relative sum of the CPU and I/0 costs. The execution plan starts with an Index scan on the HISTORY\_M table and returns all of the entries in the table belonging to a specific user ID. The \texttt{UPDATE} statement makes a calculation on every entity to be able to update the quantity of the sold articles. Since the entities in HISTORY\_M are not in any specific order the scan needs to be of the entire table to group and calculate a sum of all unique entries (the Compute scalar operation represents a negative application on the articles quantity). This is of course not optimal in any way, but for this query sadly inevitable. According to Fritchey an Index scan is quite common and occurs if the query optimizer determines that it's quicker to scan all the values in the entire index than use the key provided by the index, since so many rows need to be returned \cite{fritchey}. To reduce the returned rows a fine-tuning in the \texttt{WHERE}-clause has to be done. \\\\ 
+\noindent As mentioned earlier almost every stored procedure contain similar statement blocks such as \texttt{INSERT, UPDATE, DELETE}. The estimated cost and operation percentages shown in an execution plan are not directly correlated with time, they show a relative calculated internal estimation of resources used by the batch and operations \cite{cost}. High percentage values doesn't necessarily mean it's bad, but is often an indication of room for improvement. Since the estimated cost is an internal relative estimation, it's not a good measurement to compare queries with. Contrariwise the CPU cost and I/O are solid comparative signs. \begin{wrapfigure}{r}{0.35\textwidth}
+  \vspace{-20pt}
+  \begin{center}
+    \includegraphics[scale=0.8]{Pictures/plan.png}
+  \end{center}
+  \vspace{-20pt}
+  \caption{Graphical execution plan of the most resource-intensive \texttt{UPDATE} statement in stored procedure 2\_5}
+  \label{2_5 ep}
+  \vspace{-10pt}
+\end{wrapfigure}
+In the above table the first \texttt{UPDATE} statement is the villain in stored procedure 2\_5 as can be seen on the CPU cost and the relative statement cost compared to the other statements in the SQL batch. We can also see from the overview above that cardinality issues may be in place in the \texttt{INSERT} and \texttt{DELETE} statements, due to the huge skew in the comparison between actual number of rows and estimated number of rows.\\\\    
+In figure \ref{2_5 ep} the graphical execution plan for the most resource-intensive \texttt{UPDATE} statement in stored procedure 2\_5 is shown. The execution plan is read from right to left and bottom to top. The operation costs all add up to 100\% since the costs are a relative sum of the CPU and I/0 costs. The execution plan starts with an Index scan on the HISTORY\_M table and returns all of the entries in the table belonging to a specific user ID. The \texttt{UPDATE} statement makes a calculation on every entity to be able to update the quantity of the sold articles. Since the entities in HISTORY\_M are not in any specific order the scan needs to be of the entire table to group and calculate a sum of all unique entries (the Compute scalar operation represents a negative application on the articles quantity). This is of course not optimal in any way, but for this query sadly inevitable. According to Fritchey an Index scan is quite common and occurs if the query optimizer determines that it's quicker to scan all the values in the entire index than use the key provided by the index, since so many rows need to be returned \cite{fritchey}. To reduce the returned rows a fine-tuning in the \texttt{WHERE}-clause has to be done. \\\\ 
 The next operator is an Index Spool. This operator stores each of the rows to be updated and creates a temporary index, which is then used instead of the original table indexes. Without this operations every article update would initiate the earlier mentioned Index scan. Instead the spooled data can be reused later if the operator is rewound. In the stored procedure this operation is actually rewound 651 830 times due to number of entities in the result table. This is better than redoing the Index scan 651 830 times, but still very suboptimal. The rewinding is caused in conjunction with the Clustered Index Scan on the result table and the nested loop that compares the entities in HISTORY\_M, meaning a rewind for every comparison/row in the result table.\\\\
 The other operations are self-explanatory and it's not until the penultimate operation the rows identification is done and the actual update is done. The leftmost operator is a T-SQL Language Element Catchall operator, which tells us, in this case, that an \texttt{UPDATE} operation has been completed. This operator also indicates that a minor problem existed, a warning label in the form of a yellow triangle. This warning tells us that there is a missing index on the result table and by creating one the performance could be improved.\\\\
 This warning, among others, is the most common in the current system. According to estimates by SQL Sentry Plan Explorer some \texttt{UPDATE} statements in the stored procedures can be performance improved up to 70,5 \% by implementing these missing indexes. But it also gives the warning that this estimate is based solely upon analysis of that specific query and has not taken the external factors in to account.\\\\ 
@@ -788,14 +791,10 @@ Report 1\_1\_1    & \texttt{INSERT}                & ITEM              \\
 \noindent Three tables where of interest; HISTORY\_M, ITEM and ITEM\_L\_E. These three tables all had a column which could be grouped by dates and had entities with dates stretching back to year 2011. The experimentation started with making copies of the original tables both with and without original indexes and keys and modified stored procedures. The store procedures executions were then time measured and altered by deleting entities associated with a certain year. This measuring and deletion procedure was repeated until entities associated with only one year was left. This procedure was applied to table copies with and without indexes and keys.  
 \begin{figure}[H]
 \begin{center}$
-\begin{array}{cc}
-\textbf{Without index and keys} & \textbf{With index and keys}\\
-\includegraphics[scale=0.7]{Pictures/Report25.png} &
-\includegraphics[scale=0.7]{Pictures/Report25Index.png} \\ 
-\includegraphics[scale=0.7]{Pictures/Report44.png} &
-\includegraphics[scale=0.7]{Pictures/Report44Index.png}\\
-\includegraphics[scale=0.7]{Pictures/Report112.png} &
-\includegraphics[scale=0.7]{Pictures/Report112Index.png}
+\begin{array}{c}
+\includegraphics[scale=0.7]{Pictures/Report25.png}  \\ 
+\includegraphics[scale=0.7]{Pictures/Report44.png} \\
+\includegraphics[scale=0.7]{Pictures/Report112.png} 
 \end{array}$
 \caption{Execution time differences for entity partitioning in troublesome tables}
 \label{plots}
@@ -937,6 +936,8 @@ Ola Hallengren's \cite{Hallengren15} scripts allow for analysis of the database 
 
 \section{In-memory}
 Hekaton tables are only available in SQL Server Enterprise edition. The test environment uses SQL Server Standard Edition which meant that experimenting with Hekaton tables wasn't possible. The case company use SQL Server Web Edition which doesn't support Hekaton either. Upgrading to Enterprise Edition is expensive and might not result in any improvements. However, if the case company decides to purchase it, it is highly recommended that they experiment with putting some of their tables with high transaction frequency in memory for overall performance improvements to \bex Online.
+
+\section{Miscellaneous improvements}
 
 \chapter{Discussion}\label{sec:discussion}
 
