@@ -652,7 +652,7 @@ The \texttt{SET STATISTICS IO ON} command was, as for the \texttt{SET STATISTICS
 
 \subsubsection{Execution plans}
 An execution plan is an algorithm calculated by the SQL Servers Query Optimizer using minimum of the server's resources. It shows the necessary set of steps in a specific order that is executed to obtain the data access in a database. The execution plans corresponding to the stored procedures in the system were obtained in a graphical perspective through SMSS. These execution plans contain graphical representations of operations, operation costs, operation properties and values as well as helpful warnings. The variety of operations and their properties are too cumbersome to explain in detail in writing. Therefore this sections focal point will be summarizing the execution plans corresponding to the most critical stored procedure and one in particular as an example.\\\\      
-With the help of SQL Sentry Plan Explorer the execution plans could be further analyzed. As execution plans tend to accommodate a lot of information it's problematic to quickly to identify operations or signs that are troublesome and can be improved. According to Fritchey there are a few common signs of trouble \cite{fritchey2}:
+With the help of SQL Sentry Plan Explorer the execution plans could be further analyzed. As execution plans tend to accommodate a lot of information it's problematic to quickly identify operations or signs that are troublesome and can be improved. According to Fritchey there are a few common signs of trouble \cite{fritchey2}:
 \begin{table}[H]
 \begin{center}
 \begin{tabular}{p{3cm} p{10cm}}
@@ -934,6 +934,7 @@ Ola Hallengren's \cite{Hallengren15} scripts allow for analysis of the database 
 Hekaton tables are only available in SQL Server Enterprise edition. The test environment uses SQL Server Standard Edition which meant that experimenting with Hekaton tables wasn't possible. The case company use SQL Server Web Edition which doesn't support Hekaton either. Upgrading to Enterprise Edition is expensive and might not result in any improvements. However, if the case company decides to purchase it, it is highly recommended that they experiment with putting some of their tables with high transaction frequency in memory for overall performance improvements to \bex Online.
 
 \section{Miscellaneous improvements}
+
 \begin{itemize}
 \item convert issues
 \item cardinality issues
