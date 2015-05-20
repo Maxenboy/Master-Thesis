@@ -21,6 +21,7 @@
 \usepackage{listings}
 \usepackage{color}
 \usepackage{tikz}
+\usepackage{scrextend}
 \usepackage{tikz-qtree}
 \usetikzlibrary{trees}
 \usepackage{capt-of}
@@ -244,7 +245,6 @@ The advantages and disadvantages of OODB are numerous, therefore only a few will
     \item[] Disadvantages: 
     \item{Interoperability between RDB and OODB }
     \item{Minimal query optimization and performance tuning}
-    \item{Lack of standard query algebra}
     \item{Authorization concerns}
     \end{enumerate}
 \end{minipage}
@@ -252,8 +252,14 @@ The advantages and disadvantages of OODB are numerous, therefore only a few will
 \begin{flushright}
 \cite{OODBMS}
 \end{flushright}
-\textbf{1.} The user of an OODB is allowed to create and define new data abstractions. Meaning the user can create new classes with methods and attributes, inherit from superclasses, create instances with unique identifiers, load and run methods etc. \cite{userdefinedabstractions}.\\ \textbf{2.} With the help of the OID object uniqueness is guaranteed. Resulting in eliminating the needs of user defined keys. Therefore it's not possible to modify the OID by applications and two object are different even if they have the same value for all their properties and structure \cite{identity}.\\\textbf{3.} The OODB enables navigation through object structures and path expressions in object attributes. These path expressions can reduce the need for joins of classes \cite{userdefinedabstractions}.\\\textbf{4.}\textbf{a)} If the domain of a value of an attribute in an object is another object, the value references the latter object (OID). Thus if the first object is retrieved the latter object can be instantly retrieved by the first objects attribute value.\\
-\textbf{b)} When OODB objects are loaded into memory the objects OID is converted into memory pointers. Making repeated navigation through linked objects loaded in memory dramatically faster \cite{userdefinedabstractions}.\\\\\textbf{1.} OODBs are not compatible with RDBs-there's a need for a migration path. The architecture and data models between OODBs and RDBs are not yet unified, making it difficult for these systems to coexist \cite{userdefinedabstractions}. \\\textbf{2.} Since OODBs often contain a lot of user defined classes and new types the optimizer can have a hard time to predict the "relation" between classes and might assume that a class is a subclass to a faulty superclass. In addition complex methods, objects and encapsulations add complexity through complex path expressions in the query processing. Due to these problems object-oriented query optimization is still in research stage \cite{OODBqopt}. \\\textbf{3.} Several different query languages of algebra have been proposed for OODBs, such as association algebra \cite{associationalg}, but they differ in expressibility and optimizing rewrite rules. \\\textbf{4.} Unlike RDBs, most OODBs don't support authorization, making privileges on data nonexistent \cite{userdefinedabstractions}.\\\\
+\textbf{1.} The user of an OODB is allowed to create and define new data abstractions. Meaning the user can create new classes with methods and attributes, inherit from superclasses, create instances with unique identifiers, load and run methods etc. \cite{userdefinedabstractions}.\\ \textbf{2.} With the help of the OID object uniqueness is guaranteed. Resulting in eliminating the needs of user defined keys. Therefore it's not possible to modify the OID by applications and two object are different even if they have the same value for all their properties and structure \cite{identity}.\\\textbf{3.} The OODB enables navigation through object structures and path expressions in object attributes. These path expressions can reduce the need for joins of classes \cite{userdefinedabstractions}.\\\textbf{4.}
+\begin{addmargin}[1em]{0em}
+\textbf{a)} If the domain of a value of an attribute in an object is another object, the value references the latter object (OID). Thus if the first object is retrieved the latter object can be instantly retrieved by the first objects attribute value.\\
+\end{addmargin}
+\begin{addmargin}[1em]{0em}
+\textbf{b)} When OODB objects are loaded into memory the objects OID is converted into memory pointers. Making repeated navigation through linked objects loaded in memory dramatically faster \cite{userdefinedabstractions}.\\
+\end{addmargin}
+\textbf{1.} OODBs are not compatible with RDBs, there's a need for a migration path. The architecture and data models between OODBs and RDBs are not yet unified, making it difficult for these systems to coexist \cite{userdefinedabstractions}. \\\textbf{2.} Since OODBs often contain a lot of user defined classes and new types the optimizer can have a hard time to predict the "relation" between classes and might assume that a class is a subclass to a faulty superclass. In addition complex methods, objects and encapsulations add complexity through complex path expressions in the query processing. Due to these problems object-oriented query optimization is still in research stage \cite{OODBqopt}. \\\textbf{3.} Unlike RDBs, most OODBs don't support authorization, making privileges on data nonexistent \cite{userdefinedabstractions}.\\\\
 Unfortunately the phrase OODB has become a faulty term. The weaknesses has brought the OODB technology to being more of a constant storage of object-oriented programming language than database system. The OODB technology has not met its expectations to provide important features to the complex applications it was meant to help currently the disadvantages outweigh the advantages \cite{OODBMS}.
 
 \subsection{Neo4J \& Graph Databases}
