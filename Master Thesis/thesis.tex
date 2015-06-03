@@ -520,7 +520,7 @@ In Hekaton, the concept of buckets is an object that is reserved for the hash in
 \noindent The reason why the bucket count has to be set as a power of two number is to make the hash function faster. The position for a value in a table is calculated as \emph{Hash value \% array size}. The problem with this calculation is that modulo is slow compared to the bit wise AND-operation. By setting the array size, which is the bucket count, to a number that is a power of two, one can use the AND-operation instead and save time.
 
 \paragraph*{Stored procedures in Hekaton}\mbox{}\\\\ 
-Hekaton uses the SQL Query Optimizer to produce an efficient query plan. This plane is then compiled into native C code and loaded as DLLs into the SQL Server process. This compilation happens on SQL Server start.
+Hekaton uses the SQL Query Optimizer to produce an efficient query plan. This plan is then compiled into native C code and loaded as DLLs into the SQL Server process. This compilation happens on SQL Server start.
 When a procedure is saved as a natively compiled stored procedure it locks all the tables that it uses. This is because such procedures must be schema bound, i.e. all tables referenced by a procedure can't be dropped. If this is considered together with the limitation mentioned above regarding changing of a table architecture, the following process would be required in order to change e.g. a Hekaton table's columns, Nevarez \cite{Nevarez}.
 \begin{enumerate}
 \item Drop the procedures referencing the table.
