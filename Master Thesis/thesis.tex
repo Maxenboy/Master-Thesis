@@ -408,7 +408,7 @@ The purpose of the query optimization is to provide a good enough and hopefully 
 \subsubsection{Query Tuning}
 In order to optimize the process explained above there are numerous areas that can be altered. One can dive in to the actual SQL statements and try to break down complex queries, optimize join ordering etc. Besides altering the SQL statements the workload sent to the query optimizer can be optimized in several ways. Chaudhuri et al. \cite{compressing} state that compressing the size of a workload, which is a set of SQL statements, improves a systems scalability and illustrates its effectiveness in index selection and approximate query processing. Furthermore, major database vendors have focused on releasing automated physical database design tools that reduce the total cost of a workload. An essential assumption of these tools is that the workload consists of a set of SQL statements with no internal ordering. Agrawal et al. state that the workload in itself isn't the most promising aspect of workload optimization, but that the workload can be treated as a sequence which broadens the usage of the above mentioned tools, Agrawal et al. \cite{automatic}.
 
-\paragraph*{Join Ordering}\mbox{}\\\\
+\subsubsection{Join Ordering}
 The order of joins is a key factor in controlling the amount of data flowing between operators in an execution plan. The query optimizer needs to pay close attention to this complex problem and has been the subject of extensive research since the 1970s  as mentioned in the study by Steinbrunn et al. \cite{join}. The task of the query optimizer is to find the optimal sequence of joins between tables in queries, and the way the joins are ordered can greatly impact the cost and performance of a query. Even though the result of query is the same, disregarding the join order, the cost can vary greatly. Joins have the properties of being both commutative and associative, because of these properties even simple queries can have many different possible join orders and increase exponentially with the number of tables that are involved. As mentioned earlier in section \ref{sec:qopt} the queries are represented as trees in the query processor. The shape of the tree is of utter importance for the query optimizer and is constructed by the nature of the join ordering. In table \ref{table:join} the number of possibilities depending on two sorts of tree shapes (seen in Figure \ref{fig:trees}) are listed, seemingly the number of possibilities increases dramatically. It's obviously impossible for the query optimizer to considere all these possibilities, it would take too long.  
 
 \begin{figure}[H] 
@@ -440,7 +440,7 @@ The order of joins is a key factor in controlling the amount of data flowing bet
 
 \noindent Since the number of the possibilities are that great the query optimizer needs to balance between the optimization time and the quality of it. So the goal of the query optimizer is to find a good enough plan as quick as possible. 
 
-\paragraph*{Query Break Down}\mbox{}\\\\ \label{querybreakdown}
+\subsubsection{Query Break Down} \label{querybreakdown}
 \noindent In some cases the query optimizer may not be able to produce/decide a good plan. This is mostly because of complex queries containing a large number of joins and joins with aggregations. Breaking down these complex queries into two or more and storing the intermediate result in temporary tables is a good plan, since it's fairly rare to request all the data in a single query. 
 Howard   \cite{break-down} describes several problematic query patterns that the query optimizer has problems creating good plans for. The article is applied to SQL Server versions from 2005 to 2012 (code-named ''Denali''), but according to Nevarez \cite{Nevarez} it's also applicable to SQL Server 2014.\\ Two important query patterns for this thesis are:
 \begin{itemize}
@@ -448,13 +448,13 @@ Howard   \cite{break-down} describes several problematic query patterns that the
 \item Joins on aggregated data sets
 \end{itemize}
 
-\subparagraph{\texttt{OR} Logic in \texttt{WHERE} Clause}\mbox{}\\\\
+\paragraph*{\texttt{OR} Logic in \texttt{WHERE} Clause}\mbox{}\\\
 When the OR operator is evaluated on one and the same table, e.g. \texttt{WHERE a.col1=@val OR a.col2=@val2}, the query optimizer is able to create efficient execution plans by using index seek on two indexes and an index union. However if the \texttt{OR} operator is evaluated on different tables, e.g. \texttt{WHERE a.col1=@val OR b.col2=@val2}, poor plans may be created. Running the two following queries in Algorithm \ref{firstbreak-down} in Appendix \ref{appCode} will create two efficient plans.\\
 
 \noindent If the two tables are joined using the same selective predicates as in Algorithm \ref{firstbreak-down} the SQL Server will return a very expensive plan. This can be fixed by using the \texttt{UNION} operator instead of the \texttt{OR} operator and allows for seeks on all indexes which results in a more efficient plan, even though the query looks more redundant and complex as seen in Algorithm \ref{second-down} in Appendix \ref{appCode}.
 
 
-\subparagraph{Joins on Aggregated Data Sets}\mbox{}\\\\
+\paragraph*{Joins on Aggregated Data Sets}\mbox{}\\\\
 Most large queries join intermediate results from several query blocks involving grouping and aggregation. Earlier, aggregation meant grouping of a relation and then applying an aggregate function (e.g. average) on each group. This still applies, but companies and users are not interested in only e.g. the average salary of each employee. They want to do further grouping and sorting such as group the above mentioned employees based on their marital status and/or sex, Chatziantoniou \& Ross \cite{partioned}, consequently wanting to perform complex processing within each group and grouping among different sets of attributes.\\ A good cardinality estimation can be provided by statistics for operations performed on a table. However, queries using operators such as \texttt{GROUP} or \texttt{DISTINCT} create results with different number of rows than that are in the stored table. Joining these intermediate results on other data sets causes statistics on these intermediate results to not exist. If an intermediate result must be materialized before used in a subsequent step statistics are not available. The query optimizer tries to estimate the cardinality based upon the original data set, but since the earlier mentioned operators intermediate result differ from the original data set, the estimation can degrade in accuracy.\\\\ By analyzing the execution plan for these complex queries, one can partition the query where the estimated number of rows differ a lot from actual number of rows. To ensure statistics, one can store the intermediate results in temporary tables as mentioned in the beginning of this section.     
 
 \subsection{Table Partitioning} \label{sec:tablepart}
@@ -534,7 +534,7 @@ When a procedure is saved as a natively compiled stored procedure it locks all t
 A complex procedure like this is preferably avoided. The cost of having to rebuild the in-memory tables from scratch could be high so it is important to plan and choose parameters wisely.
 
 
-\section{Analysis}\label{sec:analysis}
+\chapter{Analysis}\label{sec:analysis}
 The analysis of the system required several tools and environments for both live and local research, where the local environment setup is further explained in Appendix \ref{Aenviron}. To identify report-relevant parts of the system the tool Microsoft SQL Server Management Studio (SSMS) was mostly used. To identify and study the bottle-necks and problems, in the above mentioned system parts, several other tools such as DBVisualizer, SQL Sentry Plan Explorer etc. were used alongside SMSS to extract query duration, query execution plans and much more.\\\\
 Much of the analysis revolved around the stored procedures, since it was there the potential of optimization was greatest, but other optimization areas were also studied such as index fragmentation of the relevant tables.      
 
