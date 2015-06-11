@@ -538,7 +538,7 @@ A complex procedure like this is preferably avoided. The cost of having to rebui
 The analysis of the system required several tools and environments for both live and local research, where the local environment setup is further explained in Appendix \ref{Aenviron}. To identify report-relevant parts of the system the tool Microsoft SQL Server Management Studio (SSMS) was mostly used. To identify and study the bottle-necks and problems, in the above mentioned system parts, several other tools such as DBVisualizer, SQL Sentry Plan Explorer etc. were used alongside SMSS to extract query duration, query execution plans and much more.\\\\
 Much of the analysis revolved around the stored procedures, since it was there the potential of optimization was greatest, but other optimization areas were also studied such as index fragmentation of the relevant tables.      
 
-\subsection{Stored Procedures}\label{sec:sp}
+\section{Stored Procedures}\label{sec:sp}
 As mentioned in the technical description a total of 59 stored procedures are present in the system. A little more than 50\% (30) of these subroutines are directly involved with the BI-reports. In the web interface there are several more reports that can be produced, but the ones not covered by stored procedures are treated in the back-end of the system.  
 \begin{table}[H]
 \begin{center}
@@ -564,7 +564,7 @@ The data is fetched from the different tables by joining tables on stated condit
 The fetched data is stored as an intermediate result in a table with a name corresponding to the stored procedure name. This intermediate result table is present by reasons mentioned in \ref{querybreakdown}, with the exception that the table isn't temporary. The table is permanently present in the database due to a previously refactorization of the database by the DBA. The table is therefore meant as an optimization shortcut, where the last queried report result is stored until the same query is executed with different parameters.\\
 The intermediate result table is then further altered by updates based on mathematical calculations such as item quantities, contribution margins etc. And in some cases a deletion is performed of rows where the mathematical calculations don't pass the set conditions such as if purchase-, sales- and/or stock-quantity is 0.   
        
-\subsubsection{Execution Statistics}
+\subsection{Execution Statistics}
 The first step taken to tune the stored procedure was to produce statistics. The goal of our thesis is to speed up the BI-report generation and thereby speeding up the stored procedures. Therefore execution duration was of utter importance and was established with the Transact-SQL \texttt{SET STATISTICS TIME} command, as can be seen in Algorithm \ref{spexec}. This command is used to measure variety of time, some of which may or may not be of much importance considering query tuning. The result varies from query to query and can look something like this: \\\\\texttt{SQL Server parse and compile time:\\
 CPU time = 0 ms, elapsed time = 0 ms.\\
 SQL Server parse and compile time:\\
@@ -662,7 +662,7 @@ The \texttt{SET STATISTICS IO ON} command, as for the \texttt{SET STATISTICS TIM
 \end{table}
 \noindent The above information is part of the key information to tuning the stored procedures, especially the Scan count and Logical reads. But to properly alter the key item we need to use the information in conjunction with the queries execution plans, Richberg \cite{IO}.  
 
-\subsubsection{Execution Plans}
+\subsection{Execution Plans}
 An execution plan is an algorithm calculated by the SQL Servers Query Optimizer using the minimum of the server's resources. It shows the necessary set of steps in a specific order that is executed to obtain the data access in a database. The execution plans corresponding to the stored procedures in the system were obtained in a graphical perspective through SMSS. These execution plans contain graphical representations of operations, operation costs, operation properties and values as well as helpful warnings. The variety of operations and their properties are too cumbersome to explain in detail in writing. Therefore this sections focal point will be summarizing the execution plans corresponding to the most critical stored procedure and one in particular as an example.\\\\      
 With the help of SQL Sentry Plan Explorer the execution plans could be further analyzed. As execution plans tend to accommodate a lot of information it's problematic to quickly identify operations or signs that are troublesome and can be improved. According to Fritchey \cite{fritchey2} there are a few common signs of trouble:
 \begin{table}[H]
@@ -717,7 +717,7 @@ Other common warnings that were encountered were "spill to temp database" and "c
 Through the analysis of the execution plans many trouble signs were noted. Except for the warnings in several execution plans, cardinality estimates seems to be a big issue where estimated rows substantially differ from actual rows. As for operations Clustered Index Scan and Clustered Index Update are most definitely the most common operation throughout the stored procedures. Indicating that the indexes present on the database tables in the system are not optimal and should be revised.    
 
 \newpage
-\subsection{Index Fragmentation}\label{indexfragmentation}
+\section{Index Fragmentation}\label{indexfragmentation}
 By using the script from the theory the following index fragmentation values in Table \ref{indexfrag} were produced. The table names and index names has been shortened and/or changed due to confidentiality.
 \begin{center}
 \begin{table}[H]
@@ -772,7 +772,7 @@ REPORT\_R\_3\_1    & PK\_REPORT\_R\_3\_1       & 10,71428571            & 7,6904
 \end{center}
 This shows that 40 out of 572 indexes have both internal and external fragmentation. Some of the indexes used have an external fragmentation well above the value of 10, which is the threshold according to Shubho \cite{Shubho09} as mentioned in section \ref{measurefrag}. The internal fragmentation value is also bad at some of the indexes (i.e. less than 75). This shows that BeX Online over time gives rise to fragmented indexes which has to be taken care of. The indexes with heavy fragmentation are used in tables that are the most frequently used by the stored procedures to create business intelligence reports. This fragmentation is most likely a reason to poor performance in these queries.
 
-\subsection{Table Experimentation} \label{Experiments}
+\section{Table Experimentation} \label{Experiments}
 With the help of the above analysis some experimentation of the BI-stakeholder tables were performed. The goal of this was to both identify the parts that were problematic in the stored procedures and see if table partitioning is a feasible solution.
 With the help of earlier statistics, in collaboration with what \bex considers as critical BI-reports, 7 stored procedures were subjects for further experimentation (top seven rows in Table \ref{tab:duration}). In these stored procedures time differences were established between the statement blocks to identify the most resource- and time intensive part. 
 \begin{figure}[H]
@@ -856,7 +856,7 @@ During the experimental entity removals, some anomalies occurred. When deleting 
 \end{center}
 \end{figure}
 
-\subsection{Maintenance Plans}
+\section{Maintenance Plans}
 In the current system there is no maintenance done to the database except for the occasional manual adjustments. Since the query execution time is highly affected by the quality of the indexing they should be maintained to make sure that they do not cause bottlenecks. \\\\
 Generally a maintenance plan aims to correct or validate three things.
 \begin{enumerate}
@@ -867,7 +867,7 @@ Generally a maintenance plan aims to correct or validate three things.
 
 \noindent Ola Hallengren \cite{Hallengren15} is an award winning database administrator that has released a maintenance script bundle called "SQL Server Maintenance Solution". For these maintenance scripts he has received several community's choice awards and been declared "MVP: Most Valuable Professional" by Microsoft. His scripts are free to use and easy to install. Because of this, the case company's database will be analyzed so that the best implementation of Hallengren's scripts can be used.
 
-\subsubsection{Data and Log File Management}
+\subsection{Data and Log File Management}
 This topic doesn't necessarily need to be in a regular maintenance plan according to Randal \cite{Randal08}, with the exception of log-file growth. Data and log file management is mostly handled through settings, which should be reviewed so that they follow best practices for performance and security. The following checklist should be considered when looking at these settings.
 
 \begin{enumerate}
@@ -882,13 +882,13 @@ The auto-growth is on and it is set to grow by 10\%. The fact that the auto-grow
 The initial size of the files should be set to an appropriate value based on the file size and the rate at which they grow. These settings has been properly set during the creation of the database system and is not something that is covered in a maintenance plan.\\\\
 Shrinking can be used to reduce the size of the data and log files but is a resource-heavy process that causes large amounts of logical read fragmentation in a file. Both auto-shrink and shrinking made by maintenance plans should be avoided. The problems that shrinking tries to solve are better prevented by growing the files at a steady rate. The setting for auto-shrinking is already set to off in the system.
 
-\subsubsection{Index}
+\subsection{Index}
 Some of the indexes were heavily fragmented. When looking at the tables that use these indexes it was found that those were the tables that are used the most by the system. This indicates that most of the fragmentation caused to those indexes are caused by a high number of transactions, and not necessarily by bad queries. These indexes should therefore be monitored for fragmentation and actions should be taken when necessary to prevent heavy fragmentation. Many maintenance plans however, rebuild or reorganize indexes on a regular basis, without checking if the actual fragmentation is causing problems yet. Since correcting indexes is a high cost procedure, it should only be done when it is necessary. Hallengren's \cite{Hallengren15} scripts monitors the indexes regularly and reorganizes when needed and rebuilds them when it is necessary.
 
-\subsubsection{Statistics}
+\subsection{Statistics}
 The default setting in SQL Server is to have auto-update statistics to on. This is also the case in the case company's database. This is good, since statistics need to be accurate and up to date in order for the query planner to do its job properly. There are however advantages to updating statistics manually in a maintenance plan to make sure that they are correct. Updating statistics manually should be done with care. During the index rebuild process the statistics for that index are also updated. If there is a plan to manually update the statistics for that index in the maintenance plan the statistics will be updated twice, which is bad for performance. A manual statistics update is also not as thorough as the update that happens during the rebuild so the statistics might even become worse. If updating statistics should be part of the maintenance plan it should only be done to the indexes that haven't been rebuilt.
 
-\subsubsection{Testing Ola Hallengren's Scripts}
+\subsection{Testing Ola Hallengren's Scripts}
 Ola Hallengren's maintenance scripts \cite{Hallengren15} were downloaded and set up in the testing environment. The maintenance script require only five simple settings before it could be executed, i.e. which database(s) it should create the script for. When executed the script created four stored procedures that could be used for maintenance and investigation. The main maintenance stored procedure is called schemaname.IndexOptimize. It can be run with a number of settings depending on the requested actions. Some of the key settings is to define what counts as low, medium and high index fragmentation, and what operations that should be performed depending on this level. By default the fragmentation levels are set to Microsoft's recommendation, which are:
 \begin{itemize}
 \item Low fragmentation < 5\%
@@ -927,7 +927,7 @@ When running the script in the test environment a full rebuild of all fragmented
 \end{center}
 \end{figure}
 
-\subsection{In-Memory OLTP}
+\section{In-Memory OLTP}
 As described earlier the database system consists of around 250 tables and the particular database that was provided for this thesis is approximately 75GB. Since \bex Online is a cloud based SaaS solution all of their clients share server. The database is also increasing in size regarding data content every day. This makes it difficult to put every table in memory since all of the clients databases combined would require hundreds of gigabytes of RAM, which would be very expensive. However, storing only the tables with the most transactions in memory would not require massive amounts of RAM and could still be notably performance enhancing.
 \\\\
 By looking at which tables the stored procedures for the business intelligence use in their queries, a pattern could be found. 26 tables are used in all of the stored procedures and another 9 tables are used in more than 80\% of the stored procedures. Then there's 46 more tables that are used in less than 20\% of the stored procedures. The 26 tables that are used in all stored procedures contain information that is relatively static, i.e. the information stored in the tables isn't growing at a particularly fast rate. This is preferable when using Hekaton tables since they don't have to be rebuild as often.
